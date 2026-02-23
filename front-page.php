@@ -5,43 +5,50 @@
     <div class="mv-bg-svg" aria-hidden="true">
         <svg viewBox="0 0 1440 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img">
             <defs>
-                <linearGradient id="lineGradPink" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ff66cc" stop-opacity="0" />
-                    <stop offset="50%" stop-color="#ff66cc" stop-opacity="0.8" />
-                    <stop offset="100%" stop-color="#ff66cc" stop-opacity="0" />
+                <linearGradient id="lineGradMain" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f88379" stop-opacity="0" />
+                    <stop offset="50%" stop-color="#f88379" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#f88379" stop-opacity="0" />
                 </linearGradient>
-                <linearGradient id="lineGradBlue" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#3b82f6" stop-opacity="0" />
-                    <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.8" />
-                    <stop offset="100%" stop-color="#3b82f6" stop-opacity="0" />
+                <linearGradient id="lineGradSub" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#5a67d8" stop-opacity="0" />
+                    <stop offset="50%" stop-color="#5a67d8" stop-opacity="0.7" />
+                    <stop offset="100%" stop-color="#5a67d8" stop-opacity="0" />
                 </linearGradient>
+                <radialGradient id="glowFx" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#f88379" stop-opacity="0.3" />
+                    <stop offset="100%" stop-color="#f88379" stop-opacity="0" />
+                </radialGradient>
             </defs>
 
-            <!-- Dynamic Network Grid background -->
-            <g stroke="rgba(255,255,255,0.03)" stroke-width="1">
-                <path d="M0 200 H1440 M0 400 H1440 M0 600 H1440" />
-                <path d="M200 0 V800 M400 0 V800 M600 0 V800 M800 0 V800 M1000 0 V800 M1200 0 V800" />
+            <!-- Tech Hexagon Grid background -->
+            <g stroke="rgba(255,255,255,0.02)" stroke-width="1.5">
+                <path d="M0 200 L200 100 L400 200 L400 400 L200 500 L0 400 Z" transform="translate(100, -50)" />
+                <path d="M400 200 L600 100 L800 200 L800 400 L600 500 L400 400 Z" transform="translate(100, -50)" />
+                <path d="M800 200 L1000 100 L1200 200 L1200 400 L1000 500 L800 400 Z" transform="translate(100, -50)" />
+                <path d="M0 500 L200 400 L400 500 L400 700 L200 800 L0 700 Z" transform="translate(300, 100)" />
+                <path d="M400 500 L600 400 L800 500 L800 700 L600 800 L400 700 Z" transform="translate(300, 100)" />
             </g>
 
-            <!-- Elegant Curve 1 (Pink) -->
-            <path d="M-100,500 C300,300 600,600 1500,400" fill="none" stroke="url(#lineGradPink)" stroke-width="2" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 10s ease-out forwards, floatOrb 15s ease-in-out infinite alternate;" />
+            <!-- Sharp Modern Lines -->
+            <path d="M-200,600 L300,300 L700,450 L1600,100" fill="none" stroke="url(#lineGradMain)" stroke-width="3" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 8s cubic-bezier(0.4, 0, 0.2, 1) forwards, floatOrb 12s ease-in-out infinite alternate;" />
             
-            <!-- Elegant Curve 2 (Blue) -->
-            <path d="M-100,600 C400,800 800,200 1500,500" fill="none" stroke="url(#lineGradBlue)" stroke-width="2" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 12s ease-out 0.5s forwards, floatOrb 18s ease-in-out infinite alternate;" />
+            <path d="M-200,700 L400,850 L800,400 L1600,200" fill="none" stroke="url(#lineGradSub)" stroke-width="2" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 10s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards, floatOrb 15s ease-in-out infinite alternate-reverse;" />
 
-            <!-- Highlight Nodes -->
+            <!-- Glow Highlights -->
             <g style="animation: pulseGlow 4s ease-in-out infinite alternate;">
-                <circle cx="285" cy="460" r="4" fill="#ff66cc" filter="drop-shadow(0 0 8px #ff66cc)" />
-                <circle cx="830" cy="390" r="6" fill="#3b82f6" filter="drop-shadow(0 0 10px #3b82f6)" />
-                <circle cx="1080" cy="485" r="3" fill="#ff66cc" filter="drop-shadow(0 0 6px #ff66cc)" />
+                <circle cx="300" cy="300" r="120" fill="url(#glowFx)" />
+                <circle cx="700" cy="450" r="90" fill="url(#glowFx)" />
+                <circle cx="300" cy="300" r="5" fill="#f88379" filter="drop-shadow(0 0 10px #f88379)" />
+                <circle cx="700" cy="450" r="5" fill="#f88379" filter="drop-shadow(0 0 10px #f88379)" />
             </g>
         </svg>
     </div>
 
     <div class="mv-content container">
-        <p class="mv-kicker">SUCCESS-DRIVEN DESIGN</p>
-        <h2 class="mv-catch">成果から逆算する<br>クリエイティブ</h2>
-        <p class="mv-sub">Web制作・マーケティングのプロフェッショナルチームが、<br>貴社のビジネス課題を解決に導きます。</p>
+        <p class="mv-kicker">CONTROL THE BLANK</p>
+        <h2 class="mv-catch">空白を、支配せよ。</h2>
+        <p class="mv-sub">デザインとデータの究極の融合。<br>私たちは、ビジネスを加速させるデジタル空間の最適解を創り出します。</p>
         <div class="mv-btns">
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn">無料相談はこちら</a>
             <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline">実績を見る</a>
@@ -63,6 +70,13 @@
         </div>
     </div>
 </section>
+
+<!-- 斜め区切り装飾 SVG -->
+<div class="section-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <polygon fill="var(--bg-color)" points="0,100 1440,0 1440,100" />
+    </svg>
+</div>
 
 <!-- blankの強み (3〜4ブロック) -->
 <section class="strengths container">
@@ -148,10 +162,19 @@
             <p>実績は準備中です。</p>
         <?php endif; ?>
     </div>
-    <div style="text-align: center; margin-top: 30px;">
-        <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline">すべての実績を見る</a>
+        <?php endif; ?>
+    </div>
+    <div style="text-align: center; margin-top: 50px;">
+        <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline" style="color:var(--primary-color) !important; border-color:var(--primary-color);">すべての実績を見る &rarr;</a>
     </div>
 </section>
+
+<!-- 波形区切り装飾 SVG -->
+<div class="section-divider" style="background:var(--white);">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path fill="var(--secondary-color)" d="M0,0 C320,120 420,120 720,60 C1020,0 1120,0 1440,60 L1440,120 L0,120 Z" />
+    </svg>
+</div>
 
 <!-- 数字で見るblank -->
 <section class="numbers" style="padding: 60px 0;">

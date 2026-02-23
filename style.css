@@ -15,8 +15,8 @@ Text Domain: blank
 :root {
     --primary-color: #0b132b;
     --secondary-color: #1c2541;
-    --accent-color: #3b82f6;
-    --highlight-color: #ff66cc;
+    --accent-color: #5a67d8;
+    --highlight-color: #f88379;
     --bg-color: #f8f9fa;
     --text-color: #333;
     --white: #ffffff;
@@ -123,18 +123,18 @@ h6 {
 }
 
 .cta-btn {
-    background: linear-gradient(135deg, #ff88dd, var(--highlight-color));
+    background: linear-gradient(135deg, #fbb0aa, var(--highlight-color));
     color: var(--white) !important;
     padding: 12px 28px;
     border-radius: 6px;
     font-weight: bold;
-    box-shadow: 0 4px 15px rgba(255, 102, 204, 0.3);
+    box-shadow: 0 4px 15px rgba(248, 131, 121, 0.3);
     transition: all 0.3s ease;
 }
 
 .cta-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 102, 204, 0.45);
+    box-shadow: 0 6px 20px rgba(248, 131, 121, 0.45);
 }
 
 .cta-btn-outline {
@@ -191,9 +191,9 @@ h6 {
     position: relative;
     overflow: hidden;
     background:
-        radial-gradient(circle at 10% 20%, rgba(255, 102, 204, 0.15), transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.15), transparent 50%),
-        linear-gradient(130deg, #091124 0%, #101c3a 60%, #152243 100%);
+        radial-gradient(circle at 10% 20%, rgba(248, 131, 121, 0.12), transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(90, 103, 216, 0.15), transparent 50%),
+        linear-gradient(130deg, #091124 0%, #101c3a 65%, #152243 100%);
     color: var(--white);
     text-align: center;
 }
@@ -245,10 +245,10 @@ h6 {
     color: var(--highlight-color);
     margin-bottom: 20px;
     font-weight: 700;
-    border: 1px solid rgba(255, 102, 204, 0.3);
+    border: 1px solid rgba(248, 131, 121, 0.3);
     padding: 6px 16px;
     border-radius: 30px;
-    background: rgba(255, 102, 204, 0.05);
+    background: rgba(248, 131, 121, 0.05);
     opacity: 0;
     animation: fadeUp 1s ease forwards;
 }
@@ -358,6 +358,24 @@ h6 {
 @keyframes drawLine {
     to {
         stroke-dashoffset: 0;
+    }
+}
+
+.section-divider {
+    width: 100%;
+    margin-bottom: -1px;
+    line-height: 0;
+}
+
+.section-divider svg {
+    display: block;
+    width: 100%;
+    height: 60px;
+}
+
+@media (min-width: 768px) {
+    .section-divider svg {
+        height: 120px;
     }
 }
 
