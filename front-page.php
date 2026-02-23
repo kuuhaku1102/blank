@@ -3,62 +3,66 @@
 <!-- 1. TOP MV -->
 <section class="mv">
     <div class="mv-bg-svg" aria-hidden="true">
-        <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" role="img">
+        <svg viewBox="0 0 1440 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img">
             <defs>
-                <linearGradient id="mvGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#58d3cf" stop-opacity="0.58" />
-                    <stop offset="100%" stop-color="#7f8aaf" stop-opacity="0.12" />
+                <linearGradient id="lineGradPink" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ff66cc" stop-opacity="0" />
+                    <stop offset="50%" stop-color="#ff66cc" stop-opacity="0.8" />
+                    <stop offset="100%" stop-color="#ff66cc" stop-opacity="0" />
                 </linearGradient>
-                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#5bc0be" stop-opacity="0.1" />
-                    <stop offset="50%" stop-color="#9ef3ef" stop-opacity="0.95" />
-                    <stop offset="100%" stop-color="#5bc0be" stop-opacity="0.1" />
+                <linearGradient id="lineGradBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#3b82f6" stop-opacity="0" />
+                    <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.8" />
+                    <stop offset="100%" stop-color="#3b82f6" stop-opacity="0" />
                 </linearGradient>
-                <radialGradient id="pulseOrb" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#8af6f0" stop-opacity="0.7" />
-                    <stop offset="100%" stop-color="#8af6f0" stop-opacity="0" />
-                </radialGradient>
             </defs>
-            <rect x="98" y="86" width="560" height="360" rx="30" fill="url(#mvGrad)" class="mv-panel-glow" />
-            <rect x="126" y="118" width="502" height="294" rx="18" fill="#0b1531" fill-opacity="0.92" />
-            <g class="mv-grid-lines">
-                <line x1="156" y1="168" x2="598" y2="168" />
-                <line x1="156" y1="226" x2="598" y2="226" />
-                <line x1="156" y1="284" x2="598" y2="284" />
-                <line x1="156" y1="342" x2="598" y2="342" />
+
+            <!-- Dynamic Network Grid background -->
+            <g stroke="rgba(255,255,255,0.03)" stroke-width="1">
+                <path d="M0 200 H1440 M0 400 H1440 M0 600 H1440" />
+                <path d="M200 0 V800 M400 0 V800 M600 0 V800 M800 0 V800 M1000 0 V800 M1200 0 V800" />
             </g>
-            <path class="mv-spark-line" d="M156 310 C206 280, 226 258, 272 270 C314 282, 338 250, 378 218 C416 188, 454 206, 496 176 C522 156, 552 166, 598 190" fill="none" stroke="url(#lineGrad)" stroke-width="7" stroke-linecap="round" />
-            <circle class="mv-orb mv-orb-1" cx="272" cy="270" r="7" fill="#90f4ee" />
-            <circle class="mv-orb mv-orb-2" cx="378" cy="218" r="7" fill="#90f4ee" />
-            <circle class="mv-orb mv-orb-3" cx="496" cy="176" r="7" fill="#90f4ee" />
-            <circle class="mv-pulse" cx="496" cy="176" r="54" fill="url(#pulseOrb)" />
-            <text x="168" y="190" class="mv-label">Blank Design System</text>
-            <text x="168" y="220" class="mv-label-sub">余白を設計し、意思決定を加速させる。</text>
-            <text x="540" y="385" class="mv-blank-word">空白</text>
+
+            <!-- Elegant Curve 1 (Pink) -->
+            <path d="M-100,500 C300,300 600,600 1500,400" fill="none" stroke="url(#lineGradPink)" stroke-width="2" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 10s ease-out forwards, floatOrb 15s ease-in-out infinite alternate;" />
+            
+            <!-- Elegant Curve 2 (Blue) -->
+            <path d="M-100,600 C400,800 800,200 1500,500" fill="none" stroke="url(#lineGradBlue)" stroke-width="2" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 12s ease-out 0.5s forwards, floatOrb 18s ease-in-out infinite alternate;" />
+
+            <!-- Highlight Nodes -->
+            <g style="animation: pulseGlow 4s ease-in-out infinite alternate;">
+                <circle cx="285" cy="460" r="4" fill="#ff66cc" filter="drop-shadow(0 0 8px #ff66cc)" />
+                <circle cx="830" cy="390" r="6" fill="#3b82f6" filter="drop-shadow(0 0 10px #3b82f6)" />
+                <circle cx="1080" cy="485" r="3" fill="#ff66cc" filter="drop-shadow(0 0 6px #ff66cc)" />
+            </g>
         </svg>
     </div>
+
     <div class="mv-content container">
-        <div class="mv-copy">
-            <p class="mv-kicker">BUSINESS GROWTH PARTNER</p>
-            <h2 class="mv-catch">成果から逆算する<br>クリエイティブ</h2>
-            <p class="mv-sub">Web制作・マーケティングのプロフェッショナルチームが、<br>貴社のビジネス課題を解決に導きます。</p>
-            <div class="mv-btns">
-                <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn">無料相談はこちら</a>
-                <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline">実績を見る</a>
-            </div>
+        <p class="mv-kicker">SUCCESS-DRIVEN DESIGN</p>
+        <h2 class="mv-catch">成果から逆算する<br>クリエイティブ</h2>
+        <p class="mv-sub">Web制作・マーケティングのプロフェッショナルチームが、<br>貴社のビジネス課題を解決に導きます。</p>
+        <div class="mv-btns">
+            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn">無料相談はこちら</a>
+            <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline">実績を見る</a>
         </div>
-        <div class="mv-highlight" aria-hidden="true">
-            <p class="mv-highlight-label">結果を最短で可視化</p>
-            <p class="mv-highlight-value">平均CV改善率 <span>250%</span></p>
-            <p class="mv-highlight-note">戦略立案から制作・運用改善まで一気通貫で支援します。</p>
+
+        <div class="mv-highlight-data">
+            <div class="mv-highlight-item">
+                <span>平均CV改善率</span>
+                <strong>250<i>%</i></strong>
+            </div>
+            <div class="mv-highlight-item">
+                <span>制作実績</span>
+                <strong>500<i>+</i></strong>
+            </div>
+            <div class="mv-highlight-item">
+                <span>継続率</span>
+                <strong>92<i>%</i></strong>
+            </div>
         </div>
     </div>
 </section>
-
-<!-- テスト記載追加 -->
-<div style="text-align:center; padding: 20px; background: red; color: white; font-weight: bold; font-size: 20px; position:relative; z-index:10;">
-    テスト：これはAntigravityからのGitHub Actions連携テスト用のテキストです。
-</div>
 
 <!-- blankの強み (3〜4ブロック) -->
 <section class="strengths container">
