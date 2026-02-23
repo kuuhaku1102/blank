@@ -2,12 +2,45 @@
 
 <!-- 1. TOP MV -->
 <section class="mv">
+    <div class="mv-bg-svg" aria-hidden="true">
+        <svg viewBox="0 0 720 520" xmlns="http://www.w3.org/2000/svg" role="img">
+            <defs>
+                <linearGradient id="mvGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#5bc0be" stop-opacity="0.65" />
+                    <stop offset="100%" stop-color="#9aa7bf" stop-opacity="0.15" />
+                </linearGradient>
+                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#5bc0be" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.35" />
+                </linearGradient>
+            </defs>
+            <rect x="88" y="74" width="540" height="340" rx="24" fill="url(#mvGrad)" />
+            <rect x="124" y="122" width="470" height="250" rx="16" fill="#0f1834" fill-opacity="0.88" />
+            <polyline points="156,310 224,268 288,286 352,214 418,238 482,182 560,208" fill="none" stroke="url(#lineGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="224" cy="268" r="8" fill="#5bc0be" />
+            <circle cx="352" cy="214" r="8" fill="#5bc0be" />
+            <circle cx="482" cy="182" r="8" fill="#5bc0be" />
+            <rect x="156" y="168" width="124" height="18" rx="9" fill="#ffffff" fill-opacity="0.22" />
+            <rect x="156" y="198" width="84" height="14" rx="7" fill="#ffffff" fill-opacity="0.18" />
+            <rect x="528" y="146" width="32" height="176" rx="10" fill="#5bc0be" fill-opacity="0.45" />
+            <rect x="484" y="192" width="32" height="130" rx="10" fill="#5bc0be" fill-opacity="0.35" />
+            <rect x="440" y="232" width="32" height="90" rx="10" fill="#5bc0be" fill-opacity="0.25" />
+        </svg>
+    </div>
     <div class="mv-content container">
-        <h2 class="mv-catch">成果から逆算する<br>クリエイティブ</h2>
-        <p class="mv-sub">Web制作・マーケティングのプロフェッショナルチームが、<br>貴社のビジネス課題を解決に導きます。</p>
-        <div class="mv-btns">
-            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn">無料相談はこちら</a>
-            <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline">実績を見る</a>
+        <div class="mv-copy">
+            <p class="mv-kicker">BUSINESS GROWTH PARTNER</p>
+            <h2 class="mv-catch">成果から逆算する<br>クリエイティブ</h2>
+            <p class="mv-sub">Web制作・マーケティングのプロフェッショナルチームが、<br>貴社のビジネス課題を解決に導きます。</p>
+            <div class="mv-btns">
+                <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn">無料相談はこちら</a>
+                <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline">実績を見る</a>
+            </div>
+        </div>
+        <div class="mv-highlight" aria-hidden="true">
+            <p class="mv-highlight-label">結果を最短で可視化</p>
+            <p class="mv-highlight-value">平均CV改善率 <span>250%</span></p>
+            <p class="mv-highlight-note">戦略立案から制作・運用改善まで一気通貫で支援します。</p>
         </div>
     </div>
 </section>
