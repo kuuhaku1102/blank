@@ -195,6 +195,65 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
+.mv-bg-svg svg {
+  width: 100%;
+  height: auto;
+}
+
+.mv-panel-glow {
+  animation: mvPanelFloat 6.6s ease-in-out infinite;
+}
+
+.mv-grid-lines line {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+}
+
+.mv-spark-line {
+  stroke-dasharray: 12 16;
+  animation: mvLineFlow 7s linear infinite;
+}
+
+.mv-orb {
+  filter: drop-shadow(0 0 10px rgba(122, 247, 239, 0.65));
+}
+
+.mv-orb-1 {
+  animation: mvOrbPulse 3.2s ease-in-out infinite;
+}
+
+.mv-orb-2 {
+  animation: mvOrbPulse 3.2s ease-in-out infinite 0.8s;
+}
+
+.mv-orb-3 {
+  animation: mvOrbPulse 3.2s ease-in-out infinite 1.6s;
+}
+
+.mv-pulse {
+  animation: mvPulseFade 2.8s ease-out infinite;
+}
+
+.mv-label {
+  fill: rgba(255, 255, 255, 0.74);
+  font-size: 19px;
+  letter-spacing: 0.06em;
+}
+
+.mv-label-sub {
+  fill: rgba(255, 255, 255, 0.45);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+}
+
+.mv-blank-word {
+  fill: rgba(255, 255, 255, 0.2);
+  font-size: 86px;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+  animation: mvWordFloat 6s ease-in-out infinite;
+}
+
 .mv-kicker {
   margin: 0 0 18px;
   letter-spacing: 0.16em;
@@ -256,6 +315,63 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.82);
+}
+
+@keyframes mvLineFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -220;
+  }
+}
+
+@keyframes mvOrbPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@keyframes mvPulseFade {
+  0% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  60% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes mvPanelFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes mvWordFloat {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 0.32;
+    transform: translate(-6px, -4px);
+  }
 }
 
 /* specific sections */
@@ -331,6 +447,9 @@ h1, h2, h3, h4, h5, h6 {
     right: -35%;
     top: 18%;
     opacity: 0.42;
+  }
+  .mv-blank-word {
+    font-size: 72px;
   }
   .mv-kicker {
     font-size: 0.72rem;
