@@ -55,6 +55,11 @@
     </div>
 </section>
 
+<!-- テスト記載追加 -->
+<div style="text-align:center; padding: 20px; background: red; color: white; font-weight: bold; font-size: 20px; position:relative; z-index:10;">
+    テスト：これはAntigravityからのGitHub Actions連携テスト用のテキストです。
+</div>
+
 <!-- blankの強み (3〜4ブロック) -->
 <section class="strengths container">
     <h2 class="section-title">blankの強み</h2>
