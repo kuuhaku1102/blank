@@ -162,8 +162,6 @@
             <p>実績は準備中です。</p>
         <?php endif; ?>
     </div>
-        <?php endif; ?>
-    </div>
     <div style="text-align: center; margin-top: 50px;">
         <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline" style="color:var(--primary-color) !important; border-color:var(--primary-color);">すべての実績を見る &rarr;</a>
     </div>
