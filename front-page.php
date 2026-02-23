@@ -3,28 +3,38 @@
 <!-- 1. TOP MV -->
 <section class="mv">
     <div class="mv-bg-svg" aria-hidden="true">
-        <svg viewBox="0 0 720 520" xmlns="http://www.w3.org/2000/svg" role="img">
+        <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" role="img">
             <defs>
                 <linearGradient id="mvGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#5bc0be" stop-opacity="0.65" />
-                    <stop offset="100%" stop-color="#9aa7bf" stop-opacity="0.15" />
+                    <stop offset="0%" stop-color="#58d3cf" stop-opacity="0.58" />
+                    <stop offset="100%" stop-color="#7f8aaf" stop-opacity="0.12" />
                 </linearGradient>
                 <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#5bc0be" stop-opacity="0.9" />
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.35" />
+                    <stop offset="0%" stop-color="#5bc0be" stop-opacity="0.1" />
+                    <stop offset="50%" stop-color="#9ef3ef" stop-opacity="0.95" />
+                    <stop offset="100%" stop-color="#5bc0be" stop-opacity="0.1" />
                 </linearGradient>
+                <radialGradient id="pulseOrb" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#8af6f0" stop-opacity="0.7" />
+                    <stop offset="100%" stop-color="#8af6f0" stop-opacity="0" />
+                </radialGradient>
             </defs>
-            <rect x="88" y="74" width="540" height="340" rx="24" fill="url(#mvGrad)" />
-            <rect x="124" y="122" width="470" height="250" rx="16" fill="#0f1834" fill-opacity="0.88" />
-            <polyline points="156,310 224,268 288,286 352,214 418,238 482,182 560,208" fill="none" stroke="url(#lineGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
-            <circle cx="224" cy="268" r="8" fill="#5bc0be" />
-            <circle cx="352" cy="214" r="8" fill="#5bc0be" />
-            <circle cx="482" cy="182" r="8" fill="#5bc0be" />
-            <rect x="156" y="168" width="124" height="18" rx="9" fill="#ffffff" fill-opacity="0.22" />
-            <rect x="156" y="198" width="84" height="14" rx="7" fill="#ffffff" fill-opacity="0.18" />
-            <rect x="528" y="146" width="32" height="176" rx="10" fill="#5bc0be" fill-opacity="0.45" />
-            <rect x="484" y="192" width="32" height="130" rx="10" fill="#5bc0be" fill-opacity="0.35" />
-            <rect x="440" y="232" width="32" height="90" rx="10" fill="#5bc0be" fill-opacity="0.25" />
+            <rect x="98" y="86" width="560" height="360" rx="30" fill="url(#mvGrad)" class="mv-panel-glow" />
+            <rect x="126" y="118" width="502" height="294" rx="18" fill="#0b1531" fill-opacity="0.92" />
+            <g class="mv-grid-lines">
+                <line x1="156" y1="168" x2="598" y2="168" />
+                <line x1="156" y1="226" x2="598" y2="226" />
+                <line x1="156" y1="284" x2="598" y2="284" />
+                <line x1="156" y1="342" x2="598" y2="342" />
+            </g>
+            <path class="mv-spark-line" d="M156 310 C206 280, 226 258, 272 270 C314 282, 338 250, 378 218 C416 188, 454 206, 496 176 C522 156, 552 166, 598 190" fill="none" stroke="url(#lineGrad)" stroke-width="7" stroke-linecap="round" />
+            <circle class="mv-orb mv-orb-1" cx="272" cy="270" r="7" fill="#90f4ee" />
+            <circle class="mv-orb mv-orb-2" cx="378" cy="218" r="7" fill="#90f4ee" />
+            <circle class="mv-orb mv-orb-3" cx="496" cy="176" r="7" fill="#90f4ee" />
+            <circle class="mv-pulse" cx="496" cy="176" r="54" fill="url(#pulseOrb)" />
+            <text x="168" y="190" class="mv-label">Blank Design System</text>
+            <text x="168" y="220" class="mv-label-sub">余白を設計し、意思決定を加速させる。</text>
+            <text x="540" y="385" class="mv-blank-word">空白</text>
         </svg>
     </div>
     <div class="mv-content container">
