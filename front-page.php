@@ -84,9 +84,9 @@
     </svg>
 
     <div class="container" style="position:relative; z-index:1;">
-        <div class="section-header fade-up" style="text-align:center; margin-bottom: 80px;">
-            <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">BUSINESS DOMAIN</p>
-            <h2 style="font-size: 2.8rem; font-weight: 700; margin:0; color:var(--primary-color);">提供領域</h2>
+        <div class="section-header" style="text-align:center; margin-bottom: 80px;">
+            <p class="gsap-subtitle" style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">BUSINESS DOMAIN</p>
+            <div style="overflow:hidden; padding-bottom:10px; perspective: 400px;"><h2 class="gsap-title" style="font-size: 3.5rem; font-weight: 800; margin:0; color:var(--primary-color);">Service</h2></div>
         </div>
         
         <div class="service-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px;">
@@ -153,10 +153,10 @@
     </svg>
 
     <div class="container" style="position:relative; z-index:1;">
-        <div class="section-header fade-up" style="margin-bottom: 60px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;">
+        <div class="section-header" style="margin-bottom: 60px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;">
             <div>
-                <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">CASE STUDIES</p>
-                <h2 style="font-size: 2.8rem; font-weight: 700; margin:0; color:var(--primary-color);">成功事例（実装インパクト）</h2>
+                <p class="gsap-subtitle" style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">WORKS</p>
+                <div style="overflow:hidden; padding-bottom:10px; perspective: 400px;"><h2 class="gsap-title" style="font-size: 3.5rem; font-weight: 800; margin:0; color:var(--primary-color);">CaseStudy</h2></div>
             </div>
             <a href="<?php echo esc_url(get_post_type_archive_link('case_study')); ?>" class="view-all-link" style="color: var(--primary-color); font-weight:bold; border-bottom: 2px solid var(--primary-color); text-decoration:none; padding-bottom:5px; transition:all 0.3s;" onmouseover="this.style.color='var(--highlight-color)'; this.style.borderColor='var(--highlight-color)';" onmouseout="this.style.color='var(--primary-color)'; this.style.borderColor='var(--primary-color)';">VIEW ALL 事例一覧 &rarr;</a>
         </div>
@@ -357,6 +357,36 @@ document.addEventListener("DOMContentLoaded", function() {
             end: "bottom top",
             scrub: true
         }
+    });
+
+    // Stylish Title Reveals
+    gsap.utils.toArray('.gsap-title').forEach(title => {
+        gsap.from(title, {
+            y: 80,
+            opacity: 0,
+            rotationX: -45,
+            transformOrigin: "0% 50% -50",
+            duration: 1.2,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: title.closest('.section-header'),
+                start: "top 85%"
+            }
+        });
+    });
+
+    gsap.utils.toArray('.gsap-subtitle').forEach(sub => {
+        gsap.from(sub, {
+            x: -20,
+            opacity: 0,
+            duration: 1.0,
+            delay: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: sub.closest('.section-header'),
+                start: "top 85%"
+            }
+        });
     });
 });
 </script>
