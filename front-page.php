@@ -33,8 +33,7 @@
 </section>
 
 <!-- 2. News Ticker -->
-<section class="top-news section-padding" style="padding: 40px 0; position:relative; z-index:1;">
-    <div style="position:absolute; inset:0; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index:-1;"></div>
+<section class="top-news section-padding" style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px 0; position:relative;">
     <div class="container flex-row fade-up" style="display:flex; flex-wrap: wrap; align-items:flex-start; border-top: 1px solid var(--light-gray); padding-top: 40px;">
         <h2 class="news-heading" style="flex:0 0 150px; font-size: 1.2rem; letter-spacing: 0.1em; font-weight:700; color:var(--primary-color); margin-top:0;">NEWS</h2>
         <div class="news-list" style="flex: 1; min-width:300px;">
@@ -61,8 +60,7 @@
 </section>
 
 <!-- 3. Vision / Concept -->
-<section class="top-vision section-padding" style="position:relative; overflow:hidden; padding: 140px 0; z-index:1;">
-    <div style="position:absolute; inset:0; background: rgba(248, 249, 250, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index:-1;"></div>
+<section class="top-vision section-padding" style="background: rgba(248, 249, 250, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); position:relative; overflow:hidden; padding: 140px 0;">
     <div class="bg-text fade-in" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size: 16vw; color: rgba(11, 19, 43, 0.03); font-weight:900; white-space:nowrap; pointer-events:none; z-index:0;">PHILOSOPHY</div>
     <div class="container fade-up" style="position:relative; z-index:1; text-align:center;">
         <h2 style="font-size: 3rem; color: var(--primary-color); margin-bottom: 40px; font-weight:700; line-height:1.4;">デジタルとクリエイティブで、<br>次の「当たり前」を創る。</h2>
@@ -77,8 +75,7 @@
 </section>
 
 <!-- 4. Services / Business Domain -->
-<section class="top-services section-padding" style="padding: 120px 0; position:relative; overflow:hidden; z-index:1;">
-    <div style="position:absolute; inset:0; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index:-1;"></div>
+<section class="top-services section-padding" style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 120px 0; position:relative; overflow:hidden;">
     <!-- Abstract SVG Background for Services -->
     <svg style="position:absolute; top: -10%; left: -5%; width: 50%; height: 120%; opacity: 0.03; pointer-events: none; animation: floatOrb 25s infinite alternate-reverse;" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="40" fill="none" stroke="var(--primary-color)" stroke-width="0.5" stroke-dasharray="2 4" />
@@ -94,50 +91,55 @@
         
         <div class="service-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px;">
             <!-- Service 1 -->
-            <a href="<?php echo esc_url(home_url('/service/#marketing')); ?>" class="service-card" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
-                <div class="icon" style="height:200px; overflow:hidden; position:relative;">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service1.jpg" alt="マーケティングDX" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
-                    <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(229, 57, 53, 0.4)); blend-mode:multiply;"></div>
-                </div>
-                <div style="padding: 40px;">
-                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">マーケティングDX</h3>
-                <p style="font-size: 1rem; color: var(--accent-color); line-height: 1.7; margin-bottom:30px;">データ分析に基づく戦略立案から、Google/Meta広告・SEOなどの実行支援まで一気通貫で行います。</p>
-                <div class="btn-arrow" style="font-weight:bold; color:var(--highlight-color); display:flex; align-items:center; gap:8px;">詳しく見る <span style="font-size:1.2rem;">&rarr;</span></div>
-                </div>
-            </a>
+            <div class="gsap-service">
+                <a href="<?php echo esc_url(home_url('/service/#marketing')); ?>" class="service-card" style="background:var(--white); border-radius: 12px; transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
+                    <div class="icon" style="height:200px; overflow:hidden; position:relative;">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service1.jpg" alt="マーケティングDX" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
+                        <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(229, 57, 53, 0.4)); blend-mode:multiply;"></div>
+                    </div>
+                    <div style="padding: 40px;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">マーケティングDX</h3>
+                    <p style="font-size: 1rem; color: var(--accent-color); line-height: 1.7; margin-bottom:30px;">データ分析に基づく戦略立案から、Google/Meta広告・SEOなどの実行支援まで一気通貫で行います。</p>
+                    <div class="btn-arrow" style="font-weight:bold; color:var(--highlight-color); display:flex; align-items:center; gap:8px;">詳しく見る <span style="font-size:1.2rem;">&rarr;</span></div>
+                    </div>
+                </a>
+            </div>
             
             <!-- Service 2 -->
-            <a href="<?php echo esc_url(home_url('/service/#web')); ?>" class="service-card" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
-                <div class="icon" style="height:200px; overflow:hidden; position:relative;">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service2.jpg" alt="クリエイティブ・Web制作" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
-                    <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(90, 103, 216, 0.4)); blend-mode:multiply;"></div>
-                </div>
-                <div style="padding: 40px;">
-                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">クリエイティブ・Web制作</h3>
-                <p style="font-size: 1rem; color: var(--accent-color); line-height: 1.7; margin-bottom:30px;">コーポレートサイトやCV特化型LPなど、最新のUI/UXを取り入れたハイクオリティなデザインを提供します。</p>
-                <div class="btn-arrow" style="font-weight:bold; color:var(--highlight-color); display:flex; align-items:center; gap:8px;">詳しく見る <span style="font-size:1.2rem;">&rarr;</span></div>
-                </div>
-            </a>
+            <div class="gsap-service">
+                <a href="<?php echo esc_url(home_url('/service/#web')); ?>" class="service-card" style="background:var(--white); border-radius: 12px; transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
+                    <div class="icon" style="height:200px; overflow:hidden; position:relative;">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service2.jpg" alt="クリエイティブ・Web制作" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
+                        <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(90, 103, 216, 0.4)); blend-mode:multiply;"></div>
+                    </div>
+                    <div style="padding: 40px;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">クリエイティブ・Web制作</h3>
+                    <p style="font-size: 1rem; color: var(--accent-color); line-height: 1.7; margin-bottom:30px;">コーポレートサイトやCV特化型LPなど、最新のUI/UXを取り入れたハイクオリティなデザインを提供します。</p>
+                    <div class="btn-arrow" style="font-weight:bold; color:var(--highlight-color); display:flex; align-items:center; gap:8px;">詳しく見る <span style="font-size:1.2rem;">&rarr;</span></div>
+                    </div>
+                </a>
+            </div>
 
             <!-- Service 3 -->
-            <a href="<?php echo esc_url(home_url('/service/#system')); ?>" class="service-card" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
-                <div class="icon" style="height:200px; overflow:hidden; position:relative;">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service3.jpg" alt="システム・アプリ開発" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
-                    <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(11, 19, 43, 0.4)); blend-mode:multiply;"></div>
-                </div>
-                <div style="padding: 40px;">
-                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">システム・アプリ開発</h3>
-                <p style="font-size: 1rem; color: var(--accent-color); line-height: 1.7; margin-bottom:30px;">業務のデジタルトランスフォーメーションを支えるシステムや、専用Webアプリケーションをスクラッチで開発します。</p>
-                <div class="btn-arrow" style="font-weight:bold; color:var(--highlight-color); display:flex; align-items:center; gap:8px;">詳しく見る <span style="font-size:1.2rem;">&rarr;</span></div>
-                </div>
-            </a>
+            <div class="gsap-service">
+                <a href="<?php echo esc_url(home_url('/service/#system')); ?>" class="service-card" style="background:var(--white); border-radius: 12px; transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
+                    <div class="icon" style="height:200px; overflow:hidden; position:relative;">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service3.jpg" alt="システム・アプリ開発" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
+                        <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(11, 19, 43, 0.4)); blend-mode:multiply;"></div>
+                    </div>
+                    <div style="padding: 40px;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">システム・アプリ開発</h3>
+                    <p style="font-size: 1rem; color: var(--accent-color); line-height: 1.7; margin-bottom:30px;">業務のデジタルトランスフォーメーションを支えるシステムや、専用Webアプリケーションをスクラッチで開発します。</p>
+                    <div class="btn-arrow" style="font-weight:bold; color:var(--highlight-color); display:flex; align-items:center; gap:8px;">詳しく見る <span style="font-size:1.2rem;">&rarr;</span></div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- 5. Case Studies -->
-<section class="top-works section-padding" style="padding: 120px 0; position:relative; overflow:hidden; z-index:1;">
-    <div style="position:absolute; inset:0; background: rgba(248, 249, 250, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index:-1;"></div>
+<section class="top-works section-padding" style="background: rgba(248, 249, 250, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 120px 0; position:relative; overflow:hidden;">
     <!-- Elegant geometric abstract data network for professional tech feel -->
     <svg style="position:absolute; top:-20%; right:-10%; width:60%; opacity:0.04; pointer-events:none; animation: fluidMorph2 25s infinite alternate ease-in-out;" viewBox="0 0 100 100">
         <circle cx="20" cy="50" r="3" fill="var(--primary-color)" />
@@ -165,28 +167,30 @@
             if($cs_query->have_posts()): while($cs_query->have_posts()): $cs_query->the_post();
                 $industry = get_post_meta(get_the_ID(), 'cs_industry', true);
             ?>
-            <a href="<?php the_permalink(); ?>" class="work-card-elegant" style="display:block; text-decoration:none; color:inherit; background:#ffffff; border-radius:12px; transition:transform 0.4s ease, box-shadow 0.4s ease; box-shadow:0 5px 20px rgba(0,0,0,0.03); border:1px solid rgba(0,0,0,0.05); padding:20px;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.03)';">
-                <div class="img-wrapper" style="border-radius:8px; overflow:hidden; margin-bottom:20px; position:relative; aspect-ratio: 16/10; background:#f4f7f6;">
-                    <?php if(has_post_thumbnail()): ?>
-                        <?php the_post_thumbnail('large', ['style' => 'width:100%; height:100%; object-fit:cover; transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);', 'class' => 'work-img']); ?>
-                    <?php else: ?>
-                        <!-- カスタムプレースホルダー -->
-                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(11,19,43,0.05), rgba(11,19,43,0.1)); transition:transform 0.6s ease;" class="work-img">
-                            CASE STUDY
-                        </div>
-                    <?php endif; ?>
-                    <div class="overlay" style="position:absolute; inset:0; background:rgba(229,57,53,0.1); opacity:0; transition:opacity 0.4s ease;"></div>
-                </div>
-                <div class="work-meta" style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
-                    <?php if($industry): ?>
-                    <span style="font-size:0.75rem; background:rgba(11,19,43,0.05); color:var(--primary-color); padding:6px 14px; border-radius:20px; font-weight:bold; border:1px solid rgba(11,19,43,0.1);"><?php echo esc_html($industry); ?></span>
-                    <?php endif; ?>
-                </div>
-                <h3 style="font-size:1.25rem; font-weight:700; color:var(--primary-color); margin:0 0 10px; line-height:1.5;"><?php the_title(); ?></h3>
-                <div style="font-size:0.9rem; color:var(--highlight-color); font-weight:bold; display:flex; align-items:center; gap:5px; margin-top:20px;">
-                    Read More <span style="font-size:1.2rem;">&rarr;</span>
-                </div>
-            </a>
+            <div class="gsap-work">
+                <a href="<?php the_permalink(); ?>" class="work-card-elegant" style="display:block; text-decoration:none; color:inherit; background:#ffffff; border-radius:12px; transition:transform 0.4s ease, box-shadow 0.4s ease; box-shadow:0 5px 20px rgba(0,0,0,0.03); border:1px solid rgba(0,0,0,0.05); padding:20px;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.03)';">
+                    <div class="img-wrapper" style="border-radius:8px; overflow:hidden; margin-bottom:20px; position:relative; aspect-ratio: 16/10; background:#f4f7f6;">
+                        <?php if(has_post_thumbnail()): ?>
+                            <?php the_post_thumbnail('large', ['style' => 'width:100%; height:100%; object-fit:cover; transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);', 'class' => 'work-img']); ?>
+                        <?php else: ?>
+                            <!-- カスタムプレースホルダー -->
+                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(11,19,43,0.05), rgba(11,19,43,0.1)); transition:transform 0.6s ease;" class="work-img">
+                                CASE STUDY
+                            </div>
+                        <?php endif; ?>
+                        <div class="overlay" style="position:absolute; inset:0; background:rgba(229,57,53,0.1); opacity:0; transition:opacity 0.4s ease;"></div>
+                    </div>
+                    <div class="work-meta" style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
+                        <?php if($industry): ?>
+                        <span style="font-size:0.75rem; background:rgba(11,19,43,0.05); color:var(--primary-color); padding:6px 14px; border-radius:20px; font-weight:bold; border:1px solid rgba(11,19,43,0.1);"><?php echo esc_html($industry); ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <h3 style="font-size:1.25rem; font-weight:700; color:var(--primary-color); margin:0 0 10px; line-height:1.5;"><?php the_title(); ?></h3>
+                    <div style="font-size:0.9rem; color:var(--highlight-color); font-weight:bold; display:flex; align-items:center; gap:5px; margin-top:20px;">
+                        Read More <span style="font-size:1.2rem;">&rarr;</span>
+                    </div>
+                </a>
+            </div>
             <?php endwhile; wp_reset_postdata(); else: ?>
                 <p style="color:var(--accent-color);">成功事例は現在準備中です。</p>
             <?php endif; ?>
@@ -306,13 +310,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Apple-style Service Cards Entrance
-    gsap.from(".service-card", {
-        y: 100,
+    gsap.from(".gsap-service", {
+        y: 80,
         opacity: 0,
-        rotationX: -15, // slight 3D flip effect
-        stagger: 0.2,
-        duration: 1.2,
-        ease: "expo.out",
+        stagger: 0.15,
+        duration: 1.0,
+        ease: "power3.out",
         scrollTrigger: {
             trigger: ".service-grid",
             start: "top 80%"
@@ -320,13 +323,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Case Studies Reveal
-    gsap.from(".work-card-elegant", {
-        y: 80,
+    gsap.from(".gsap-work", {
+        y: 60,
         opacity: 0,
-        scale: 0.95,
         stagger: 0.15,
-        duration: 1.2,
-        ease: "power4.out",
+        duration: 1.0,
+        ease: "power3.out",
         scrollTrigger: {
             trigger: ".works-grid",
             start: "top 85%"
