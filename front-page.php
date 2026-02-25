@@ -206,8 +206,8 @@
         
         <div class="marquee-track">
             <?php
-            // Custom Post Type "work" query
-            $work_query = new WP_Query( array('post_type' => 'work', 'posts_per_page' => 6) );
+            // Custom Post Type "works" (制作実績) query
+            $work_query = new WP_Query( array('post_type' => 'works', 'posts_per_page' => 6) );
             $works_html = '';
             
             if($work_query->have_posts()):
@@ -243,7 +243,7 @@
     </div>
     
     <div class="fade-up" style="text-align:center; margin-top: 60px; position:relative; z-index:1;">
-        <a href="<?php echo esc_url(get_post_type_archive_link('work')); ?>" class="cta-btn-outline" style="color:var(--primary-color); border-color:var(--primary-color); padding: 14px 40px; border-radius:30px; border-width:2px;">VIEW ALL WORKS &rarr;</a>
+        <a href="<?php echo esc_url(get_post_type_archive_link('works')); ?>" class="cta-btn-outline" style="color:var(--primary-color); border-color:var(--primary-color); padding: 14px 40px; border-radius:30px; border-width:2px;">VIEW ALL WORKS &rarr;</a>
     </div>
 </section>
 
@@ -475,12 +475,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Work Marquee Fade In
+    // Work Marquee Fade In from the side (Stylish Benchmark Style)
     gsap.from(".gsap-marquee-anim", {
         opacity: 0,
-        y: 60,
-        duration: 2.0,
-        ease: "expo.out",
+        x: 300, // Slide in horizontally from the right
+        duration: 1.8,
+        ease: "power3.out",
         scrollTrigger: {
             trigger: ".top-portfolio",
             start: "top 75%"
