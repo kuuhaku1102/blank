@@ -160,14 +160,45 @@
             </div>
             <a href="<?php echo esc_url(get_post_type_archive_link('case_study')); ?>" class="view-all-link" style="color: var(--primary-color); font-weight:bold; border-bottom: 2px solid var(--primary-color); text-decoration:none; padding-bottom:5px; transition:all 0.3s;" onmouseover="this.style.color='var(--highlight-color)'; this.style.borderColor='var(--highlight-color)';" onmouseout="this.style.color='var(--primary-color)'; this.style.borderColor='var(--primary-color)';">VIEW ALL 事例一覧 &rarr;</a>
         </div>
+    </div> <!-- Close container to allow full width scrolling -->
 
-        <div class="works-grid fade-up delay-1" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
+    <div class="works-horizontal-wrapper" style="width: 100vw; margin-left: calc(50% - 50vw); position:relative; z-index:1;">
+        <style>
+            .works-grid-horizontal {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 40px;
+                /* Matches exactly with .container's left margin so the cards align properly */
+                padding-left: max(20px, calc((100vw - 1200px) / 2));
+                padding-right: max(20px, calc((100vw - 1200px) / 2));
+                padding-bottom: 60px;
+                scroll-behavior: smooth;
+                scroll-snap-type: x mandatory;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none;  /* IE and Edge */
+                -webkit-overflow-scrolling: touch;
+            }
+            .works-grid-horizontal::-webkit-scrollbar {
+                display: none; /* Chrome, Safari and Opera */
+            }
+            .gsap-work-horizontal {
+                flex: 0 0 420px;
+                scroll-snap-align: start;
+            }
+            @media (max-width: 768px) {
+                .gsap-work-horizontal {
+                    flex: 0 0 85vw;
+                }
+            }
+        </style>
+        <div class="works-grid-horizontal">
             <?php
             $cs_query = new WP_Query( array('post_type' => 'case_study', 'posts_per_page' => 4) );
             if($cs_query->have_posts()): while($cs_query->have_posts()): $cs_query->the_post();
                 $industry = get_post_meta(get_the_ID(), 'cs_industry', true);
             ?>
-            <div class="gsap-work">
+            <div class="gsap-work-horizontal">
                 <a href="<?php the_permalink(); ?>" class="work-card-elegant" style="display:block; text-decoration:none; color:inherit; background:#ffffff; border-radius:12px; transition:transform 0.4s ease, box-shadow 0.4s ease; box-shadow:0 5px 20px rgba(0,0,0,0.03); border:1px solid rgba(0,0,0,0.05); padding:20px;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.03)';">
                     <div class="img-wrapper" style="border-radius:8px; overflow:hidden; margin-bottom:20px; position:relative; aspect-ratio: 16/10; background:#f4f7f6;">
                         <?php if(has_post_thumbnail()): ?>
@@ -322,16 +353,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Case Studies Reveal
-    gsap.from(".gsap-work", {
-        y: 60,
+    // Case Studies Horizontal Reveal
+    gsap.from(".gsap-work-horizontal", {
+        x: 100, // Slide in horizontally
         opacity: 0,
         stagger: 0.15,
         duration: 1.0,
         ease: "power3.out",
         scrollTrigger: {
-            trigger: ".works-grid",
-            start: "top 85%"
+            trigger: ".works-horizontal-wrapper",
+            start: "top 80%"
         }
     });
 
