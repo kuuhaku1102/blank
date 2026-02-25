@@ -24,64 +24,34 @@
         <p style="text-align:center; margin-bottom:60px; color:rgba(255,255,255,0.8); font-size:1.1rem; line-height:1.8;">
             デジタルの“余白”に設計と実装を入れ込み、大きな成果を出したプロジェクトをご紹介します。</p>
 
-        <div class="works-grid fade-up" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 40px;">
+        <div class="works-grid fade-up" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px;">
             <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); 
                 $industry = get_post_meta(get_the_ID(), 'cs_industry', true);
-                $issue = get_post_meta(get_the_ID(), 'cs_issue', true);
-                $impl = get_post_meta(get_the_ID(), 'cs_implementation', true);
-                $result = get_post_meta(get_the_ID(), 'cs_result', true);
-                $val = get_post_meta(get_the_ID(), 'cs_value', true);
             ?>
-            <a href="<?php the_permalink(); ?>" class="cs-card" style="display:block; text-decoration:none; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding: 60px 50px; position:relative; overflow:hidden; transition:transform 0.4s ease, border-color 0.4s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(229, 57, 53, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.08)';">
+            <a href="<?php the_permalink(); ?>" class="work-card-elegant" style="display:block; text-decoration:none; color:inherit; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:25px; transition:transform 0.4s ease, border-color 0.4s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(229, 57, 53, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.08)';">
                 
                 <!-- Background decorative accent -->
-                <div style="position:absolute; top:0; right:0; width:150px; height:150px; background:radial-gradient(circle at top right, rgba(229,57,53,0.15), transparent 70%); border-radius:0 12px 0 0;"></div>
+                <div style="position:absolute; top:0; right:0; width:100px; height:100px; background:radial-gradient(circle at top right, rgba(229,57,53,0.1), transparent 70%); border-radius:0 12px 0 0; pointer-events:none;"></div>
 
-                <div style="display:flex; align-items:center; gap:15px; margin-bottom:25px;">
-                    <span style="background:var(--highlight-color); color:var(--white); font-size:0.85rem; font-weight:bold; padding:6px 16px; border-radius:20px;">
-                        <?php echo esc_html( $industry ? $industry : '未設定' ); ?>
-                    </span>
+                <div class="img-wrapper" style="border-radius:8px; overflow:hidden; margin-bottom:20px; position:relative; aspect-ratio: 16/10; background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05);">
+                    <?php if(has_post_thumbnail()): ?>
+                        <?php the_post_thumbnail('large', ['style' => 'width:100%; height:100%; object-fit:cover; transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);', 'class' => 'work-img']); ?>
+                    <?php else: ?>
+                        <!-- カスタムプレースホルダー -->
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.5); font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(229,57,53,0.2), rgba(11,19,43,0.5)); transition:transform 0.6s ease;" class="work-img">
+                            CASE STUDY
+                        </div>
+                    <?php endif; ?>
+                    <div class="overlay" style="position:absolute; inset:0; background:rgba(11,19,43,0.4); opacity:0; transition:opacity 0.4s ease;"></div>
                 </div>
 
-                <h3 style="font-size:1.6rem; font-weight:bold; color:var(--white); margin-top:0; margin-bottom:40px; line-height:1.6; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:30px;">
-                    <?php the_title(); ?>
-                </h3>
-
-                <div style="display:flex; flex-direction:column; gap:35px;">
-                    <!-- 課題 -->
-                    <?php if($issue): ?>
-                    <div style="background:rgba(0,0,0,0.2); padding:30px; border-radius:8px; border-left:4px solid #6c757d;">
-                        <h4 style="color:#a1a1aa; font-size:1rem; margin-top:0; margin-bottom:15px; font-weight:bold; letter-spacing:0.05em;">▼ 課題</h4>
-                        <p style="color:var(--white); margin:0; font-size:1.05rem; line-height:2; white-space:pre-wrap;"><?php echo esc_html($issue); ?></p>
-                    </div>
-                    <?php endif; ?>
-
-                    <!-- 実装ブロック -->
-                    <?php if($impl): ?>
-                    <div style="background:rgba(229,57,53,0.05); padding:30px; border-radius:8px; border-left:4px solid var(--highlight-color);">
-                        <h4 style="color:var(--highlight-color); font-size:1rem; margin-top:0; margin-bottom:15px; font-weight:bold; letter-spacing:0.05em;">▼ 実装ブロック</h4>
-                        <p style="color:var(--white); font-weight:bold; margin:0; font-size:1.05rem; line-height:2; white-space:pre-wrap;"><?php echo esc_html($impl); ?></p>
-                    </div>
-                    <?php endif; ?>
-
-                    <!-- 成果 -->
-                    <?php if($result): ?>
-                    <div style="background:rgba(90,103,216,0.1); padding:30px; border-radius:8px; border-left:4px solid #5a67d8;">
-                        <h4 style="color:#818cf8; font-size:1rem; margin-top:0; margin-bottom:15px; font-weight:bold; letter-spacing:0.05em;">▼ 成果</h4>
-                        <p style="color:var(--white); margin:0; font-size:1.15rem; font-weight:bold; line-height:2; white-space:pre-wrap;"><?php echo esc_html($result); ?></p>
-                    </div>
+                <div class="work-meta" style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
+                    <?php if($industry): ?>
+                    <span style="font-size:0.8rem; background:var(--highlight-color); padding:5px 15px; border-radius:30px; color:var(--white); font-weight:bold;"><?php echo esc_html($industry); ?></span>
                     <?php endif; ?>
                 </div>
 
-                <!-- 価値 -->
-                <?php if($val): ?>
-                <div style="margin-top:40px; text-align:right;">
-                    <p style="color:var(--white); font-size:0.9rem; opacity:0.6; margin:0; font-weight:bold; letter-spacing:0.05em;">
-                        ✓ <?php echo esc_html($val); ?>
-                    </p>
-                </div>
-                <?php endif; ?>
-
+                <h3 style="font-size:1.3rem; font-weight:bold; color:var(--white); margin:0; line-height:1.6;"><?php the_title(); ?></h3>
             </a>
             <?php endwhile; else: ?>
                 <p style="color:var(--white);">まだ成功事例が登録されていません。</p>
