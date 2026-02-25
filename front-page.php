@@ -5,42 +5,35 @@
     <div class="mv-bg-svg" aria-hidden="true">
         <svg viewBox="0 0 1440 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img">
             <defs>
-                <linearGradient id="lineGradMain" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#f88379" stop-opacity="0" />
-                    <stop offset="50%" stop-color="#f88379" stop-opacity="0.9" />
-                    <stop offset="100%" stop-color="#f88379" stop-opacity="0" />
+                <linearGradient id="freshGradMain" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f88379" stop-opacity="0.6" />
+                    <stop offset="100%" stop-color="#fda085" stop-opacity="0.2" />
                 </linearGradient>
-                <linearGradient id="lineGradSub" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#5a67d8" stop-opacity="0" />
-                    <stop offset="50%" stop-color="#5a67d8" stop-opacity="0.7" />
-                    <stop offset="100%" stop-color="#5a67d8" stop-opacity="0" />
+                <linearGradient id="freshGradSub" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#a18cd1" stop-opacity="0.5" />
+                    <stop offset="100%" stop-color="#fbc2eb" stop-opacity="0.1" />
                 </linearGradient>
-                <radialGradient id="glowFx" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#f88379" stop-opacity="0.3" />
-                    <stop offset="100%" stop-color="#f88379" stop-opacity="0" />
-                </radialGradient>
+                <filter id="blurEffect" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="80" />
+                </filter>
             </defs>
 
-            <!-- Tech Hexagon Grid background -->
-            <g stroke="rgba(255,255,255,0.02)" stroke-width="1.5">
-                <path d="M0 200 L200 100 L400 200 L400 400 L200 500 L0 400 Z" transform="translate(100, -50)" />
-                <path d="M400 200 L600 100 L800 200 L800 400 L600 500 L400 400 Z" transform="translate(100, -50)" />
-                <path d="M800 200 L1000 100 L1200 200 L1200 400 L1000 500 L800 400 Z" transform="translate(100, -50)" />
-                <path d="M0 500 L200 400 L400 500 L400 700 L200 800 L0 700 Z" transform="translate(300, 100)" />
-                <path d="M400 500 L600 400 L800 500 L800 700 L600 800 L400 700 Z" transform="translate(300, 100)" />
+            <!-- Organic Fluid Blobs for a fresh feel -->
+            <g filter="url(#blurEffect)" opacity="0.8">
+                <path d="M 900 0 Q 1200 -50 1400 200 T 1500 600 T 1100 800 T 900 0 Z" fill="url(#freshGradSub)" style="animation: fluidMorph 20s infinite alternate;" />
+                <path d="M 50 300 Q 250 50 550 250 T 800 650 T 300 850 T 50 300 Z" fill="url(#freshGradMain)" style="animation: fluidMorph2 25s infinite alternate-reverse;" />
             </g>
 
-            <!-- Sharp Modern Lines -->
-            <path d="M-200,600 L300,300 L700,450 L1600,100" fill="none" stroke="url(#lineGradMain)" stroke-width="3" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 8s cubic-bezier(0.4, 0, 0.2, 1) forwards, floatOrb 12s ease-in-out infinite alternate;" />
-            
-            <path d="M-200,700 L400,850 L800,400 L1600,200" fill="none" stroke="url(#lineGradSub)" stroke-width="2" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 10s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards, floatOrb 15s ease-in-out infinite alternate-reverse;" />
+            <!-- Crisp Modern Outline Accents -->
+            <path d="M-100,550 C300,400 600,750 1500,200" fill="none" stroke="#f88379" stroke-width="2" opacity="0.3" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 8s ease-out forwards;" />
+            <path d="M-100,450 C400,650 800,150 1500,450" fill="none" stroke="#5a67d8" stroke-width="1.5" opacity="0.2" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 10s ease-out 0.5s forwards;" />
 
-            <!-- Glow Highlights -->
-            <g style="animation: pulseGlow 4s ease-in-out infinite alternate;">
-                <circle cx="300" cy="300" r="120" fill="url(#glowFx)" />
-                <circle cx="700" cy="450" r="90" fill="url(#glowFx)" />
-                <circle cx="300" cy="300" r="5" fill="#f88379" filter="drop-shadow(0 0 10px #f88379)" />
-                <circle cx="700" cy="450" r="5" fill="#f88379" filter="drop-shadow(0 0 10px #f88379)" />
+            <!-- Small Floating Particles -->
+            <g opacity="0.6" style="animation: floatOrb 15s ease-in-out infinite alternate;">
+                <circle cx="250" cy="200" r="4" fill="#f88379" />
+                <circle cx="1150" cy="450" r="6" fill="#a18cd1" />
+                <circle cx="850" cy="180" r="3" fill="#f88379" />
+                <circle cx="450" cy="650" r="4" fill="#5a67d8" />
             </g>
         </svg>
     </div>
