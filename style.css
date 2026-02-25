@@ -118,8 +118,8 @@ h6 {
 }
 
 .main-nav a {
-    color: var(--secondary-color);
-    font-weight: 500;
+    color: var(--primary-color);
+    font-weight: 700;
 }
 
 .cta-btn {
