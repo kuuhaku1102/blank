@@ -569,7 +569,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const posArray = new Float32Array(particlesCount * 3);
     const colorsArray = new Float32Array(particlesCount * 3);
 
-    const color1 = new THREE.Color('#0b132b'); // Primary Navy
+    const color1 = new THREE.Color('#91a6b4'); // Primary Slate Gray text color
     const color2 = new THREE.Color('#e53935'); // Highlight Red
 
     for(let i = 0; i < particlesCount * 3; i+=3) {

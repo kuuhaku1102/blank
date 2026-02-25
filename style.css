@@ -13,12 +13,12 @@ Text Domain: blank
 
 /* Reset & Base */
 :root {
-    --primary-color: #0b132b;
+    --primary-color: rgb(145, 166, 180);
     --secondary-color: #1c2541;
     --accent-color: #5a67d8;
     --highlight-color: #e53935;
     --bg-color: #f8f9fa;
-    --text-color: #333;
+    --text-color: rgb(145, 166, 180);
     --white: #ffffff;
     --light-gray: #e9ecef;
 }
