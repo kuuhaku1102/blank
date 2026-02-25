@@ -1,45 +1,12 @@
 <?php get_header(); ?>
 
 <!-- 1. TOP MV -->
-<section class="mv">
-    <div class="mv-bg-svg" aria-hidden="true">
-        <svg viewBox="0 0 1440 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img">
-            <defs>
-                <linearGradient id="freshGradMain" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#e53935" stop-opacity="0.6" />
-                    <stop offset="100%" stop-color="#ef5350" stop-opacity="0.2" />
-                </linearGradient>
-                <linearGradient id="freshGradSub" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#a18cd1" stop-opacity="0.5" />
-                    <stop offset="100%" stop-color="#fbc2eb" stop-opacity="0.1" />
-                </linearGradient>
-                <filter id="blurEffect" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="80" />
-                </filter>
-            </defs>
+<section class="mv" style="position:relative; overflow:hidden; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); min-height: 100vh; display:flex; align-items:center;">
+    <!-- Three.js Canvas -->
+    <canvas id="three-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;"></canvas>
 
-            <!-- Organic Fluid Blobs for a fresh feel -->
-            <g filter="url(#blurEffect)" opacity="0.8">
-                <path d="M 900 0 Q 1200 -50 1400 200 T 1500 600 T 1100 800 T 900 0 Z" fill="url(#freshGradSub)" style="animation: fluidMorph 20s infinite alternate;" />
-                <path d="M 50 300 Q 250 50 550 250 T 800 650 T 300 850 T 50 300 Z" fill="url(#freshGradMain)" style="animation: fluidMorph2 25s infinite alternate-reverse;" />
-            </g>
-
-            <!-- Crisp Modern Outline Accents -->
-            <path d="M-100,550 C300,400 600,750 1500,200" fill="none" stroke="#e53935" stroke-width="2" opacity="0.3" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 8s ease-out forwards;" />
-            <path d="M-100,450 C400,650 800,150 1500,450" fill="none" stroke="#5a67d8" stroke-width="1.5" opacity="0.2" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 10s ease-out 0.5s forwards;" />
-
-            <!-- Small Floating Particles -->
-            <g opacity="0.6" style="animation: floatOrb 15s ease-in-out infinite alternate;">
-                <circle cx="250" cy="200" r="4" fill="#e53935" />
-                <circle cx="1150" cy="450" r="6" fill="#a18cd1" />
-                <circle cx="850" cy="180" r="3" fill="#e53935" />
-                <circle cx="450" cy="650" r="4" fill="#5a67d8" />
-            </g>
-        </svg>
-    </div>
-
-    <div class="mv-content container">
-        <p class="mv-kicker">CONTROL THE BLANK</p>
+    <div class="mv-content container" style="position:relative; z-index:1; text-align:center;">
+        <p class="mv-kicker" style="color:var(--highlight-color); font-weight:bold; letter-spacing:0.2em; margin-bottom:15px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">CONTROL THE BLANK</p>
         <h2 class="mv-catch">空白を、支配せよ。</h2>
         <p class="mv-sub">デザインとデータの究極の融合。<br>私たちは、ビジネスを加速させるデジタル空間の最適解を創り出します。</p>
         <div class="mv-btns">
@@ -279,6 +246,144 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const fadeElements = document.querySelectorAll('.fade-up, .fade-in, .fade-left, .fade-right');
     fadeElements.forEach(el => observer.observe(el));
+});
+</script>
+
+<!-- Three.js CDN and Animation Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const canvas = document.getElementById('three-canvas');
+    if (!canvas) return;
+
+    // Scene Setup
+    const scene = new THREE.Scene();
+    
+    // Camera Setup
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 30;
+
+    // Renderer Setup
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Particle Setup (Tech/Data feel)
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 800;
+    
+    const posArray = new Float32Array(particlesCount * 3);
+    const colorsArray = new Float32Array(particlesCount * 3);
+
+    const color1 = new THREE.Color('#ffffff'); // White
+    const color2 = new THREE.Color('#e53935'); // Highlight Red
+
+    for(let i = 0; i < particlesCount * 3; i+=3) {
+        // Spread particles
+        posArray[i] = (Math.random() - 0.5) * 80;     // x
+        posArray[i+1] = (Math.random() - 0.5) * 80;   // y
+        posArray[i+2] = (Math.random() - 0.5) * 40;   // z
+
+        // Mix colors
+        const mixedColor = color1.clone().lerp(color2, Math.random() * 0.3); // Mostly white, some red hint
+        colorsArray[i] = mixedColor.r;
+        colorsArray[i+1] = mixedColor.g;
+        colorsArray[i+2] = mixedColor.b;
+    }
+
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
+
+    const particlesMaterial = new THREE.PointsMaterial({
+        size: 0.15,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+    });
+
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    // Connecting Lines (Network effect)
+    const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.05
+    });
+
+    // We only connect a few to keep performance high
+    const lineGeometry = new THREE.BufferGeometry();
+    const linePositions = [];
+    for(let i=0; i<300; i++) {
+        const x = (Math.random() - 0.5) * 60;
+        const y = (Math.random() - 0.5) * 60;
+        const z = (Math.random() - 0.5) * 20;
+        linePositions.push(x, y, z);
+    }
+    lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+    const linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(linesMesh);
+
+    // Mouse Interaction
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+
+    document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX - windowHalfX) * 0.001;
+        mouseY = (event.clientY - windowHalfY) * 0.001;
+    });
+
+    // Scroll Interaction
+    let scrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+        scrollY = window.scrollY;
+    });
+
+    // Animation Loop
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+        const elapsedTime = clock.getElapsedTime();
+
+        // Parallax & smooth rotation based on mouse
+        targetX = mouseX * 0.5;
+        targetY = mouseY * 0.5;
+        
+        particlesMesh.rotation.y += 0.001;
+        particlesMesh.rotation.x += 0.0005;
+        
+        linesMesh.rotation.y -= 0.0005;
+
+        // Interactive mouse movement
+        camera.position.x += (mouseX - camera.position.x) * 0.05;
+        camera.position.y += (-mouseY - camera.position.y) * 0.05;
+
+        // Scroll effect: move elements upwards as user scrolls down
+        const scrollOffset = scrollY * 0.005;
+        particlesMesh.position.y = scrollOffset;
+        linesMesh.position.y = scrollOffset * 1.5;
+
+        // Slightly pulse particles
+        particlesMaterial.size = 0.15 + Math.sin(elapsedTime * 2) * 0.05;
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Responsive
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 });
 </script>
 
