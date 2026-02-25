@@ -6,8 +6,8 @@
         <svg viewBox="0 0 1440 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img">
             <defs>
                 <linearGradient id="freshGradMain" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ff9999" stop-opacity="0.6" />
-                    <stop offset="100%" stop-color="#fda085" stop-opacity="0.2" />
+                    <stop offset="0%" stop-color="#e53935" stop-opacity="0.6" />
+                    <stop offset="100%" stop-color="#ef5350" stop-opacity="0.2" />
                 </linearGradient>
                 <linearGradient id="freshGradSub" x1="100%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" stop-color="#a18cd1" stop-opacity="0.5" />
@@ -25,14 +25,14 @@
             </g>
 
             <!-- Crisp Modern Outline Accents -->
-            <path d="M-100,550 C300,400 600,750 1500,200" fill="none" stroke="#ff9999" stroke-width="2" opacity="0.3" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 8s ease-out forwards;" />
+            <path d="M-100,550 C300,400 600,750 1500,200" fill="none" stroke="#e53935" stroke-width="2" opacity="0.3" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 8s ease-out forwards;" />
             <path d="M-100,450 C400,650 800,150 1500,450" fill="none" stroke="#5a67d8" stroke-width="1.5" opacity="0.2" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 10s ease-out 0.5s forwards;" />
 
             <!-- Small Floating Particles -->
             <g opacity="0.6" style="animation: floatOrb 15s ease-in-out infinite alternate;">
-                <circle cx="250" cy="200" r="4" fill="#ff9999" />
+                <circle cx="250" cy="200" r="4" fill="#e53935" />
                 <circle cx="1150" cy="450" r="6" fill="#a18cd1" />
-                <circle cx="850" cy="180" r="3" fill="#ff9999" />
+                <circle cx="850" cy="180" r="3" fill="#e53935" />
                 <circle cx="450" cy="650" r="4" fill="#5a67d8" />
             </g>
         </svg>
