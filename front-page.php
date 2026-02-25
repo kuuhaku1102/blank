@@ -8,27 +8,8 @@
     
     <div class="mv-content container" style="position:relative; z-index:1; text-align:center; background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 80px 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 20px 50px rgba(0,0,0,0.05); max-width: 900px; margin-top: 50px;">
         <p class="mv-kicker" style="color:var(--highlight-color); font-weight:bold; letter-spacing:0.2em; margin-bottom:15px;">CONTROL THE BLANK</p>
-        <h2 class="mv-catch" style="color:var(--primary-color); font-size:3.5rem; font-weight:800; margin-bottom:20px;">空白を、支配せよ。</h2>
-        <p class="mv-sub" style="color:var(--primary-color); font-weight:bold; font-size:1.15rem; margin-bottom:40px;">デザインとデータの究極の融合。<br>私たちは、ビジネスを加速させるデジタル空間の最適解を創り出します。</p>
-        <div class="mv-btns">
-            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn">無料相談はこちら</a>
-            <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline" style="background:rgba(255,255,255,0.3);">実績を見る</a>
-        </div>
-
-        <div class="mv-highlight-data">
-            <div class="mv-highlight-item">
-                <span>平均CV改善率</span>
-                <strong>250<i>%</i></strong>
-            </div>
-            <div class="mv-highlight-item">
-                <span>制作実績</span>
-                <strong>500<i>+</i></strong>
-            </div>
-            <div class="mv-highlight-item">
-                <span>継続率</span>
-                <strong>92<i>%</i></strong>
-            </div>
-        </div>
+        <h2 class="mv-catch" style="color:var(--primary-color); font-size:clamp(3.5rem, 7vw, 6rem); font-weight:900; margin-bottom:30px; line-height:1.2; letter-spacing:0.02em;">「」を、支配せよ。</h2>
+        <p class="mv-sub" style="color:var(--primary-color); font-weight:bold; font-size:clamp(1.1rem, 1.5vw, 1.3rem); margin-bottom:0; line-height:1.8;">デザインとデータの究極の融合。<br>私たちは、ビジネスを加速させるデジタル空間の最適解を創り出します。</p>
     </div>
 </section>
 
