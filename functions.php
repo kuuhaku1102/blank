@@ -147,7 +147,7 @@ add_action( 'save_post', 'blank_save_cs_meta_data' );
 
 // 自動シードスクリプト：4つのCase Studyを作成
 function blank_seed_case_studies() {
-    if ( get_option( 'blank_case_studies_seeded_v2' ) ) return;
+    if ( get_option( 'blank_case_studies_seeded_v3' ) ) return;
     $case_studies = [
         [
             'title' => 'Case Study 01: 美容クリニック｜CVR 2倍を実現した予約完結型LP',
@@ -194,6 +194,10 @@ function blank_seed_case_studies() {
         update_post_meta($post_id, 'cs_result', $cs['result']);
         update_post_meta($post_id, 'cs_value', $cs['value']);
     }
-    update_option( 'blank_case_studies_seeded_v2', true );
+    
+    // パーマリンク設定の更新（404エラー解消のため）
+    flush_rewrite_rules();
+    
+    update_option( 'blank_case_studies_seeded_v3', true );
 }
 add_action( 'init', 'blank_seed_case_studies' );

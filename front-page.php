@@ -194,7 +194,7 @@
                 $result = get_post_meta(get_the_ID(), 'cs_result', true);
                 $val = get_post_meta(get_the_ID(), 'cs_value', true);
             ?>
-            <div class="cs-card fade-up delay-<?php echo $delay; ?>" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding: 60px 50px; position:relative; overflow:hidden; transition:transform 0.4s ease, border-color 0.4s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(229, 57, 53, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.08)';">
+            <a href="<?php the_permalink(); ?>" class="cs-card fade-up delay-<?php echo $delay; ?>" style="display:block; text-decoration:none; color:inherit; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding: 60px 50px; position:relative; overflow:hidden; transition:transform 0.4s ease, border-color 0.4s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(229, 57, 53, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.08)';">
                 
                 <!-- Background decorative accent -->
                 <div style="position:absolute; top:0; right:0; width:150px; height:150px; background:radial-gradient(circle at top right, rgba(229,57,53,0.15), transparent 70%); border-radius:0 12px 0 0;"></div>
@@ -244,7 +244,7 @@
                 </div>
                 <?php endif; ?>
 
-            </div>
+            </a>
             <?php 
                 $delay++;
                 if($delay > 4) $delay = 1;
