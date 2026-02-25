@@ -66,7 +66,7 @@
 
 <!-- 2. News Ticker -->
 <section class="top-news section-padding" style="background: var(--white); padding: 40px 0;">
-    <div class="container flex-row" style="display:flex; flex-wrap: wrap; align-items:flex-start; border-top: 1px solid var(--light-gray); padding-top: 40px;">
+    <div class="container flex-row fade-up" style="display:flex; flex-wrap: wrap; align-items:flex-start; border-top: 1px solid var(--light-gray); padding-top: 40px;">
         <h2 class="news-heading" style="flex:0 0 150px; font-size: 1.2rem; letter-spacing: 0.1em; font-weight:700; color:var(--primary-color); margin-top:0;">NEWS</h2>
         <div class="news-list" style="flex: 1; min-width:300px;">
             <?php
@@ -93,8 +93,8 @@
 
 <!-- 3. Vision / Concept -->
 <section class="top-vision section-padding" style="position:relative; overflow:hidden; background: var(--bg-color); padding: 140px 0;">
-    <div class="bg-text" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size: 16vw; color: rgba(11, 19, 43, 0.03); font-weight:900; white-space:nowrap; pointer-events:none; z-index:0;">PHILOSOPHY</div>
-    <div class="container" style="position:relative; z-index:1; text-align:center;">
+    <div class="bg-text fade-in" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size: 16vw; color: rgba(11, 19, 43, 0.03); font-weight:900; white-space:nowrap; pointer-events:none; z-index:0;">PHILOSOPHY</div>
+    <div class="container fade-up" style="position:relative; z-index:1; text-align:center;">
         <h2 style="font-size: 3rem; color: var(--primary-color); margin-bottom: 40px; font-weight:700; line-height:1.4;">デジタルとクリエイティブで、<br>次の「当たり前」を創る。</h2>
         <p style="font-size: 1.15rem; line-height: 2.2; margin-bottom: 50px; color: var(--accent-color);">
             株式会社blankは、単なるWeb制作会社ではありません。<br>
@@ -109,14 +109,14 @@
 <!-- 4. Services / Business Domain -->
 <section class="top-services section-padding" style="background: var(--white); padding: 120px 0;">
     <div class="container">
-        <div class="section-header" style="text-align:center; margin-bottom: 80px;">
+        <div class="section-header fade-up" style="text-align:center; margin-bottom: 80px;">
             <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">BUSINESS DOMAIN</p>
             <h2 style="font-size: 2.8rem; font-weight: 700; margin:0; color:var(--primary-color);">提供領域</h2>
         </div>
         
         <div class="service-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px;">
             <!-- Service 1 -->
-            <a href="<?php echo esc_url(home_url('/service/#marketing')); ?>" class="service-card" style="background:var(--bg-color); padding: 60px 40px; border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0);">
+            <a href="<?php echo esc_url(home_url('/service/#marketing')); ?>" class="service-card fade-up delay-1" style="background:var(--bg-color); padding: 60px 40px; border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0);">
                 <div class="icon" style="color: var(--highlight-color); margin-bottom: 25px;">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                 </div>
@@ -126,7 +126,7 @@
             </a>
             
             <!-- Service 2 -->
-            <a href="<?php echo esc_url(home_url('/service/#web')); ?>" class="service-card" style="background:var(--bg-color); padding: 60px 40px; border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0);">
+            <a href="<?php echo esc_url(home_url('/service/#web')); ?>" class="service-card fade-up delay-2" style="background:var(--bg-color); padding: 60px 40px; border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0);">
                 <div class="icon" style="color: var(--highlight-color); margin-bottom: 25px;">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                 </div>
@@ -136,7 +136,7 @@
             </a>
 
             <!-- Service 3 -->
-            <a href="<?php echo esc_url(home_url('/service/#system')); ?>" class="service-card" style="background:var(--bg-color); padding: 60px 40px; border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0);">
+            <a href="<?php echo esc_url(home_url('/service/#system')); ?>" class="service-card fade-up delay-3" style="background:var(--bg-color); padding: 60px 40px; border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0);">
                 <div class="icon" style="color: var(--highlight-color); margin-bottom: 25px;">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
                 </div>
@@ -151,7 +151,7 @@
 <!-- 5. Works & Portfolio -->
 <section class="top-works section-padding" style="background: var(--secondary-color); padding: 120px 0;">
     <div class="container">
-        <div class="section-header" style="margin-bottom: 60px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;">
+        <div class="section-header fade-up" style="margin-bottom: 60px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;">
             <div>
                 <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">CASE STUDIES</p>
                 <h2 style="font-size: 2.8rem; font-weight: 700; margin:0; color:var(--white);">制作・支援実績</h2>
@@ -159,7 +159,7 @@
             <a href="<?php echo esc_url(get_post_type_archive_link('works')); ?>" class="view-all-link" style="color: var(--white); font-weight:bold; border-bottom: 1px solid var(--white); text-decoration:none; padding-bottom:5px; transition:opacity 0.3s;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'">VIEW ALL 実績一覧 &rarr;</a>
         </div>
 
-        <div class="works-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
+        <div class="works-grid fade-up delay-1" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
             <?php
             $works_query = new WP_Query( array('post_type' => 'works', 'posts_per_page' => 4) );
             if($works_query->have_posts()): while($works_query->have_posts()): $works_query->the_post();
@@ -194,7 +194,7 @@
 
 <!-- 6. Recruit & Culture (Half image layout) -->
 <section class="top-recruit" style="background:var(--white); display:flex; flex-wrap:wrap;">
-    <div style="flex:1 1 50%; min-width:300px; padding: 120px 5% 120px 10%; display:flex; flex-direction:column; justify-content:center;">
+    <div class="fade-up" style="flex:1 1 50%; min-width:300px; padding: 120px 5% 120px 10%; display:flex; flex-direction:column; justify-content:center;">
         <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">RECRUIT</p>
         <h2 style="font-size: 2.8rem; font-weight: 700; margin:0 0 30px; color:var(--primary-color);">共に、デジタルの<br>最前線を開拓する。</h2>
         <p style="color:var(--accent-color); line-height:2; margin-bottom:50px; font-size:1.1rem;">
@@ -206,7 +206,7 @@
             <a href="<?php echo esc_url(home_url('/recruit/')); ?>" class="cta-btn" style="display:inline-block; font-size:1.1rem; padding: 16px 40px;">採用情報を見る</a>
         </div>
     </div>
-    <div style="flex:1 1 50%; min-width:300px; background:linear-gradient(135deg, rgba(229,57,53,0.9), rgba(11,19,43,0.95)); position:relative; min-height:400px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+    <div class="fade-in" style="flex:1 1 50%; min-width:300px; background:linear-gradient(135deg, rgba(229,57,53,0.9), rgba(11,19,43,0.95)); position:relative; min-height:400px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
         <!-- Geometric pattern to represent digital space -->
         <svg style="position:absolute; width:150%; height:150%; top:-25%; left:-25%; opacity:0.1; animation: fluidMorph 30s infinite linear;" viewBox="0 0 100 100">
              <circlecx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="0.5" stroke-dasharray="2 4" />
@@ -220,11 +220,34 @@
 
 <!-- 7. Contact -->
 <section class="contact-section" style="padding:140px 0; background:var(--bg-color); text-align:center;">
-    <div class="container">
+    <div class="container fade-up">
         <h2 style="font-size: 2.5rem; color:var(--primary-color); margin-bottom: 25px; font-weight:700;">ビジネスを加速させませんか？</h2>
         <p style="margin-bottom: 50px; color:var(--accent-color); font-size:1.15rem; line-height:1.8;">新規プロジェクトのご相談、お見積り、DX推進に関するお悩みなど<br>些細なことでもお気軽にお問い合わせください。専門のコンサルタントが的確に対応いたします。</p>
         <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="cta-btn" style="font-size: 1.25rem; padding: 20px 60px;">無料相談・お問い合わせフォームへ</a>
     </div>
 </section>
+
+<!-- Scroll Animation Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    const fadeElements = document.querySelectorAll('.fade-up, .fade-in, .fade-left, .fade-right');
+    fadeElements.forEach(el => observer.observe(el));
+});
+</script>
 
 <?php get_footer(); ?>
