@@ -107,6 +107,34 @@ function blank_register_post_types() {
     ));
 
     flush_rewrite_rules(false); // Temporary flush to enable the new CPT URLs
+
+    // ONE TIME MIGRATION: Convert Service blocks to CPT posts, rename old Page to avoid conflict
+    if ( !get_option('blank_service_migrated_v2') ) {
+        $old_page = get_page_by_path('service');
+        if ($old_page && $old_page->post_type === 'page') {
+            wp_update_post([ 'ID' => $old_page->ID, 'post_name' => 'service-old' ]);
+        }
+        $services = [
+            ["title" => "Web制作事業（Design & Build）", "content" => "成果直結型Webサイト制作。心理導線設計に基づいたUI/UX、CVR最大化構造設計、モバイルファースト等を特徴とします。"],
+            ["title" => "高機能Webシステム開発", "content" => "“見た目”だけでなく、“ビジネスを動かす”Webへ。予約システムや会員制サイト等の構築を行います。"],
+            ["title" => "LP特化制作（成果特化型）", "content" => "400件以上の制作思想を踏襲。CVR 1.3〜2.8倍改善設計など、広告連動型構成を得意とします。"],
+            ["title" => "デジタルマーケティング支援", "content" => "制作して終わりではなく、成果が出るまで伴走。Google広告、Meta広告、SEO対策、SNS運用など。"],
+            ["title" => "AI × 自動化ソリューション", "content" => "Python × ChatGPT × Github Actions。24時間自動稼働、コンテンツ自動生成システム、競合連携など。"],
+            ["title" => "コンサルティング事業", "content" => "新規事業立ち上げ支援、DX推進支援、事業再設計、収益構造改善、デジタル戦略設計など。"]
+        ];
+        foreach ($services as $s) {
+            if (!get_page_by_title($s["title"], OBJECT, "service")) {
+                wp_insert_post([
+                    "post_title" => $s["title"],
+                    "post_content" => $s["content"],
+                    "post_type" => "service",
+                    "post_status" => "publish",
+                    "post_excerpt" => $s["content"]
+                ]);
+            }
+        }
+        update_option('blank_service_migrated_v2', 1);
+    }
 }
 add_action( 'init', 'blank_register_post_types' );
 
