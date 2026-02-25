@@ -89,8 +89,111 @@ function blank_register_post_types() {
         'has_archive' => true,
         'menu_position' => 9,
         'menu_icon' => 'dashicons-awards',
-        'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+        'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
         'show_in_rest' => true,
     ));
 }
 add_action( 'init', 'blank_register_post_types' );
+
+// カスタムフィールド（メタボックス）の追加: Case Study詳細
+function blank_add_cs_meta_boxes() {
+    add_meta_box( 'cs_details', 'Case Study 詳細情報', 'blank_cs_meta_box_html', 'case_study', 'normal', 'default' );
+}
+add_action( 'add_meta_boxes', 'blank_add_cs_meta_boxes' );
+
+function blank_cs_meta_box_html( $post ) {
+    $cs_industry = get_post_meta($post->ID, 'cs_industry', true);
+    $cs_issue = get_post_meta($post->ID, 'cs_issue', true);
+    $cs_implementation = get_post_meta($post->ID, 'cs_implementation', true);
+    $cs_result = get_post_meta($post->ID, 'cs_result', true);
+    $cs_value = get_post_meta($post->ID, 'cs_value', true);
+    ?>
+    <style>
+        .cs-meta-field { margin-bottom: 20px; }
+        .cs-meta-field label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .cs-meta-field textarea, .cs-meta-field input { width: 100%; max-width: 100%; }
+    </style>
+    <div class="cs-meta-field">
+        <label>■ 業界</label>
+        <input type="text" name="cs_industry" value="<?php echo esc_attr($cs_industry); ?>" />
+    </div>
+    <div class="cs-meta-field">
+        <label>■ 課題</label>
+        <textarea name="cs_issue" rows="4"><?php echo esc_textarea($cs_issue); ?></textarea>
+    </div>
+    <div class="cs-meta-field">
+        <label>■ 実装ブロック / 施策設計</label>
+        <textarea name="cs_implementation" rows="8"><?php echo esc_textarea($cs_implementation); ?></textarea>
+    </div>
+    <div class="cs-meta-field">
+        <label>■ 成果 / KPI改善</label>
+        <textarea name="cs_result" rows="4"><?php echo esc_textarea($cs_result); ?></textarea>
+    </div>
+    <div class="cs-meta-field">
+        <label>■ blankの役割 / 価値</label>
+        <textarea name="cs_value" rows="3"><?php echo esc_textarea($cs_value); ?></textarea>
+    </div>
+    <?php
+}
+
+function blank_save_cs_meta_data( $post_id ) {
+    if ( array_key_exists( 'cs_industry', $_POST ) ) { update_post_meta( $post_id, 'cs_industry', sanitize_text_field( $_POST['cs_industry'] ) ); }
+    if ( array_key_exists( 'cs_issue', $_POST ) ) { update_post_meta( $post_id, 'cs_issue', sanitize_textarea_field( $_POST['cs_issue'] ) ); }
+    if ( array_key_exists( 'cs_implementation', $_POST ) ) { update_post_meta( $post_id, 'cs_implementation', sanitize_textarea_field( $_POST['cs_implementation'] ) ); }
+    if ( array_key_exists( 'cs_result', $_POST ) ) { update_post_meta( $post_id, 'cs_result', sanitize_textarea_field( $_POST['cs_result'] ) ); }
+    if ( array_key_exists( 'cs_value', $_POST ) ) { update_post_meta( $post_id, 'cs_value', sanitize_textarea_field( $_POST['cs_value'] ) ); }
+}
+add_action( 'save_post', 'blank_save_cs_meta_data' );
+
+// 自動シードスクリプト：4つのCase Studyを作成
+function blank_seed_case_studies() {
+    if ( get_option( 'blank_case_studies_seeded' ) ) return;
+    $case_studies = [
+        [
+            'title' => 'Case Study 01: 美容クリニック｜CVR 2倍を実現した予約完結型LP',
+            'industry' => '美容医療',
+            'issue' => "・広告流入はあるが予約率が低い（CVR 4.8%）\n・フォーム離脱が多い\n・競合との差別化ができていない",
+            'impl' => "1. 心理導線再設計\n→ 悩み別ブロック構造に再構築\n→ 医師紹介をファーストビュー直下へ\n→ 社会的証明（症例）をCTA前に配置\n\n2. 予約完結型実装\n→ LP内予約完結\n→ Googleカレンダー自動連携\n→ 自動リマインド通知\n\n3. UI最適化\n→ スライドフォーム導入\n→ 入力ステップ簡略化\n→ 表示速度改善",
+            'result' => "CVR：4.8% → 9.5%\n予約数：210%増\nフォーム完了率：1.7倍\nCPA：22%改善",
+            'value' => "デザインではなく「予約が増える構造」を実装。"
+        ],
+        [
+            'title' => 'Case Study 02: 地域工務店｜問い合わせ4.8倍',
+            'industry' => '建築・リフォーム',
+            'issue' => "・月12件の問い合わせ\n・価格競争に巻き込まれていた\n・地域検索で弱い",
+            'impl' => "■ 地域特化型LP制作\n■ KW反応型ヘッドライン導入\n■ 施工事例のストーリー化\n■ EFO改善\n■ Google × Metaクロス運用",
+            'result' => "問い合わせ：12件 → 58件\n客単価：22%UP\nCTR：+44%\n品質スコア改善",
+            'value' => "競合と戦わず、ポジションを作る設計。"
+        ],
+        [
+            'title' => 'Case Study 03: SaaSスタートアップ｜トライアル申込235%増',
+            'industry' => 'IT / SaaS',
+            'issue' => "・サービスが難解\n・直帰率63%\n・価格理解で離脱",
+            'impl' => "■ 料金シミュレーター実装\n■ 機能別UI再整理\n■ FAQ再構築\n■ マイクロCV設計\n■ Looker可視化",
+            'result' => "トライアル申込：235%増\n直帰率：▲43pt\n有料転換率：1.6倍",
+            'value' => "「分かりにくい」を「触りたくなる」に変える。"
+        ],
+        [
+            'title' => 'Case Study 04: 美容サロン｜月商180%成長',
+            'industry' => '美容サロン',
+            'issue' => "・集客が広告依存\n・リピート率が低い\n・顧客管理がアナログ",
+            'impl' => "■ 会員機能導入\n→ マイページ構築\n→ 来店履歴表示\n→ 次回予約促進\n\n■ CRM連携\n→ LINE自動連携\n→ 来店3日後フォロー\n\n■ 定期キャンペーン自動化\n→ 月次自動配信\n→ セグメント別配信\n\n☑ 会員システム\n☑ LINE自動連携\n☑ API構築\n☑ マーケ設計",
+            'result' => "リピート率：+32%\n来店単価：+18%\n月商：180%成長\n業務工数：▲40%",
+            'value' => "店舗全体の「仕組み化」と「システム構築」。"
+        ]
+    ];
+    foreach($case_studies as $cs) {
+        $post_id = wp_insert_post( [
+            'post_title' => $cs['title'],
+            'post_type' => 'case_study',
+            'post_status' => 'publish'
+        ] );
+        update_post_meta($post_id, 'cs_industry', $cs['industry']);
+        update_post_meta($post_id, 'cs_issue', $cs['issue']);
+        update_post_meta($post_id, 'cs_implementation', $cs['impl']);
+        update_post_meta($post_id, 'cs_result', $cs['result']);
+        update_post_meta($post_id, 'cs_value', $cs['value']);
+    }
+    update_option( 'blank_case_studies_seeded', true );
+}
+add_action( 'init', 'blank_seed_case_studies' );

@@ -164,45 +164,92 @@
     </div>
 </section>
 
-<!-- 5. Works & Portfolio -->
-<section class="top-works section-padding" style="background: var(--secondary-color); padding: 120px 0;">
-    <div class="container">
+<!-- 5. Case Studies -->
+<section class="top-works section-padding" style="background: var(--secondary-color); padding: 120px 0; position:relative; overflow:hidden;">
+    <!-- Geometric abstract data lines for tech feel -->
+    <svg style="position:absolute; top:10%; right:-5%; width:40%; opacity:0.03; pointer-events:none; animation: fluidMorph2 20s infinite alternate;" viewBox="0 0 100 100">
+        <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" fill="none" stroke="#fff" stroke-width="0.5"/>
+        <line x1="50" y1="0" x2="50" y2="100" stroke="#fff" stroke-width="0.2"/>
+        <line x1="0" y1="25" x2="100" y2="75" stroke="#fff" stroke-width="0.2"/>
+        <line x1="0" y1="75" x2="100" y2="25" stroke="#fff" stroke-width="0.2"/>
+    </svg>
+
+    <div class="container" style="position:relative; z-index:1;">
         <div class="section-header fade-up" style="margin-bottom: 60px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;">
             <div>
                 <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">CASE STUDIES</p>
-                <h2 style="font-size: 2.8rem; font-weight: 700; margin:0; color:var(--white);">制作・支援実績</h2>
+                <h2 style="font-size: 2.8rem; font-weight: 700; margin:0; color:var(--white);">成功事例（実装インパクト）</h2>
             </div>
-            <a href="<?php echo esc_url(get_post_type_archive_link('works')); ?>" class="view-all-link" style="color: var(--white); font-weight:bold; border-bottom: 1px solid var(--white); text-decoration:none; padding-bottom:5px; transition:opacity 0.3s;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'">VIEW ALL 実績一覧 &rarr;</a>
+            <a href="<?php echo esc_url(get_post_type_archive_link('case_study')); ?>" class="view-all-link" style="color: var(--white); font-weight:bold; border-bottom: 1px solid var(--white); text-decoration:none; padding-bottom:5px; transition:opacity 0.3s;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'">VIEW ALL 事例一覧 &rarr;</a>
         </div>
 
-        <div class="works-grid fade-up delay-1" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
+        <div class="works-grid fade-up delay-1" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px;">
             <?php
-            $works_query = new WP_Query( array('post_type' => 'works', 'posts_per_page' => 4) );
-            if($works_query->have_posts()): while($works_query->have_posts()): $works_query->the_post();
+            $cs_query = new WP_Query( array('post_type' => 'case_study', 'posts_per_page' => 4) );
+            $delay = 1;
+            if($cs_query->have_posts()): while($cs_query->have_posts()): $cs_query->the_post();
+                $industry = get_post_meta(get_the_ID(), 'cs_industry', true);
+                $issue = get_post_meta(get_the_ID(), 'cs_issue', true);
+                $impl = get_post_meta(get_the_ID(), 'cs_implementation', true);
+                $result = get_post_meta(get_the_ID(), 'cs_result', true);
+                $val = get_post_meta(get_the_ID(), 'cs_value', true);
             ?>
-            <a href="<?php the_permalink(); ?>" class="work-card-elegant" style="display:block; text-decoration:none; color:inherit;">
-                <div class="img-wrapper" style="border-radius:8px; overflow:hidden; margin-bottom:20px; position:relative; aspect-ratio: 16/10; background:rgba(255,255,255,0.05);">
-                    <?php if(has_post_thumbnail()): ?>
-                        <?php the_post_thumbnail('large', ['style' => 'width:100%; height:100%; object-fit:cover; transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);', 'class' => 'work-img']); ?>
-                    <?php else: ?>
-                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.3);">No Image</div>
+            <div class="cs-card fade-up delay-<?php echo $delay; ?>" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:40px; position:relative; overflow:hidden; transition:transform 0.4s ease, border-color 0.4s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(229, 57, 53, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.08)';">
+                
+                <!-- Background decorative accent -->
+                <div style="position:absolute; top:0; right:0; width:100px; height:100px; background:radial-gradient(circle at top right, rgba(229,57,53,0.15), transparent 70%); border-radius:0 12px 0 0;"></div>
+
+                <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
+                    <span style="background:var(--highlight-color); color:var(--white); font-size:0.8rem; font-weight:bold; padding:5px 12px; border-radius:20px;">
+                        <?php echo esc_html( $industry ? $industry : '未設定' ); ?>
+                    </span>
+                </div>
+
+                <h3 style="font-size:1.4rem; font-weight:bold; color:var(--white); margin-top:0; margin-bottom:30px; line-height:1.5; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:20px;">
+                    <?php the_title(); ?>
+                </h3>
+
+                <div style="display:flex; flex-direction:column; gap:25px;">
+                    <!-- 課題 -->
+                    <?php if($issue): ?>
+                    <div style="background:rgba(0,0,0,0.2); padding:20px; border-radius:8px; border-left:3px solid #6c757d;">
+                        <h4 style="color:#a1a1aa; font-size:0.9rem; margin-top:0; margin-bottom:10px; font-weight:bold;">▼ 課題</h4>
+                        <p style="color:var(--white); margin:0; font-size:0.95rem; line-height:1.8; white-space:pre-wrap;"><?php echo esc_html($issue); ?></p>
+                    </div>
                     <?php endif; ?>
-                    <div class="overlay" style="position:absolute; inset:0; background:rgba(11,19,43,0.4); opacity:0; transition:opacity 0.4s ease;"></div>
+
+                    <!-- 実装ブロック -->
+                    <?php if($impl): ?>
+                    <div style="background:rgba(229,57,53,0.05); padding:20px; border-radius:8px; border-left:3px solid var(--highlight-color);">
+                        <h4 style="color:var(--highlight-color); font-size:0.9rem; margin-top:0; margin-bottom:10px; font-weight:bold;">▼ 実装ブロック</h4>
+                        <p style="color:var(--white); font-weight:bold; margin:0; font-size:0.95rem; line-height:1.8; white-space:pre-wrap;"><?php echo esc_html($impl); ?></p>
+                    </div>
+                    <?php endif; ?>
+
+                    <!-- 成果 -->
+                    <?php if($result): ?>
+                    <div style="background:rgba(90,103,216,0.1); padding:20px; border-radius:8px; border-left:3px solid #5a67d8;">
+                        <h4 style="color:#818cf8; font-size:0.9rem; margin-top:0; margin-bottom:10px; font-weight:bold;">▼ 成果</h4>
+                        <p style="color:var(--white); margin:0; font-size:1.05rem; font-weight:bold; line-height:1.8; white-space:pre-wrap;"><?php echo esc_html($result); ?></p>
+                    </div>
+                    <?php endif; ?>
                 </div>
-                <div class="work-meta" style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
-                    <?php
-                    $terms = get_the_terms(get_the_ID(), 'work_cat');
-                    if($terms && !is_wp_error($terms)){
-                        foreach($terms as $term){
-                            echo '<span style="font-size:0.75rem; background:rgba(255,255,255,0.1); padding:5px 12px; border-radius:20px; color:var(--white); font-weight:bold; border: 1px solid rgba(255,255,255,0.2);">' . esc_html($term->name) . '</span>';
-                        }
-                    }
-                    ?>
+
+                <!-- 価値 -->
+                <?php if($val): ?>
+                <div style="margin-top:30px; text-align:right;">
+                    <p style="color:var(--white); font-size:0.85rem; opacity:0.6; margin:0;">
+                        ✓ <?php echo esc_html($val); ?>
+                    </p>
                 </div>
-                <h3 style="font-size:1.3rem; font-weight:bold; color:var(--white); margin:0; line-height:1.5;"><?php the_title(); ?></h3>
-            </a>
-            <?php endwhile; wp_reset_postdata(); else: ?>
-                <p style="color:rgba(255,255,255,0.6);">実績は準備中です。</p>
+                <?php endif; ?>
+
+            </div>
+            <?php 
+                $delay++;
+                if($delay > 4) $delay = 1;
+            endwhile; wp_reset_postdata(); else: ?>
+                <p style="color:rgba(255,255,255,0.6);">成功事例は現在準備中です。</p>
             <?php endif; ?>
         </div>
     </div>
