@@ -92,6 +92,21 @@ function blank_register_post_types() {
         'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
         'show_in_rest' => true,
     ));
+    // 6. サービス (Service)
+    register_post_type( 'service', array(
+        'labels' => array(
+            'name' => 'サービス',
+            'singular_name' => 'サービス',
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'menu_position' => 10,
+        'menu_icon' => 'dashicons-admin-tools',
+        'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
+        'show_in_rest' => true,
+    ));
+
+    flush_rewrite_rules(false); // Temporary flush to enable the new CPT URLs
 }
 add_action( 'init', 'blank_register_post_types' );
 
