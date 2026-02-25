@@ -6,13 +6,13 @@
 <!-- 1. TOP MV -->
 <section class="mv" style="position:relative; overflow:hidden; min-height: 100vh; display:flex; align-items:center; background: transparent;">
     
-    <div class="mv-content container" style="position:relative; z-index:1; text-align:center;">
+    <div class="mv-content container" style="position:relative; z-index:1; text-align:center; background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 80px 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 20px 50px rgba(0,0,0,0.05); max-width: 900px; margin-top: 50px;">
         <p class="mv-kicker" style="color:var(--highlight-color); font-weight:bold; letter-spacing:0.2em; margin-bottom:15px;">CONTROL THE BLANK</p>
-        <h2 class="mv-catch" style="color:var(--primary-color);">空白を、支配せよ。</h2>
-        <p class="mv-sub" style="color:var(--primary-color); font-weight:bold;">デザインとデータの究極の融合。<br>私たちは、ビジネスを加速させるデジタル空間の最適解を創り出します。</p>
+        <h2 class="mv-catch" style="color:var(--primary-color); font-size:3.5rem; font-weight:800; margin-bottom:20px;">空白を、支配せよ。</h2>
+        <p class="mv-sub" style="color:var(--primary-color); font-weight:bold; font-size:1.15rem; margin-bottom:40px;">デザインとデータの究極の融合。<br>私たちは、ビジネスを加速させるデジタル空間の最適解を創り出します。</p>
         <div class="mv-btns">
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn">無料相談はこちら</a>
-            <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline">実績を見る</a>
+            <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline" style="background:rgba(255,255,255,0.3);">実績を見る</a>
         </div>
 
         <div class="mv-highlight-data">
@@ -227,26 +227,105 @@
     </div>
 </section>
 
-<!-- Scroll Animation Script -->
+<!-- GSAP & ScrollTrigger Animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
+    gsap.registerPlugin(ScrollTrigger);
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if(entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
+    // Fade out and scale down MV completely smoothly on scroll
+    gsap.to(".mv-content", {
+        y: -150,
+        opacity: 0,
+        scale: 0.9,
+        scrollTrigger: {
+            trigger: ".mv",
+            start: "top top",
+            end: "bottom center",
+            scrub: 1.5
+        }
+    });
 
-    const fadeElements = document.querySelectorAll('.fade-up, .fade-in, .fade-left, .fade-right');
-    fadeElements.forEach(el => observer.observe(el));
+    // Vision Philosophy Background Text Scrub
+    gsap.to(".bg-text", {
+        xPercent: -30,
+        scrollTrigger: {
+            trigger: ".top-vision",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 2
+        }
+    });
+
+    // Vision Content Reveal Strategy
+    gsap.from(".top-vision h2", {
+        y: 60,
+        opacity: 0,
+        duration: 1.5,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".top-vision", start: "top 70%" }
+    });
+    gsap.from(".top-vision p", {
+        y: 40,
+        opacity: 0,
+        duration: 1.5,
+        delay: 0.3,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".top-vision", start: "top 70%" }
+    });
+
+    // Apple-style Service Cards Entrance
+    gsap.from(".service-card", {
+        y: 100,
+        opacity: 0,
+        rotationX: -15, // slight 3D flip effect
+        stagger: 0.2,
+        duration: 1.2,
+        ease: "expo.out",
+        scrollTrigger: {
+            trigger: ".service-grid",
+            start: "top 80%"
+        }
+    });
+
+    // Case Studies Reveal
+    gsap.from(".work-card-elegant", {
+        y: 80,
+        opacity: 0,
+        scale: 0.95,
+        stagger: 0.15,
+        duration: 1.2,
+        ease: "power4.out",
+        scrollTrigger: {
+            trigger: ".works-grid",
+            start: "top 85%"
+        }
+    });
+
+    // News Items Side Sweep
+    gsap.from(".news-item", {
+        x: -50,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: ".news-list",
+            start: "top 90%"
+        }
+    });
+    
+    // Recruit section parallax
+    gsap.from(".top-recruit .fade-in", {
+        backgroundPosition: "50% 100%",
+        scrollTrigger: {
+            trigger: ".top-recruit",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true
+        }
+    });
 });
 </script>
 
