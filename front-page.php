@@ -389,6 +389,44 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", function() {
     gsap.registerPlugin(ScrollTrigger);
 
+    // Dynamic Typography Animation for MV
+    const catchTitle = document.querySelector('.mv-catch');
+    if (catchTitle) {
+        // Split text into lines/characters for dynamic staggered animation
+        const text = catchTitle.innerHTML;
+        // In this specific case, it's plain text so we can just split chars.
+        // We'll replace the content with span wraps.
+        catchTitle.innerHTML = text.split('').map(char => {
+            if (char === ' ') return ' ';
+            return `<span style="display:inline-block; transform-origin: left bottom;" class="mv-char">${char}</span>`;
+        }).join('');
+
+        // 1. Kicker fade in
+        gsap.from(".mv-kicker", { opacity: 0, y: -20, duration: 1, ease: "power3.out" });
+
+        // 2. Main title characters drop in with slight 3D rotation and stagger
+        gsap.from(".mv-char", {
+            y: 80,
+            opacity: 0,
+            rotationZ: 5,
+            rotationX: 90,
+            scale: 0.8,
+            stagger: 0.08,
+            duration: 1.2,
+            ease: "expo.out",
+            delay: 0.2
+        });
+
+        // 3. Subtext slide up smoothly later
+        gsap.from(".mv-sub", {
+            y: 40,
+            opacity: 0,
+            duration: 1.5,
+            ease: "power4.out",
+            delay: 1.2
+        });
+    }
+
     // Fade out and scale down MV completely smoothly on scroll
     gsap.to(".mv-content", {
         y: -150,
