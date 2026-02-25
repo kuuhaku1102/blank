@@ -107,8 +107,15 @@
 </section>
 
 <!-- 4. Services / Business Domain -->
-<section class="top-services section-padding" style="background: var(--white); padding: 120px 0;">
-    <div class="container">
+<section class="top-services section-padding" style="background: var(--white); padding: 120px 0; position:relative; overflow:hidden;">
+    <!-- Abstract SVG Background for Services -->
+    <svg style="position:absolute; top: -10%; left: -5%; width: 50%; height: 120%; opacity: 0.03; pointer-events: none; animation: floatOrb 25s infinite alternate-reverse;" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="var(--primary-color)" stroke-width="0.5" stroke-dasharray="2 4" />
+        <rect x="20" y="20" width="60" height="60" fill="none" stroke="var(--highlight-color)" stroke-width="0.2" transform="rotate(25 50 50)" />
+        <polygon points="50,10 90,90 10,90" fill="none" stroke="var(--primary-color)" stroke-width="0.3" transform="rotate(-15 50 50)" />
+    </svg>
+
+    <div class="container" style="position:relative; z-index:1;">
         <div class="section-header fade-up" style="text-align:center; margin-bottom: 80px;">
             <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">BUSINESS DOMAIN</p>
             <h2 style="font-size: 2.8rem; font-weight: 700; margin:0; color:var(--primary-color);">提供領域</h2>
@@ -116,33 +123,42 @@
         
         <div class="service-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px;">
             <!-- Service 1 -->
-            <a href="<?php echo esc_url(home_url('/service/#marketing')); ?>" class="service-card fade-up delay-1" style="background:var(--bg-color); padding: 60px 40px; border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0);">
-                <div class="icon" style="color: var(--highlight-color); margin-bottom: 25px;">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <a href="<?php echo esc_url(home_url('/service/#marketing')); ?>" class="service-card fade-up delay-1" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
+                <div class="icon" style="height:200px; overflow:hidden; position:relative;">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service1.jpg" alt="マーケティングDX" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
+                    <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(229, 57, 53, 0.4)); blend-mode:multiply;"></div>
                 </div>
-                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">マーケティングDX</h3>
+                <div style="padding: 40px;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">マーケティングDX</h3>
                 <p style="font-size: 1rem; color: var(--accent-color); line-height: 1.7; margin-bottom:30px;">データ分析に基づく戦略立案から、Google/Meta広告・SEOなどの実行支援まで一気通貫で行います。</p>
                 <div class="btn-arrow" style="font-weight:bold; color:var(--highlight-color); display:flex; align-items:center; gap:8px;">詳しく見る <span style="font-size:1.2rem;">&rarr;</span></div>
+                </div>
             </a>
             
             <!-- Service 2 -->
-            <a href="<?php echo esc_url(home_url('/service/#web')); ?>" class="service-card fade-up delay-2" style="background:var(--bg-color); padding: 60px 40px; border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0);">
-                <div class="icon" style="color: var(--highlight-color); margin-bottom: 25px;">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <a href="<?php echo esc_url(home_url('/service/#web')); ?>" class="service-card fade-up delay-2" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
+                <div class="icon" style="height:200px; overflow:hidden; position:relative;">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service2.jpg" alt="クリエイティブ・Web制作" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
+                    <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(90, 103, 216, 0.4)); blend-mode:multiply;"></div>
                 </div>
-                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">クリエイティブ・Web制作</h3>
+                <div style="padding: 40px;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">クリエイティブ・Web制作</h3>
                 <p style="font-size: 1rem; color: var(--accent-color); line-height: 1.7; margin-bottom:30px;">コーポレートサイトやCV特化型LPなど、最新のUI/UXを取り入れたハイクオリティなデザインを提供します。</p>
                 <div class="btn-arrow" style="font-weight:bold; color:var(--highlight-color); display:flex; align-items:center; gap:8px;">詳しく見る <span style="font-size:1.2rem;">&rarr;</span></div>
+                </div>
             </a>
 
             <!-- Service 3 -->
-            <a href="<?php echo esc_url(home_url('/service/#system')); ?>" class="service-card fade-up delay-3" style="background:var(--bg-color); padding: 60px 40px; border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0);">
-                <div class="icon" style="color: var(--highlight-color); margin-bottom: 25px;">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <a href="<?php echo esc_url(home_url('/service/#system')); ?>" class="service-card fade-up delay-3" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
+                <div class="icon" style="height:200px; overflow:hidden; position:relative;">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service3.jpg" alt="システム・アプリ開発" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
+                    <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(11, 19, 43, 0.4)); blend-mode:multiply;"></div>
                 </div>
-                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">システム・アプリ開発</h3>
+                <div style="padding: 40px;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--primary-color);">システム・アプリ開発</h3>
                 <p style="font-size: 1rem; color: var(--accent-color); line-height: 1.7; margin-bottom:30px;">業務のデジタルトランスフォーメーションを支えるシステムや、専用Webアプリケーションをスクラッチで開発します。</p>
                 <div class="btn-arrow" style="font-weight:bold; color:var(--highlight-color); display:flex; align-items:center; gap:8px;">詳しく見る <span style="font-size:1.2rem;">&rarr;</span></div>
+                </div>
             </a>
         </div>
     </div>
@@ -209,9 +225,11 @@
     <div class="fade-in" style="flex:1 1 50%; min-width:300px; background:linear-gradient(135deg, rgba(229,57,53,0.9), rgba(11,19,43,0.95)); position:relative; min-height:400px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
         <!-- Geometric pattern to represent digital space -->
         <svg style="position:absolute; width:150%; height:150%; top:-25%; left:-25%; opacity:0.1; animation: fluidMorph 30s infinite linear;" viewBox="0 0 100 100">
-             <circlecx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="0.5" stroke-dasharray="2 4" />
+             <circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="0.5" stroke-dasharray="2 4" />
              <polygon points="50,10 90,90 10,90" fill="none" stroke="#fff" stroke-width="0.5" />
+             <rect x="25" y="25" width="50" height="50" fill="none" stroke="#e53935" stroke-width="0.8" />
         </svg>
+        <div style="position:absolute; inset:0; background: url('<?php echo get_template_directory_uri(); ?>/assets/img/service1.jpg') center/cover no-repeat; opacity: 0.2; mix-blend-mode: luminosity;"></div>
         <div style="text-align:center; position:relative; z-index:1;">
             <p style="color:rgba(255,255,255,0.8); font-size:1.5rem; letter-spacing:0.3em; font-weight:300;">JOIN OUR TEAM</p>
         </div>
