@@ -227,6 +227,32 @@
     </div>
 </section>
 
+<!-- Scroll Animation Script for Generic Fade Elements -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Only observe elements that aren't being fully overtaken by advanced GSAP from() tweens, 
+    // or simply observe all of them so they get the necessary opacity:1 from .is-visible base class 
+    // while GSAP handles the secondary animations.
+    const fadeElements = document.querySelectorAll('.fade-up, .fade-in, .fade-left, .fade-right');
+    fadeElements.forEach(el => observer.observe(el));
+});
+</script>
+
 <!-- GSAP & ScrollTrigger Animations -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
