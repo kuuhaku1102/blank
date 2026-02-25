@@ -392,20 +392,34 @@ document.addEventListener("DOMContentLoaded", function() {
     // Dynamic Typography Animation for MV
     const catchTitle = document.querySelector('.mv-catch');
     if (catchTitle) {
-        // Split text into lines/characters for dynamic staggered animation
-        const text = catchTitle.innerHTML;
-        // In this specific case, it's plain text so we can just split chars.
-        // We'll replace the content with span wraps.
-        catchTitle.innerHTML = text.split('').map(char => {
+        // Split text into characters. Isolate brackets.
+        const chars = catchTitle.innerHTML.split('');
+        catchTitle.innerHTML = chars.map(char => {
             if (char === ' ') return ' ';
-            return `<span style="display:inline-block; transform-origin: left bottom;" class="mv-char">${char}</span>`;
+            if (char === '「' || char === '」') {
+                return `<span style="display:inline-block;" class="mv-bracket">${char}</span>`;
+            } else {
+                return `<span style="display:inline-block; transform-origin: left bottom;" class="mv-char">${char}</span>`;
+            }
         }).join('');
 
-        // 1. Kicker fade in
-        gsap.from(".mv-kicker", { opacity: 0, y: -20, duration: 1, ease: "power3.out" });
+        const tl = gsap.timeline();
 
-        // 2. Main title characters drop in with slight 3D rotation and stagger
-        gsap.from(".mv-char", {
+        // 1. Kicker fade in
+        tl.from(".mv-kicker", { opacity: 0, y: -20, duration: 1, ease: "power3.out" }, "+=0.1");
+
+        // 2. Brackets fall from top
+        tl.from(".mv-bracket", {
+            y: -150,
+            opacity: 0,
+            scale: 1.2,
+            duration: 1.0,
+            ease: "bounce.out",
+            stagger: 0.15 // Let them drop slightly offset for extra flair
+        }, "-=0.2");
+
+        // 3. Main title characters drop in with slight 3D rotation and stagger
+        tl.from(".mv-char", {
             y: 80,
             opacity: 0,
             rotationZ: 5,
@@ -413,18 +427,16 @@ document.addEventListener("DOMContentLoaded", function() {
             scale: 0.8,
             stagger: 0.08,
             duration: 1.2,
-            ease: "expo.out",
-            delay: 0.2
-        });
+            ease: "expo.out"
+        }, "-=0.3"); // Overlap slightly with the brackets dropping
 
-        // 3. Subtext slide up smoothly later
-        gsap.from(".mv-sub", {
+        // 4. Subtext slide up smoothly later
+        tl.from(".mv-sub", {
             y: 40,
             opacity: 0,
             duration: 1.5,
-            ease: "power4.out",
-            delay: 1.2
-        });
+            ease: "power4.out"
+        }, "-=0.8");
     }
 
     // Fade out and scale down MV completely smoothly on scroll
