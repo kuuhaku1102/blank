@@ -15,7 +15,7 @@ Text Domain: blank
 :root {
     --primary-color: rgb(145, 166, 180);
     --secondary-color: #1c2541;
-    --accent-color: #5a67d8;
+    --accent-color: #333333;
     --highlight-color: #e53935;
     --bg-color: #f8f9fa;
     --text-color: rgb(145, 166, 180);
