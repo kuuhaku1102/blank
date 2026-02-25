@@ -165,22 +165,26 @@
 </section>
 
 <!-- 5. Case Studies -->
-<section class="top-works section-padding" style="background: var(--secondary-color); padding: 120px 0; position:relative; overflow:hidden;">
-    <!-- Geometric abstract data lines for tech feel -->
-    <svg style="position:absolute; top:10%; right:-5%; width:40%; opacity:0.03; pointer-events:none; animation: fluidMorph2 20s infinite alternate;" viewBox="0 0 100 100">
-        <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" fill="none" stroke="#fff" stroke-width="0.5"/>
-        <line x1="50" y1="0" x2="50" y2="100" stroke="#fff" stroke-width="0.2"/>
-        <line x1="0" y1="25" x2="100" y2="75" stroke="#fff" stroke-width="0.2"/>
-        <line x1="0" y1="75" x2="100" y2="25" stroke="#fff" stroke-width="0.2"/>
+<section class="top-works section-padding" style="background: #f8f9fa; padding: 120px 0; position:relative; overflow:hidden;">
+    <!-- Elegant geometric abstract data network for professional tech feel -->
+    <svg style="position:absolute; top:-20%; right:-10%; width:60%; opacity:0.04; pointer-events:none; animation: fluidMorph2 25s infinite alternate ease-in-out;" viewBox="0 0 100 100">
+        <circle cx="20" cy="50" r="3" fill="var(--primary-color)" />
+        <circle cx="80" cy="20" r="4" fill="var(--highlight-color)" />
+        <circle cx="50" cy="80" r="5" fill="var(--primary-color)" />
+        <path d="M20,50 L80,20 L50,80 Z" fill="none" stroke="var(--primary-color)" stroke-width="0.3"/>
+        <path d="M0,0 M20,50 Q40,20 80,20 Q60,60 50,80 Q30,60 20,50 Z" fill="none" stroke="var(--primary-color)" stroke-width="0.1" />
+        <line x1="20" y1="50" x2="-20" y2="60" stroke="var(--primary-color)" stroke-width="0.2"/>
+        <line x1="80" y1="20" x2="120" y2="10" stroke="var(--primary-color)" stroke-width="0.2"/>
+        <line x1="50" y1="80" x2="60" y2="120" stroke="var(--primary-color)" stroke-width="0.2"/>
     </svg>
 
     <div class="container" style="position:relative; z-index:1;">
         <div class="section-header fade-up" style="margin-bottom: 60px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;">
             <div>
                 <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">CASE STUDIES</p>
-                <h2 style="font-size: 2.8rem; font-weight: 700; margin:0; color:var(--white);">成功事例（実装インパクト）</h2>
+                <h2 style="font-size: 2.8rem; font-weight: 700; margin:0; color:var(--primary-color);">成功事例（実装インパクト）</h2>
             </div>
-            <a href="<?php echo esc_url(get_post_type_archive_link('case_study')); ?>" class="view-all-link" style="color: var(--white); font-weight:bold; border-bottom: 1px solid var(--white); text-decoration:none; padding-bottom:5px; transition:opacity 0.3s;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'">VIEW ALL 事例一覧 &rarr;</a>
+            <a href="<?php echo esc_url(get_post_type_archive_link('case_study')); ?>" class="view-all-link" style="color: var(--primary-color); font-weight:bold; border-bottom: 2px solid var(--primary-color); text-decoration:none; padding-bottom:5px; transition:all 0.3s;" onmouseover="this.style.color='var(--highlight-color)'; this.style.borderColor='var(--highlight-color)';" onmouseout="this.style.color='var(--primary-color)'; this.style.borderColor='var(--primary-color)';">VIEW ALL 事例一覧 &rarr;</a>
         </div>
 
         <div class="works-grid fade-up delay-1" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
@@ -189,27 +193,30 @@
             if($cs_query->have_posts()): while($cs_query->have_posts()): $cs_query->the_post();
                 $industry = get_post_meta(get_the_ID(), 'cs_industry', true);
             ?>
-            <a href="<?php the_permalink(); ?>" class="work-card-elegant" style="display:block; text-decoration:none; color:inherit;">
-                <div class="img-wrapper" style="border-radius:12px; overflow:hidden; margin-bottom:20px; position:relative; aspect-ratio: 16/10; background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05);">
+            <a href="<?php the_permalink(); ?>" class="work-card-elegant" style="display:block; text-decoration:none; color:inherit; background:#ffffff; border-radius:12px; transition:transform 0.4s ease, box-shadow 0.4s ease; box-shadow:0 5px 20px rgba(0,0,0,0.03); border:1px solid rgba(0,0,0,0.05); padding:20px;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.03)';">
+                <div class="img-wrapper" style="border-radius:8px; overflow:hidden; margin-bottom:20px; position:relative; aspect-ratio: 16/10; background:#f4f7f6;">
                     <?php if(has_post_thumbnail()): ?>
                         <?php the_post_thumbnail('large', ['style' => 'width:100%; height:100%; object-fit:cover; transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);', 'class' => 'work-img']); ?>
                     <?php else: ?>
                         <!-- カスタムプレースホルダー -->
-                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.5); font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(229,57,53,0.2), rgba(11,19,43,0.5)); transition:transform 0.6s ease;" class="work-img">
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(11,19,43,0.05), rgba(11,19,43,0.1)); transition:transform 0.6s ease;" class="work-img">
                             CASE STUDY
                         </div>
                     <?php endif; ?>
-                    <div class="overlay" style="position:absolute; inset:0; background:rgba(11,19,43,0.4); opacity:0; transition:opacity 0.4s ease;"></div>
+                    <div class="overlay" style="position:absolute; inset:0; background:rgba(229,57,53,0.1); opacity:0; transition:opacity 0.4s ease;"></div>
                 </div>
                 <div class="work-meta" style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
                     <?php if($industry): ?>
-                    <span style="font-size:0.75rem; background:var(--highlight-color); padding:5px 12px; border-radius:20px; color:var(--white); font-weight:bold;"><?php echo esc_html($industry); ?></span>
+                    <span style="font-size:0.75rem; background:rgba(11,19,43,0.05); color:var(--primary-color); padding:6px 14px; border-radius:20px; font-weight:bold; border:1px solid rgba(11,19,43,0.1);"><?php echo esc_html($industry); ?></span>
                     <?php endif; ?>
                 </div>
-                <h3 style="font-size:1.3rem; font-weight:bold; color:var(--white); margin:0; line-height:1.5;"><?php the_title(); ?></h3>
+                <h3 style="font-size:1.25rem; font-weight:700; color:var(--primary-color); margin:0 0 10px; line-height:1.5;"><?php the_title(); ?></h3>
+                <div style="font-size:0.9rem; color:var(--highlight-color); font-weight:bold; display:flex; align-items:center; gap:5px; margin-top:20px;">
+                    Read More <span style="font-size:1.2rem;">&rarr;</span>
+                </div>
             </a>
             <?php endwhile; wp_reset_postdata(); else: ?>
-                <p style="color:rgba(255,255,255,0.6);">成功事例は現在準備中です。</p>
+                <p style="color:var(--accent-color);">成功事例は現在準備中です。</p>
             <?php endif; ?>
         </div>
     </div>
