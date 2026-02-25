@@ -91,7 +91,7 @@
         
         <div class="service-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px;">
             <!-- Service 1 -->
-            <a href="<?php echo esc_url(home_url('/service/#marketing')); ?>" class="service-card fade-up delay-1" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
+            <a href="<?php echo esc_url(home_url('/service/#marketing')); ?>" class="service-card" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
                 <div class="icon" style="height:200px; overflow:hidden; position:relative;">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service1.jpg" alt="マーケティングDX" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
                     <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(229, 57, 53, 0.4)); blend-mode:multiply;"></div>
@@ -104,7 +104,7 @@
             </a>
             
             <!-- Service 2 -->
-            <a href="<?php echo esc_url(home_url('/service/#web')); ?>" class="service-card fade-up delay-2" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
+            <a href="<?php echo esc_url(home_url('/service/#web')); ?>" class="service-card" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
                 <div class="icon" style="height:200px; overflow:hidden; position:relative;">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service2.jpg" alt="クリエイティブ・Web制作" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
                     <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(90, 103, 216, 0.4)); blend-mode:multiply;"></div>
@@ -117,7 +117,7 @@
             </a>
 
             <!-- Service 3 -->
-            <a href="<?php echo esc_url(home_url('/service/#system')); ?>" class="service-card fade-up delay-3" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
+            <a href="<?php echo esc_url(home_url('/service/#system')); ?>" class="service-card" style="background:var(--bg-color); border-radius: 12px; transition: all 0.4s ease; text-decoration: none; color: inherit; display:block; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 20px rgba(0,0,0,0); overflow:hidden;">
                 <div class="icon" style="height:200px; overflow:hidden; position:relative;">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/img/service3.jpg" alt="システム・アプリ開発" style="width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease;" class="card-img" />
                     <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(11, 19, 43, 0.4)); blend-mode:multiply;"></div>
