@@ -449,9 +449,36 @@ h6 {
     color: var(--highlight-color);
 }
 
+/* Top Page Specific Classes */
+.news-link:hover {
+    opacity: 0.6 !important;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(11, 19, 43, 0.08) !important;
+}
+
+.service-card .btn-arrow {
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .btn-arrow {
+    transform: translateX(8px);
+}
+
+.work-card-elegant:hover .work-img {
+    transform: scale(1.08) !important;
+}
+
+.work-card-elegant:hover .overlay {
+    opacity: 1 !important;
+}
+
+/* General Layouts */
 .contact-section {
     text-align: center;
-    background: var(--light-gray);
+    background: var(--bg-color);
 }
 
 /* Responsive */
