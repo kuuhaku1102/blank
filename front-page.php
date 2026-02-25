@@ -1,14 +1,15 @@
 <?php get_header(); ?>
 
-<!-- 1. TOP MV -->
-<section class="mv" style="position:relative; overflow:hidden; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); min-height: 100vh; display:flex; align-items:center;">
-    <!-- Three.js Canvas -->
-    <canvas id="three-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;"></canvas>
+<!-- Three.js Background Canvas (Whole Page) -->
+<canvas id="three-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none;"></canvas>
 
+<!-- 1. TOP MV -->
+<section class="mv" style="position:relative; overflow:hidden; min-height: 100vh; display:flex; align-items:center; background: transparent;">
+    
     <div class="mv-content container" style="position:relative; z-index:1; text-align:center;">
-        <p class="mv-kicker" style="color:var(--highlight-color); font-weight:bold; letter-spacing:0.2em; margin-bottom:15px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">CONTROL THE BLANK</p>
-        <h2 class="mv-catch">空白を、支配せよ。</h2>
-        <p class="mv-sub">デザインとデータの究極の融合。<br>私たちは、ビジネスを加速させるデジタル空間の最適解を創り出します。</p>
+        <p class="mv-kicker" style="color:var(--highlight-color); font-weight:bold; letter-spacing:0.2em; margin-bottom:15px;">CONTROL THE BLANK</p>
+        <h2 class="mv-catch" style="color:var(--primary-color);">空白を、支配せよ。</h2>
+        <p class="mv-sub" style="color:var(--primary-color); font-weight:bold;">デザインとデータの究極の融合。<br>私たちは、ビジネスを加速させるデジタル空間の最適解を創り出します。</p>
         <div class="mv-btns">
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn">無料相談はこちら</a>
             <a href="<?php echo esc_url( get_post_type_archive_link( 'works' ) ); ?>" class="cta-btn-outline">実績を見る</a>
@@ -32,7 +33,7 @@
 </section>
 
 <!-- 2. News Ticker -->
-<section class="top-news section-padding" style="background: var(--white); padding: 40px 0;">
+<section class="top-news section-padding" style="background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); padding: 40px 0;">
     <div class="container flex-row fade-up" style="display:flex; flex-wrap: wrap; align-items:flex-start; border-top: 1px solid var(--light-gray); padding-top: 40px;">
         <h2 class="news-heading" style="flex:0 0 150px; font-size: 1.2rem; letter-spacing: 0.1em; font-weight:700; color:var(--primary-color); margin-top:0;">NEWS</h2>
         <div class="news-list" style="flex: 1; min-width:300px;">
@@ -59,7 +60,7 @@
 </section>
 
 <!-- 3. Vision / Concept -->
-<section class="top-vision section-padding" style="position:relative; overflow:hidden; background: var(--bg-color); padding: 140px 0;">
+<section class="top-vision section-padding" style="position:relative; overflow:hidden; background: rgba(248, 249, 250, 0.85); backdrop-filter: blur(10px); padding: 140px 0;">
     <div class="bg-text fade-in" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size: 16vw; color: rgba(11, 19, 43, 0.03); font-weight:900; white-space:nowrap; pointer-events:none; z-index:0;">PHILOSOPHY</div>
     <div class="container fade-up" style="position:relative; z-index:1; text-align:center;">
         <h2 style="font-size: 3rem; color: var(--primary-color); margin-bottom: 40px; font-weight:700; line-height:1.4;">デジタルとクリエイティブで、<br>次の「当たり前」を創る。</h2>
@@ -74,7 +75,7 @@
 </section>
 
 <!-- 4. Services / Business Domain -->
-<section class="top-services section-padding" style="background: var(--white); padding: 120px 0; position:relative; overflow:hidden;">
+<section class="top-services section-padding" style="background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); padding: 120px 0; position:relative; overflow:hidden;">
     <!-- Abstract SVG Background for Services -->
     <svg style="position:absolute; top: -10%; left: -5%; width: 50%; height: 120%; opacity: 0.03; pointer-events: none; animation: floatOrb 25s infinite alternate-reverse;" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="40" fill="none" stroke="var(--primary-color)" stroke-width="0.5" stroke-dasharray="2 4" />
@@ -132,7 +133,7 @@
 </section>
 
 <!-- 5. Case Studies -->
-<section class="top-works section-padding" style="background: #f8f9fa; padding: 120px 0; position:relative; overflow:hidden;">
+<section class="top-works section-padding" style="background: rgba(248, 249, 250, 0.85); backdrop-filter: blur(10px); padding: 120px 0; position:relative; overflow:hidden;">
     <!-- Elegant geometric abstract data network for professional tech feel -->
     <svg style="position:absolute; top:-20%; right:-10%; width:60%; opacity:0.04; pointer-events:none; animation: fluidMorph2 25s infinite alternate ease-in-out;" viewBox="0 0 100 100">
         <circle cx="20" cy="50" r="3" fill="var(--primary-color)" />
@@ -275,7 +276,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const posArray = new Float32Array(particlesCount * 3);
     const colorsArray = new Float32Array(particlesCount * 3);
 
-    const color1 = new THREE.Color('#ffffff'); // White
+    const color1 = new THREE.Color('#0b132b'); // Primary Navy
     const color2 = new THREE.Color('#e53935'); // Highlight Red
 
     for(let i = 0; i < particlesCount * 3; i+=3) {
@@ -285,7 +286,7 @@ document.addEventListener("DOMContentLoaded", function() {
         posArray[i+2] = (Math.random() - 0.5) * 40;   // z
 
         // Mix colors
-        const mixedColor = color1.clone().lerp(color2, Math.random() * 0.3); // Mostly white, some red hint
+        const mixedColor = color1.clone().lerp(color2, Math.random() * 0.3); // Mostly navy, some red hint
         colorsArray[i] = mixedColor.r;
         colorsArray[i+1] = mixedColor.g;
         colorsArray[i+2] = mixedColor.b;
@@ -298,8 +299,8 @@ document.addEventListener("DOMContentLoaded", function() {
         size: 0.15,
         vertexColors: true,
         transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
+        opacity: 0.7,
+        blending: THREE.NormalBlending
     });
 
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -307,9 +308,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Connecting Lines (Network effect)
     const lineMaterial = new THREE.LineBasicMaterial({
-        color: 0xffffff,
+        color: 0x0b132b,
         transparent: true,
-        opacity: 0.05
+        opacity: 0.12
     });
 
     // We only connect a few to keep performance high
