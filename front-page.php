@@ -138,7 +138,116 @@
     </div>
 </section>
 
-<!-- 5. Case Studies -->
+<!-- 5. Work (制作実績) -->
+<section class="top-portfolio section-padding" style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 100px 0; position:relative; overflow:hidden;">
+    <div class="container" style="position:relative; z-index:1;">
+        <div class="section-header" style="text-align:center; margin-bottom: 60px;">
+            <p class="gsap-subtitle" style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">PORTFOLIO</p>
+            <div style="overflow:hidden; padding-bottom:10px; perspective: 400px;"><h2 class="gsap-title" style="font-size: 3.5rem; font-weight: 800; margin:0; color:var(--primary-color);">Work</h2></div>
+        </div>
+    </div>
+
+    <!-- Infinite Scroll Marquee -->
+    <div class="marquee-wrapper gsap-marquee-anim" style="width: 100vw; overflow:hidden; margin-left: calc(50% - 50vw); position:relative; z-index:1; padding: 20px 0;">
+        <style>
+            .marquee-track {
+                display: flex;
+                gap: 30px;
+                width: max-content;
+                animation: marquee-scroll 50s linear infinite;
+            }
+            .marquee-track:hover {
+                animation-play-state: paused;
+            }
+            .marquee-item {
+                flex: 0 0 400px;
+                border-radius: 12px;
+                overflow: hidden;
+                position: relative;
+                aspect-ratio: 16/10;
+                box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                background: #f4f7f6;
+                display: block;
+            }
+            .marquee-item:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            }
+            .marquee-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .marquee-item:hover .marquee-img {
+                transform: scale(1.08);
+            }
+            .marquee-overlay {
+                position:absolute; inset:0; 
+                background:linear-gradient(to top, rgba(11,19,43,0.8), rgba(0,0,0,0) 60%); 
+                opacity:0; transition:opacity 0.4s ease;
+            }
+            .marquee-text {
+                position:absolute; bottom:20px; left:20px; right:20px; 
+                color:#fff; transform:translateY(20px); opacity:0; transition:all 0.4s ease;
+            }
+            .marquee-item:hover .marquee-overlay { opacity: 1; }
+            .marquee-item:hover .marquee-text { transform: translateY(0); opacity: 1; }
+            
+            @keyframes marquee-scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(calc(-50% - 15px)); } /* 15px is half of 30px gap */
+            }
+            @media (max-width: 768px) {
+                .marquee-item { flex: 0 0 280px; }
+            }
+        </style>
+        
+        <div class="marquee-track">
+            <?php
+            // Custom Post Type "work" query
+            $work_query = new WP_Query( array('post_type' => 'work', 'posts_per_page' => 6) );
+            $works_html = '';
+            
+            if($work_query->have_posts()):
+                ob_start();
+                while($work_query->have_posts()): $work_query->the_post();
+            ?>
+            <a href="<?php the_permalink(); ?>" class="marquee-item">
+                <?php if(has_post_thumbnail()): ?>
+                    <?php the_post_thumbnail('large', ['class' => 'marquee-img']); ?>
+                <?php else: ?>
+                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(11,19,43,0.05), rgba(11,19,43,0.1));" class="marquee-img">WORK IMAGE</div>
+                <?php endif; ?>
+                <div class="marquee-overlay"></div>
+                <div class="marquee-text">
+                    <h3 style="margin:0; font-size:1.1rem; line-height:1.4; text-shadow:0 2px 5px rgba(0,0,0,0.5);"><?php the_title(); ?></h3>
+                </div>
+            </a>
+            <?php 
+                endwhile; 
+                $works_html = ob_get_clean();
+                // Output twice for seamless infinite scroll
+                echo $works_html . $works_html;
+            else: 
+            ?>
+                <!-- Placeholder for visual preview when no posts exist -->
+                <?php ob_start(); for($i=1; $i<=5; $i++): ?>
+                <span class="marquee-item">
+                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(11,19,43,0.05), rgba(11,19,43,0.1));">WORK SAMPLE <?php echo $i; ?></div>
+                </span>
+                <?php endfor; $works_html = ob_get_clean(); echo $works_html . $works_html; ?>
+            <?php endif; wp_reset_postdata(); ?>
+        </div>
+    </div>
+    
+    <div class="fade-up" style="text-align:center; margin-top: 60px; position:relative; z-index:1;">
+        <a href="<?php echo esc_url(get_post_type_archive_link('work')); ?>" class="cta-btn-outline" style="color:var(--primary-color); border-color:var(--primary-color); padding: 14px 40px; border-radius:30px; border-width:2px;">VIEW ALL WORKS &rarr;</a>
+    </div>
+</section>
+
+<!-- 6. Case Studies -->
 <section class="top-works section-padding" style="background: rgba(248, 249, 250, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 120px 0; position:relative; overflow:hidden;">
     <!-- Elegant geometric abstract data network for professional tech feel -->
     <svg style="position:absolute; top:-20%; right:-10%; width:60%; opacity:0.04; pointer-events:none; animation: fluidMorph2 25s infinite alternate ease-in-out;" viewBox="0 0 100 100">
@@ -363,6 +472,18 @@ document.addEventListener("DOMContentLoaded", function() {
         scrollTrigger: {
             trigger: ".works-horizontal-wrapper",
             start: "top 80%"
+        }
+    });
+
+    // Work Marquee Fade In
+    gsap.from(".gsap-marquee-anim", {
+        opacity: 0,
+        y: 60,
+        duration: 2.0,
+        ease: "expo.out",
+        scrollTrigger: {
+            trigger: ".top-portfolio",
+            start: "top 75%"
         }
     });
 
