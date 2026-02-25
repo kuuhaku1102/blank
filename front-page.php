@@ -194,51 +194,51 @@
                 $result = get_post_meta(get_the_ID(), 'cs_result', true);
                 $val = get_post_meta(get_the_ID(), 'cs_value', true);
             ?>
-            <div class="cs-card fade-up delay-<?php echo $delay; ?>" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:40px; position:relative; overflow:hidden; transition:transform 0.4s ease, border-color 0.4s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(229, 57, 53, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.08)';">
+            <div class="cs-card fade-up delay-<?php echo $delay; ?>" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding: 60px 50px; position:relative; overflow:hidden; transition:transform 0.4s ease, border-color 0.4s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(229, 57, 53, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.08)';">
                 
                 <!-- Background decorative accent -->
-                <div style="position:absolute; top:0; right:0; width:100px; height:100px; background:radial-gradient(circle at top right, rgba(229,57,53,0.15), transparent 70%); border-radius:0 12px 0 0;"></div>
+                <div style="position:absolute; top:0; right:0; width:150px; height:150px; background:radial-gradient(circle at top right, rgba(229,57,53,0.15), transparent 70%); border-radius:0 12px 0 0;"></div>
 
-                <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
-                    <span style="background:var(--highlight-color); color:var(--white); font-size:0.8rem; font-weight:bold; padding:5px 12px; border-radius:20px;">
+                <div style="display:flex; align-items:center; gap:15px; margin-bottom:25px;">
+                    <span style="background:var(--highlight-color); color:var(--white); font-size:0.85rem; font-weight:bold; padding:6px 16px; border-radius:20px;">
                         <?php echo esc_html( $industry ? $industry : '未設定' ); ?>
                     </span>
                 </div>
 
-                <h3 style="font-size:1.4rem; font-weight:bold; color:var(--white); margin-top:0; margin-bottom:30px; line-height:1.5; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:20px;">
+                <h3 style="font-size:1.6rem; font-weight:bold; color:var(--white); margin-top:0; margin-bottom:40px; line-height:1.6; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:30px;">
                     <?php the_title(); ?>
                 </h3>
 
-                <div style="display:flex; flex-direction:column; gap:25px;">
+                <div style="display:flex; flex-direction:column; gap:35px;">
                     <!-- 課題 -->
                     <?php if($issue): ?>
-                    <div style="background:rgba(0,0,0,0.2); padding:20px; border-radius:8px; border-left:3px solid #6c757d;">
-                        <h4 style="color:#a1a1aa; font-size:0.9rem; margin-top:0; margin-bottom:10px; font-weight:bold;">▼ 課題</h4>
-                        <p style="color:var(--white); margin:0; font-size:0.95rem; line-height:1.8; white-space:pre-wrap;"><?php echo esc_html($issue); ?></p>
+                    <div style="background:rgba(0,0,0,0.2); padding:30px; border-radius:8px; border-left:4px solid #6c757d;">
+                        <h4 style="color:#a1a1aa; font-size:1rem; margin-top:0; margin-bottom:15px; font-weight:bold; letter-spacing:0.05em;">▼ 課題</h4>
+                        <p style="color:var(--white); margin:0; font-size:1.05rem; line-height:2; white-space:pre-wrap;"><?php echo esc_html($issue); ?></p>
                     </div>
                     <?php endif; ?>
 
                     <!-- 実装ブロック -->
                     <?php if($impl): ?>
-                    <div style="background:rgba(229,57,53,0.05); padding:20px; border-radius:8px; border-left:3px solid var(--highlight-color);">
-                        <h4 style="color:var(--highlight-color); font-size:0.9rem; margin-top:0; margin-bottom:10px; font-weight:bold;">▼ 実装ブロック</h4>
-                        <p style="color:var(--white); font-weight:bold; margin:0; font-size:0.95rem; line-height:1.8; white-space:pre-wrap;"><?php echo esc_html($impl); ?></p>
+                    <div style="background:rgba(229,57,53,0.05); padding:30px; border-radius:8px; border-left:4px solid var(--highlight-color);">
+                        <h4 style="color:var(--highlight-color); font-size:1rem; margin-top:0; margin-bottom:15px; font-weight:bold; letter-spacing:0.05em;">▼ 実装ブロック</h4>
+                        <p style="color:var(--white); font-weight:bold; margin:0; font-size:1.05rem; line-height:2; white-space:pre-wrap;"><?php echo esc_html($impl); ?></p>
                     </div>
                     <?php endif; ?>
 
                     <!-- 成果 -->
                     <?php if($result): ?>
-                    <div style="background:rgba(90,103,216,0.1); padding:20px; border-radius:8px; border-left:3px solid #5a67d8;">
-                        <h4 style="color:#818cf8; font-size:0.9rem; margin-top:0; margin-bottom:10px; font-weight:bold;">▼ 成果</h4>
-                        <p style="color:var(--white); margin:0; font-size:1.05rem; font-weight:bold; line-height:1.8; white-space:pre-wrap;"><?php echo esc_html($result); ?></p>
+                    <div style="background:rgba(90,103,216,0.1); padding:30px; border-radius:8px; border-left:4px solid #5a67d8;">
+                        <h4 style="color:#818cf8; font-size:1rem; margin-top:0; margin-bottom:15px; font-weight:bold; letter-spacing:0.05em;">▼ 成果</h4>
+                        <p style="color:var(--white); margin:0; font-size:1.15rem; font-weight:bold; line-height:2; white-space:pre-wrap;"><?php echo esc_html($result); ?></p>
                     </div>
                     <?php endif; ?>
                 </div>
 
                 <!-- 価値 -->
                 <?php if($val): ?>
-                <div style="margin-top:30px; text-align:right;">
-                    <p style="color:var(--white); font-size:0.85rem; opacity:0.6; margin:0;">
+                <div style="margin-top:40px; text-align:right;">
+                    <p style="color:var(--white); font-size:0.9rem; opacity:0.6; margin:0; font-weight:bold; letter-spacing:0.05em;">
                         ✓ <?php echo esc_html($val); ?>
                     </p>
                 </div>
