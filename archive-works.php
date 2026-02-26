@@ -63,11 +63,9 @@
         <div class="works-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; margin-top:50px;">
             <?php 
             global $wp_query;
-            $paged = (get_query_var('paged')) ? get_query_var('paged') : ((get_query_var('page')) ? get_query_var('page') : 1);
             $query_args = array(
                 'post_type' => 'works',
-                'paged' => $paged,
-                'posts_per_page' => 12
+                'posts_per_page' => -1
             );
 
             if(!empty($current_cat)) {
@@ -92,9 +90,12 @@
 
             $wp_query = new WP_Query($query_args);
 
+            $card_index = 0;
             if ( $wp_query->have_posts() ) : while ( $wp_query->have_posts() ) : $wp_query->the_post(); 
+                $card_index++;
+                $is_hidden = $card_index > 9;
             ?>
-            <a href="<?php the_permalink(); ?>" class="gsap-works-card" style="display:block; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+            <a href="<?php the_permalink(); ?>" class="gsap-works-card <?php echo $is_hidden ? 'hidden-card' : 'initial-load'; ?>" style="display:<?php echo $is_hidden ? 'none' : 'block'; ?>; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                 
                 <!-- Upper Flex Area: Image on Left, Details on Right -->
                 <div style="display:flex; gap:25px; margin-bottom:25px; align-items:flex-start;">
@@ -182,12 +183,12 @@
             <?php endif; ?>
         </div>
         
-        <div class="pagination gsap-fade-up" style="margin-top: 80px; text-align:center;">
-            <?php the_posts_pagination(array(
-                'mid_size' => 2,
-                'prev_text' => '&laquo; 前へ',
-                'next_text' => '次へ &raquo;'
-            )); ?>
+        <div class="load-more-container gsap-fade-up" style="margin-top: 80px; text-align:center;">
+            <?php if ($wp_query->post_count > 9): ?>
+            <button id="load-more-btn" style="background:#ffffff; color:var(--primary-color); border:2px solid var(--primary-color); padding:15px 50px; border-radius:30px; font-weight:bold; font-size:1.1rem; letter-spacing:0.1em; cursor:pointer; transition:all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='#ffffff';" onmouseout="this.style.background='#ffffff'; this.style.color='var(--primary-color)';">
+                もっと見る &darr;
+            </button>
+            <?php endif; ?>
         </div>
     </div>
 </main>
@@ -232,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Works Cards Dynamic Staggering Matrix Layout
     // Instead of simple upward stagger, we make them scale and slide into position
-    gsap.from(".gsap-works-card", {
+    gsap.from(".gsap-works-card.initial-load", {
         scrollTrigger: {
             trigger: ".works-grid",
             start: "top 85%"
@@ -249,6 +250,40 @@ document.addEventListener("DOMContentLoaded", function() {
         duration: 1.2,
         ease: "power4.out"
     });
+
+    // Load More Logic
+    const loadMoreBtn = document.getElementById("load-more-btn");
+    if(loadMoreBtn) {
+        const hiddenCards = Array.from(document.querySelectorAll(".gsap-works-card.hidden-card"));
+        
+        loadMoreBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            const cardsToShow = hiddenCards.splice(0, 9); // Take next 9
+            
+            if(cardsToShow.length > 0) {
+                let loadTl = gsap.timeline();
+                cardsToShow.forEach((card, index) => {
+                    card.style.display = "block";
+                    card.classList.remove("hidden-card");
+                    
+                    loadTl.fromTo(card, 
+                        {opacity: 0, y: 50, rotationX: 10, scale: 0.95}, 
+                        {opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 0.8, ease: "power3.out"},
+                        index * 0.1
+                    );
+                });
+                
+                setTimeout(() => ScrollTrigger.refresh(), 500);
+            }
+            
+            if(hiddenCards.length === 0) {
+                // Fade out button
+                gsap.to(loadMoreBtn, {opacity: 0, duration: 0.5, onComplete: () => {
+                    loadMoreBtn.style.display = "none";
+                }});
+            }
+        });
+    }
 
     // Three.js Interactive Floating Layers / Tech Blueprint Background
     const canvas = document.getElementById('three-canvas-works');
