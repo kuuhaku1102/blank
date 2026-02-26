@@ -213,13 +213,47 @@
                         <!-- 業種 & 制作範囲 タグ -->
                         <div style="display:flex; flex-wrap:wrap; gap:6px;">
                             <?php 
-                            // 業種 (Category)
+                            // 業種 (Category / Industry from Taxonomy & JSON)
+                            $industry_tags = [];
+                            
+                            // 1. Taxonomy
                             $terms = get_the_terms($post->ID, 'work_cat'); 
-                            if($terms): foreach($terms as $term): ?>
+                            if($terms) {
+                                foreach($terms as $t) {
+                                    $industry_tags[] = $t->name;
+                                }
+                            }
+                            
+                            // 2. JSON Schema (works_features) - 業界
+                            $selected_features = get_post_meta( $post->ID, 'works_features', true ) ?: [];
+                            if(!empty($selected_features) && function_exists('blank_works_get_default_schema')) {
+                                $schema_json = get_option('blank_works_schema') ?: blank_works_get_default_schema();
+                                $schema = json_decode($schema_json, true);
+                                if(isset($schema['tabs']['industry']['groups'])) {
+                                    foreach($schema['tabs']['industry']['groups'] as $group) {
+                                        if(isset($group['label']) && $group['label'] === '業界' && isset($group['fields'])) {
+                                            foreach($group['fields'] as $field) {
+                                                if(in_array($field['id'], $selected_features)) {
+                                                    $industry_tags[] = $field['label'];
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Fallback
+                            if(empty($industry_tags)) {
+                                $industry_tags[] = '実績';
+                            }
+                            
+                            // Output
+                            $industry_tags = array_unique($industry_tags);
+                            foreach($industry_tags as $tag_name): ?>
                                 <span style="font-size:0.7rem; background:#ffebee; color:#c62828; border:1px solid #ffcdd2; padding:3px 8px; border-radius:4px; font-weight:bold; white-space:nowrap;">
-                                    <?php echo esc_html($term->name); ?>
+                                    <?php echo esc_html($tag_name); ?>
                                 </span>
-                            <?php endforeach; endif; ?>
+                            <?php endforeach; ?>
                             
                             <?php 
                             // 制作範囲 (Scope)
