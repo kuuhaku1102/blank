@@ -163,10 +163,52 @@
                     .work-single-article .contentArea a { color: var(--highlight-color); text-decoration: none; border-bottom:1px dashed var(--highlight-color); font-weight: bold; }
                 </style>
             </div>
+            <?php endif; ?>
+            
+            <!-- Related Works Area (Added per Mockup) -->
+            <?php
+            $related_args = array(
+                'post_type' => 'works',
+                'posts_per_page' => 5, // Match mockup exactly showing 5
+                'post__not_in' => array($post->ID),
+                'orderby' => 'rand'
+            );
+            // Optionally filter by same term if desired
+            $related_terms = get_the_terms($post->ID, 'work_cat');
+            if($related_terms) {
+                $related_args['tax_query'] = array(
+                    array(
+                        'taxonomy' => 'work_cat',
+                        'field' => 'term_id',
+                        'terms' => $related_terms[0]->term_id
+                    )
+                );
+            }
+            $related_query = new WP_Query($related_args);
+            if($related_query->have_posts()):
+            ?>
+            <div class="gsap-work-section" style="margin-top:100px;">
+                <h2 style="font-size:1.4rem; font-weight:bold; color:var(--primary-color); margin-bottom:30px;">関連する制作実績</h2>
+                <div style="display:flex; gap:20px; overflow-x:auto; padding-bottom:20px; flex-wrap:nowrap;">
+                    <?php while($related_query->have_posts()): $related_query->the_post(); ?>
+                        <a href="<?php the_permalink(); ?>" style="flex: 0 0 200px; display:block; text-decoration:none; color:inherit; border:1px solid #e1e8f0; border-radius:12px; background:#fff; padding:15px; transition:box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 10px 20px rgba(0,0,0,0.05)';" onmouseout="this.style.boxShadow='none';">
+                            <div style="aspect-ratio:5/6; background:#edf2f6; border-radius:8px; margin-bottom:15px; overflow:hidden; display:flex; align-items:center; justify-content:center; padding:15px;">
+                                <?php if(has_post_thumbnail()): ?>
+                                    <?php the_post_thumbnail('medium', ['style'=>'width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 5px 10px rgba(0,0,0,0.1));']); ?>
+                                <?php else: ?>
+                                    <span style="opacity:0.3; font-weight:bold;">WORKS</span>
+                                <?php endif; ?>
+                            </div>
+                            <h4 style="font-size:0.95rem; margin:0; text-align:center; font-weight:bold; color:var(--primary-color);"><?php the_title(); ?></h4>
+                        </a>
+                    <?php endwhile; wp_reset_postdata(); ?>
+                </div>
+            </div>
+            <?php endif; ?>
             
             <div class="back-link gsap-work-section" style="margin-top: 80px; text-align:center;">
-                <a href="<?php echo esc_url(get_post_type_archive_link('works')); ?>" style="display:inline-flex; align-items:center; gap:8px; font-weight:bold; color:var(--primary-color); border:2px solid var(--primary-color); padding:15px 50px; border-radius:30px; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow:0 5px 15px rgba(0,0,0,0.05); font-size:1.1rem;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--white)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.background='transparent'; this.style.color='var(--primary-color)'; this.style.transform='translateY(0)';">
-                    &larr; BACK TO WORKS
+                <a href="<?php echo esc_url(get_post_type_archive_link('works')); ?>" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:bold; color:var(--primary-color); border:1px solid #d1d9e0; background:#fff; padding:15px 50px; border-radius:30px; transition:all 0.3s ease; font-size:1.05rem;" onmouseover="this.style.background='#f0f4f8';" onmouseout="this.style.background='#fff';">
+                    一覧へ戻る
                 </a>
             </div>
 
