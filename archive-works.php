@@ -35,42 +35,38 @@
                 $cat_name = $terms ? esc_html($terms[0]->name) : '実績';
             ?>
             <a href="<?php the_permalink(); ?>" class="gsap-works-card" style="display:block; text-decoration:none; color:inherit; background:rgba(255,255,255,0.85); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border-radius:16px; transition:transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease; box-shadow:0 15px 40px rgba(0,0,0,0.04); border-top: 4px solid var(--accent-color); border-bottom: 1px solid rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-right: 1px solid rgba(0,0,0,0.05); padding:20px; position:relative; overflow:hidden;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 25px 60px rgba(0,0,0,0.08)'; this.style.borderColor='var(--highlight-color)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.04)'; this.style.borderColor='var(--accent-color)';">
-                
-                <div class="img-wrapper" style="border-radius:12px; overflow:hidden; margin-bottom:20px; position:relative; aspect-ratio: 16/10; background:#f4f7f6;">
+                <div class="img-wrapper" style="border-radius:12px; overflow:hidden; margin-bottom:20px; position:relative; aspect-ratio: 4/5; background:linear-gradient(135deg, rgba(240,244,248,1) 0%, rgba(225,232,240,0.5) 100%); display:flex; align-items:center; justify-content:center; padding:30px;">
                     <?php if(has_post_thumbnail()): ?>
-                        <?php the_post_thumbnail('large', ['style' => 'width:100%; height:100%; object-fit:cover; transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);', 'class' => 'works-img']); ?>
+                        <?php the_post_thumbnail('large', ['style' => 'width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 20px 30px rgba(0,0,0,0.15)); transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);', 'class' => 'works-img']); ?>
                     <?php else: ?>
                         <!-- カスタムプレースホルダー -->
                         <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(145,166,180,0.1), rgba(145,166,180,0.2));" class="works-img">
                             WORKS
                         </div>
                     <?php endif; ?>
-                    <div class="overlay" style="position:absolute; inset:0; background:linear-gradient(to top, rgba(28,37,65,0.6), rgba(28,37,65,0)); opacity:0; transition:opacity 0.4s ease;"></div>
+                    <!-- Glass tech overlay effect subtly shifting -->
+                    <div class="overlay" style="position:absolute; inset:0; background:linear-gradient(to top, rgba(28,37,65,0.05), rgba(28,37,65,0)); pointer-events:none;"></div>
                     <style>
-                        .gsap-works-card:hover .works-img { transform: scale(1.08); }
-                        .gsap-works-card:hover .overlay { opacity: 1; }
+                        .gsap-works-card:hover .works-img { transform: translateY(-10px) scale(1.05); }
                     </style>
                 </div>
 
-                <div class="work-meta" style="margin-bottom:15px;">
-                    <span style="font-size:0.8rem; background:var(--primary-color); color:var(--white); padding:5px 15px; border-radius:30px; font-weight:bold; letter-spacing:0.05em;">
+                <div class="work-meta" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <span style="font-size:0.85rem; background:var(--highlight-color); color:var(--white); padding:6px 18px; border-radius:30px; font-weight:bold; letter-spacing:0.05em; display:inline-block;">
                         <?php echo $cat_name; ?>
+                    </span>
+                    <span style="font-size:0.85rem; color:var(--accent-color); font-weight:bold; font-family:'Courier New', monospace;">
+                        <?php echo get_the_date('Y.m.d'); ?>
                     </span>
                 </div>
 
-                <h3 style="font-size:1.35rem; font-weight:800; color:var(--primary-color); margin:0 0 20px; line-height:1.5;"><?php the_title(); ?></h3>
+                <h3 style="font-size:1.35rem; font-weight:800; color:var(--primary-color); margin:0 0 20px; line-height:1.5; text-align:left;"><?php the_title(); ?></h3>
                 
-                <!-- Extract Meta -->
-                <div style="font-size:0.9rem; color:var(--text-color); line-height:1.8; margin-bottom:15px; background:rgba(145,166,180,0.05); padding:15px; border-radius:8px;">
-                    <p style="margin:0 0 5px;"><strong>課題:</strong> <span style="color:var(--primary-color);"><?php echo mb_strimwidth(esc_html(get_post_meta($post->ID, 'issue', true) ?: 'UX改善・リブランディング'), 0, 40, '...'); ?></span></p>
-                    <p style="margin:0;"><strong>成果:</strong> <span style="color:var(--highlight-color); font-weight:bold;"><?php echo mb_strimwidth(esc_html(get_post_meta($post->ID, 'result', true) ?: 'CVR150%向上'), 0, 40, '...'); ?></span></p>
-                </div>
-
-                <div style="font-size:1rem; color:var(--primary-color); font-weight:bold; display:flex; align-items:center; gap:8px; margin-top:10px; transition:color 0.3s;" class="read-more-link">
-                    View Project <span style="font-size:1.4rem; transition:transform 0.3s; display:inline-block;" class="arrow">&rarr;</span>
+                <div style="display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:0.95rem; font-weight:bold; color:var(--white); background:var(--highlight-color); border-radius:8px; padding:12px 25px; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);" class="read-more-btn">
+                    詳しく見る <span style="font-size:1.2rem; transition:transform 0.3s;" class="arrow">&rarr;</span>
                 </div>
                 <style>
-                    .gsap-works-card:hover .read-more-link { color: var(--highlight-color); }
+                    .gsap-works-card:hover .read-more-btn { background: var(--primary-color); transform: translateY(-2px); box-shadow:0 8px 15px rgba(0,0,0,0.1); }
                     .gsap-works-card:hover .arrow { transform: translateX(5px); }
                 </style>
             </a>
