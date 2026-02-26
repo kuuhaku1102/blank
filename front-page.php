@@ -317,6 +317,9 @@
 
 <!-- 5.5. Digital Marketing -->
 <section class="top-marketing section-padding" style="background:#f4f7f9; padding: 120px 0; position:relative; overflow:hidden;">
+    <!-- Three.js Canvas for Marketing Section -->
+    <canvas id="three-canvas-marketing" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;"></canvas>
+    
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <div class="container" style="display:flex; flex-wrap:wrap; align-items:center; gap:60px; position:relative; z-index:2;">
         
@@ -889,6 +892,85 @@ document.addEventListener("DOMContentLoaded", function() {
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
+
+    // --------------------------------------------------------
+    // Marketing Section Three.js Background
+    // --------------------------------------------------------
+    const canvasMarketing = document.getElementById('three-canvas-marketing');
+    if (canvasMarketing) {
+        const sceneM = new THREE.Scene();
+        const cameraM = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraM.position.z = 40;
+        
+        const rendererM = new THREE.WebGLRenderer({ canvas: canvasMarketing, alpha: true, antialias: true });
+        // Initially wait for section layout to finish, or just set to window inner width and handle via CSS clipping
+        const sectionM = canvasMarketing.parentElement;
+        rendererM.setSize(sectionM.clientWidth, sectionM.clientHeight);
+        rendererM.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const mGroup = new THREE.Group();
+        sceneM.add(mGroup);
+        
+        // Horizontal and vertical flowing grid lines to represent "marketing funnels/nodes"
+        for(let lay=0; lay<2; lay++) {
+            const gridHelper = new THREE.GridHelper(120, 15, '#1a56db', '#1a56db');
+            gridHelper.position.y = (lay - 0.5) * 40;
+            gridHelper.rotation.x = Math.PI / 6;
+            gridHelper.material.transparent = true;
+            gridHelper.material.opacity = 0.03;
+            mGroup.add(gridHelper);
+        }
+
+        // Floating geometric nodes
+        const nodeGeo = new THREE.OctahedronGeometry(1.5, 0);
+        const nodeMat = new THREE.MeshBasicMaterial({ 
+            color: '#e53935', 
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.15 
+        });
+        
+        const nodes = [];
+        for(let i=0; i<25; i++) {
+            const mesh = new THREE.Mesh(nodeGeo, nodeMat);
+            mesh.position.set(
+                (Math.random() - 0.5) * 140,
+                (Math.random() - 0.5) * 80,
+                (Math.random() - 0.5) * 40
+            );
+            nodes.push({
+                mesh: mesh,
+                speedY: Math.random() * 0.04 + 0.01,
+                rotY: Math.random() * 0.02
+            });
+            mGroup.add(mesh);
+        }
+
+        const animateMarketing = function() {
+            requestAnimationFrame(animateMarketing);
+            mGroup.rotation.y += 0.001;
+            
+            nodes.forEach(node => {
+                node.mesh.position.y += node.speedY;
+                node.mesh.rotation.x += node.rotY;
+                node.mesh.rotation.y += node.rotY;
+                
+                if(node.mesh.position.y > 50) {
+                    node.mesh.position.y = -50;
+                }
+            });
+            rendererM.render(sceneM, cameraM);
+        };
+        animateMarketing();
+
+        window.addEventListener('resize', () => {
+            if(sectionM.clientWidth && sectionM.clientHeight) {
+                cameraM.aspect = sectionM.clientWidth / sectionM.clientHeight;
+                cameraM.updateProjectionMatrix();
+                rendererM.setSize(sectionM.clientWidth, sectionM.clientHeight);
+            }
+        });
+    }
 });
 </script>
 
