@@ -244,3 +244,6 @@ function blank_seed_case_studies() {
     update_option( 'blank_case_studies_seeded_v3', true );
 }
 add_action( 'init', 'blank_seed_case_studies' );
+
+// カスタム制作実績 JSONメタ管理の読み込み
+require_once get_template_directory() . '/inc/works-admin.php';

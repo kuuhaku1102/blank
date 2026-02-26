@@ -98,6 +98,60 @@
                 </div>
             </div>
 
+            <?php 
+            $selected_features = get_post_meta( $post->ID, 'works_features', true ) ?: [];
+            $works_url = get_post_meta( $post->ID, 'works_url', true );
+            if(!empty($selected_features) || !empty($works_url)): 
+                $schema_json = get_option('blank_works_schema');
+                if(!$schema_json && function_exists('blank_works_get_default_schema')) {
+                    $schema_json = blank_works_get_default_schema();
+                }
+                $schema = json_decode($schema_json, true) ?: [];
+                
+                // create a map of id -> label from schema
+                $feature_map = [];
+                if(isset($schema['tabs'])) {
+                    foreach($schema['tabs'] as $tab) {
+                        if(isset($tab['groups'])) {
+                            foreach($tab['groups'] as $group) {
+                                if(isset($group['fields'])) {
+                                    foreach($group['fields'] as $field) {
+                                        $feature_map[$field['id']] = $field['label'];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ?>
+            <!-- Tech Specs & Features Matrix -->
+            <div class="gsap-work-section" style="margin-bottom:80px; background:rgba(28, 37, 65, 0.95); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-radius:20px; padding:50px; color:var(--white); box-shadow:0 15px 40px rgba(0,0,0,0.1); border-left:4px solid var(--highlight-color);">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:20px; margin-bottom:30px;">
+                    <h3 style="font-size:1.4rem; color:var(--white); font-weight:800; letter-spacing:0.1em; margin:0; display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        TECH SPECS / FEATURES
+                    </h3>
+                    <?php if($works_url): ?>
+                    <a href="<?php echo esc_url($works_url); ?>" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; font-weight:bold; color:var(--white); background:var(--highlight-color); padding:10px 25px; border-radius:30px; text-decoration:none; font-size:0.95rem; transition:transform 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
+                        Launch Site <span style="font-size:1.2rem;">&nearr;</span>
+                    </a>
+                    <?php endif; ?>
+                </div>
+                
+                <?php if(!empty($selected_features)): ?>
+                <div style="display:flex; flex-wrap:wrap; gap:12px;">
+                    <?php foreach($selected_features as $fid): 
+                        if(isset($feature_map[$fid])):
+                    ?>
+                    <span style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); padding:8px 20px; border-radius:8px; font-size:0.95rem; font-weight:bold; color:var(--white);">
+                        <span style="color:var(--highlight-color); margin-right:5px;">✓</span> <?php echo esc_html($feature_map[$fid]); ?>
+                    </span>
+                    <?php endif; endforeach; ?>
+                </div>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
+
             <!-- Main Content Area -->
             <div class="gsap-work-section contentArea" style="background:rgba(255,255,255,0.95); padding:60px; border-radius:20px; box-shadow:0 15px 40px rgba(0,0,0,0.03); border:1px solid rgba(0,0,0,0.05); line-height: 2.2; font-size:1.15rem; color:var(--primary-color);">
                 <?php the_content(); ?>
