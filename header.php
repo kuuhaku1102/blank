@@ -21,7 +21,7 @@
                 <li><a href="<?php echo esc_url( get_post_type_archive_link( 'case_study' ) ); ?>">CASE STUDY</a></li>
                 <li><a href="<?php echo esc_url( home_url( '/flow/' ) ); ?>">FLOW</a></li>
                 <li><a href="<?php echo esc_url( home_url( '/price/' ) ); ?>">PRICE</a></li>
-                <li><a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">SYLLABUS</a></li>
+                <li><a href="<?php echo esc_url( home_url( '/syllabus/' ) ); ?>">SYLLABUS</a></li>
                 <li><a href="<?php echo esc_url( home_url( '/recruit/' ) ); ?>">RECRUIT</a></li>
                 <li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn">無料相談 / お問い合わせ</a></li>
             </ul>
