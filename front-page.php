@@ -142,46 +142,44 @@
             }
             .marquee-item {
                 flex: 0 0 400px;
-                border-radius: 12px;
-                overflow: hidden;
+                border-radius: 16px;
                 position: relative;
-                aspect-ratio: 16/10;
-                box-shadow: 0 5px 25px rgba(0,0,0,0.05);
-                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-                background: #f4f7f6;
+                box-shadow: 0 5px 25px rgba(0,0,0,0.03);
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                background: #ffffff;
+                border: 1px solid rgba(11,19,43,0.1);
                 display: block;
+                padding: 25px;
+                text-decoration: none;
+                color: inherit;
             }
             .marquee-item:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+                transform: translateY(-8px);
+                box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            }
+            .marquee-img-wrap {
+                width: 130px; flex-shrink: 0; border-radius: 10px; overflow: hidden; position: relative; aspect-ratio: 5/6; background: #edf2f6; display: flex; align-items: center; justify-content: center; padding: 15px;
             }
             .marquee-img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             }
-            .marquee-item:hover .marquee-img {
-                transform: scale(1.08);
-            }
-            .marquee-overlay {
-                position:absolute; inset:0; 
-                background:linear-gradient(to top, rgba(11,19,43,0.8), rgba(0,0,0,0) 60%); 
-                opacity:0; transition:opacity 0.4s ease;
-            }
-            .marquee-text {
-                position:absolute; bottom:20px; left:20px; right:20px; 
-                color:#fff; transform:translateY(20px); opacity:0; transition:all 0.4s ease;
-            }
-            .marquee-item:hover .marquee-overlay { opacity: 1; }
-            .marquee-item:hover .marquee-text { transform: translateY(0); opacity: 1; }
+            .marquee-item:hover .marquee-img { transform: translateY(-4px) scale(1.05); }
             
+            .marquee-btn {
+                display:flex; align-items:center; justify-content:center; box-sizing:border-box; gap:8px; font-size:1rem; font-weight:bold; color:#ffffff; background:#e53935; border-radius:8px; padding:12px 30px; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); width:100%; text-align:center;
+            }
+            .marquee-item:hover .marquee-btn {
+                background: #c62828; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(229,57,53,0.3);
+            }
+            .marquee-item:hover .arrow { transform: translateX(5px); }
+
             @keyframes marquee-scroll {
                 0% { transform: translateX(0); }
                 100% { transform: translateX(calc(-50% - 15px)); } /* 15px is half of 30px gap */
             }
             @media (max-width: 768px) {
-                .marquee-item { flex: 0 0 280px; }
+                .marquee-item { flex: 0 0 340px; padding: 20px; }
+                .marquee-img-wrap { width: 110px; padding: 10px; }
             }
         </style>
         
@@ -196,14 +194,30 @@
                 while($work_query->have_posts()): $work_query->the_post();
             ?>
             <a href="<?php the_permalink(); ?>" class="marquee-item">
-                <?php if(has_post_thumbnail()): ?>
-                    <?php the_post_thumbnail('large', ['class' => 'marquee-img']); ?>
-                <?php else: ?>
-                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(11,19,43,0.05), rgba(11,19,43,0.1));" class="marquee-img">WORK IMAGE</div>
-                <?php endif; ?>
-                <div class="marquee-overlay"></div>
-                <div class="marquee-text">
-                    <h3 style="margin:0; font-size:1.1rem; line-height:1.4; text-shadow:0 2px 5px rgba(0,0,0,0.5);"><?php the_title(); ?></h3>
+                <div style="display:flex; gap:20px; margin-bottom:20px; align-items:flex-start;">
+                    <div class="marquee-img-wrap">
+                        <?php if(has_post_thumbnail()): ?>
+                            <?php the_post_thumbnail('medium', ['class' => 'marquee-img']); ?>
+                        <?php else: ?>
+                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1rem; font-weight:bold;">NO IMG</div>
+                        <?php endif; ?>
+                    </div>
+                    <div style="flex-grow:1; display:flex; flex-direction:column; padding-top:5px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                            <span style="font-size:0.75rem; background:#e53935; color:#ffffff; padding:4px 12px; border-radius:30px; font-weight:bold; letter-spacing:0.05em;">
+                                <?php $terms = get_the_terms($post->ID, 'work_cat'); echo $terms ? esc_html($terms[0]->name) : '実績'; ?>
+                            </span>
+                            <span style="font-size:0.8rem; color:#50575e; font-weight:bold; font-family:'Courier New', monospace;">
+                                <?php echo get_the_date('Y.m.d'); ?>
+                            </span>
+                        </div>
+                        <h3 style="font-size:1.25rem; font-weight:800; color:#1c2541; margin:0; line-height:1.4; text-align:left;"><?php the_title(); ?></h3>
+                    </div>
+                </div>
+                <div style="display:block; width:100%;">
+                    <div class="marquee-btn">
+                        詳しく見る <span style="font-size:1.2rem; transition:transform 0.3s;" class="arrow">&rarr;</span>
+                    </div>
                 </div>
             </a>
             <?php 
@@ -216,7 +230,16 @@
                 <!-- Placeholder for visual preview when no posts exist -->
                 <?php ob_start(); for($i=1; $i<=5; $i++): ?>
                 <span class="marquee-item">
-                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(11,19,43,0.05), rgba(11,19,43,0.1));">WORK SAMPLE <?php echo $i; ?></div>
+                    <div style="display:flex; gap:20px; margin-bottom:20px; align-items:flex-start;">
+                        <div class="marquee-img-wrap">
+                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1rem; font-weight:bold;">WORK <?php echo $i; ?></div>
+                        </div>
+                        <div style="flex-grow:1; display:flex; flex-direction:column; padding-top:5px;">
+                            <span style="font-size:0.75rem; background:#e53935; color:#ffffff; padding:4px 12px; border-radius:30px; font-weight:bold; align-self:flex-start; margin-bottom:10px;">LP制作</span>
+                            <h3 style="font-size:1.25rem; font-weight:800; color:#1c2541; margin:0; line-height:1.4;">Sample Work <?php echo $i; ?></h3>
+                        </div>
+                    </div>
+                    <div class="marquee-btn">詳しく見る <span class="arrow">&rarr;</span></div>
                 </span>
                 <?php endfor; $works_html = ob_get_clean(); echo $works_html . $works_html; ?>
             <?php endif; wp_reset_postdata(); ?>
