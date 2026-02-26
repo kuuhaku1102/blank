@@ -129,6 +129,74 @@
             </div>
             
             <p style="font-size: 1.5rem; font-weight:800; color:white; margin:0;">単なる“改善”ではなく、事業インパクトを出します。</p>
+            <p style="font-size: 0.85rem; color:rgba(255,255,255,0.6); margin-top:10px; font-weight:bold;">※成果を保証するものではありません。</p>
+
+            <!-- Embedded Swiper CSS & JS -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+            <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+            <div style="margin-top:60px;" class="gsap-fade-up">
+                <?php
+                $args = [
+                    'post_type'      => 'works',
+                    'posts_per_page' => 8,
+                ];
+                $lp_works_query = new WP_Query($args);
+                if($lp_works_query->have_posts()):
+                ?>
+                <div class="swiper lp-works-swiper" style="padding: 20px 0 50px;">
+                    <div class="swiper-wrapper">
+                        <?php while($lp_works_query->have_posts()): $lp_works_query->the_post(); ?>
+                        <div class="swiper-slide">
+                            <a href="<?php the_permalink(); ?>" style="display:block; text-decoration:none; background:rgba(255,255,255,0.05); border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); transition:transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                                <div style="width:100%; aspect-ratio:16/10; overflow:hidden; background:#000; position:relative;">
+                                    <?php if(has_post_thumbnail()): ?>
+                                        <?php the_post_thumbnail('medium_large', ['style' => 'width:100%; height:100%; object-fit:cover; opacity:0.85; transition:opacity 0.3s;', 'class' => 'lp-works-img']); ?>
+                                    <?php else: ?>
+                                        <div style="width:100%; height:100%; background:rgba(255,255,255,0.05);"></div>
+                                    <?php endif; ?>
+                                </div>
+                                <div style="padding:15px; text-align:left;">
+                                    <h4 style="color:white; font-size:1.05rem; font-weight:bold; margin:0; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;"><?php the_title(); ?></h4>
+                                </div>
+                            </a>
+                        </div>
+                        <?php endwhile; wp_reset_postdata(); ?>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="swiper-pagination"></div>
+                </div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    if (typeof Swiper !== 'undefined') {
+                        const swiper = new Swiper('.lp-works-swiper', {
+                            slidesPerView: 1.2,
+                            spaceBetween: 20,
+                            centeredSlides: true,
+                            loop: true,
+                            autoplay: {
+                                delay: 3500,
+                                disableOnInteraction: false,
+                            },
+                            pagination: {
+                                el: '.lp-works-swiper .swiper-pagination',
+                                clickable: true,
+                            },
+                            breakpoints: {
+                                640: { slidesPerView: 2, spaceBetween: 20, centeredSlides: false },
+                                1024: { slidesPerView: 3, spaceBetween: 30, centeredSlides: false },
+                            }
+                        });
+                    }
+                });
+                </script>
+                <style>
+                    .lp-works-swiper .swiper-pagination-bullet { background: rgba(255,255,255,0.5); opacity:1; }
+                    .lp-works-swiper .swiper-pagination-bullet-active { background: #e53935; }
+                    .lp-works-img:hover { opacity:1 !important; transform:scale(1.05) !important; }
+                </style>
+                <?php endif; ?>
+            </div>
         </div>
     </section>
 
@@ -142,20 +210,27 @@
                 <p style="color:var(--accent-color); font-weight:bold; margin-bottom:30px;">※プロジェクトの規模・実装機能により変動いたします。</p>
                 <div style="display:flex; flex-direction:column; gap:15px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; background:#ffffff; border:1px solid #e2e8f0; padding:20px; border-radius:10px;">
-                        <span style="font-weight:800; color:var(--primary-color);">テンプレートLP（高速検証用）</span>
-                        <span style="font-size:1.5rem; font-weight:900; color:#e53935;">5万円〜</span>
+                        <span style="font-weight:800; color:var(--primary-color);">通常カスタマイズLP（オリジナル）</span>
+                        <span style="font-size:1.5rem; font-weight:900; color:#e53935;">15万円〜</span>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; background:#ffffff; border:1px solid #e2e8f0; padding:20px; border-radius:10px;">
-                        <span style="font-weight:800; color:var(--primary-color);">スピード重視（短納期オリジナル）</span>
-                        <span style="font-size:1.5rem; font-weight:900; color:#e53935;">10万円〜</span>
+                        <span style="font-weight:800; color:var(--primary-color);">機能性重視LP（機能オプション）</span>
+                        <span style="font-size:1.5rem; font-weight:900; color:#e53935;">20万円〜</span>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; background:#ffffff; border:1px solid #e2e8f0; padding:20px; border-radius:10px;">
-                        <span style="font-weight:800; color:var(--primary-color);">デザイン・構成重視（王道）</span>
-                        <span style="font-size:1.5rem; font-weight:900; color:#e53935;">30万円〜</span>
+                        <span style="font-weight:800; color:var(--primary-color);">EC連携</span>
+                        <span style="font-size:1.5rem; font-weight:900; color:#e53935;">25万円〜</span>
                     </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:#ffffff; border:1px solid #1a56db; padding:20px; border-radius:10px; box-shadow:0 10px 20px rgba(26,86,219,0.1);">
-                        <span style="font-weight:800; color:var(--primary-color);">機能充実型（予約/API/DB連携）</span>
-                        <span style="font-size:1.5rem; font-weight:900; color:#1a56db;">50万円〜</span>
+                </div>
+
+                <div style="margin-top:30px; background:rgba(255,255,255,0.5); padding:20px; border-radius:10px; border:1px solid #e2e8f0;">
+                    <h4 style="font-size:1.1rem; font-weight:800; color:var(--primary-color); margin-bottom:15px; display:flex; align-items:center; gap:8px;"><span style="color:#e53935;">+</span> 追加可能な実装オプション</h4>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                        <?php 
+                        $options = ['予約システム連携', '決済機能導入', 'CRMツール連携', 'LPO（公開後改善）', '複数LP・A/Bテスト構築', '広告運用代行', 'アニメーションリッチ化'];
+                        foreach($options as $opt): ?>
+                            <span style="background:#ffffff; border:1px solid #cbd5e1; padding:6px 12px; border-radius:30px; font-size:0.85rem; font-weight:bold; color:var(--primary-color); box-shadow:0 2px 5px rgba(0,0,0,0.02);"><?php echo $opt; ?></span>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
