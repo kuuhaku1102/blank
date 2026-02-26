@@ -4,6 +4,7 @@
 
 <!-- Clean Abstract Background for Works Single -->
 <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#fafcff; z-index:-1; pointer-events:none;"></div>
+<canvas id="three-canvas-works-single" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:0.4;"></canvas>
 
 <main style="background: transparent; position:relative; overflow:hidden; padding: 120px 0;">
     <div class="container" style="position:relative; z-index:2; max-width: 1100px;">
@@ -245,6 +246,114 @@ document.addEventListener("DOMContentLoaded", function() {
             ease: "power3.out"
         });
     });
+
+    // Extremely Subtle Tech Background (Three.js Geometric Nodes)
+    const canvas = document.getElementById('three-canvas-works-single');
+    if(canvas) {
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2('#fafcff', 0.002);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+        camera.position.z = 200;
+        
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const group = new THREE.Group();
+        scene.add(group);
+
+        const particleCount = 60; // Few particles to not be distracting
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const velocities = [];
+
+        for(let i=0; i<particleCount; i++) {
+            positions[i*3]   = (Math.random() - 0.5) * 600;
+            positions[i*3+1] = (Math.random() - 0.5) * 500;
+            positions[i*3+2] = (Math.random() - 0.5) * 200;
+            velocities.push({
+                x: (Math.random() - 0.5) * 0.1,  // Very slow
+                y: (Math.random() - 0.5) * 0.1,
+                z: (Math.random() - 0.5) * 0.1
+            });
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            color: '#91a6b4', 
+            size: 2,
+            transparent: true,
+            opacity: 0.15 // barely visible
+        });
+        
+        const particles = new THREE.Points(geometry, material);
+        group.add(particles);
+
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: '#91a6b4',
+            transparent: true,
+            opacity: 0.05 // extremely subtle lines
+        });
+        
+        const lineGeo = new THREE.BufferGeometry();
+        const lineMesh = new THREE.LineSegments(lineGeo, lineMaterial);
+        group.add(lineMesh);
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.01;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.01;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const posAttr = geometry.attributes.position;
+            const positionsArray = posAttr.array;
+
+            for(let i=0; i<particleCount; i++) {
+                positionsArray[i*3]   += velocities[i].x;
+                positionsArray[i*3+1] += velocities[i].y;
+                positionsArray[i*3+2] += velocities[i].z;
+
+                if(Math.abs(positionsArray[i*3]) > 300) velocities[i].x *= -1;
+                if(Math.abs(positionsArray[i*3+1]) > 250) velocities[i].y *= -1;
+                if(Math.abs(positionsArray[i*3+2]) > 100) velocities[i].z *= -1;
+            }
+            posAttr.needsUpdate = true;
+
+            const linePositions = [];
+            for(let i=0; i<particleCount; i++) {
+                for(let j=i+1; j<particleCount; j++) {
+                    const dx = positionsArray[i*3] - positionsArray[j*3];
+                    const dy = positionsArray[i*3+1] - positionsArray[j*3+1];
+                    const dz = positionsArray[i*3+2] - positionsArray[j*3+2];
+                    const distSq = dx*dx + dy*dy + dz*dz;
+                    
+                    if(distSq < 15000) { // Connect only if relatively close
+                        linePositions.push(
+                            positionsArray[i*3], positionsArray[i*3+1], positionsArray[i*3+2],
+                            positionsArray[j*3], positionsArray[j*3+1], positionsArray[j*3+2]
+                        );
+                    }
+                }
+            }
+            lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+
+            camera.position.x += (mouseX - camera.position.x) * 0.02;
+            camera.position.y += (-mouseY - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    }
 });
 </script>
 
