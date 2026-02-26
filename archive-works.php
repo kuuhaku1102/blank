@@ -19,20 +19,80 @@
                 blankのアウトプットをご覧いただけます。
             </p>
             
-            <!-- Category Filter mock -->
-            <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:30px;">
-                <span style="background:var(--primary-color); padding:8px 25px; border-radius:30px; color:var(--white); font-weight:bold; font-size:0.9rem; letter-spacing:0.05em; box-shadow:0 5px 15px rgba(11,19,43,0.2);">すべて</span>
-                <span style="background:rgba(255,255,255,0.8); backdrop-filter:blur(5px); padding:8px 25px; border-radius:30px; color:var(--primary-color); font-weight:bold; font-size:0.9rem; letter-spacing:0.05em; border:1px solid rgba(0,0,0,0.05); cursor:pointer; transition:all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--white)';" onmouseout="this.style.background='rgba(255,255,255,0.8)'; this.style.color='var(--primary-color)';">LP</span>
-                <span style="background:rgba(255,255,255,0.8); backdrop-filter:blur(5px); padding:8px 25px; border-radius:30px; color:var(--primary-color); font-weight:bold; font-size:0.9rem; letter-spacing:0.05em; border:1px solid rgba(0,0,0,0.05); cursor:pointer; transition:all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--white)';" onmouseout="this.style.background='rgba(255,255,255,0.8)'; this.style.color='var(--primary-color)';">コーポレートサイト</span>
-                <span style="background:rgba(255,255,255,0.8); backdrop-filter:blur(5px); padding:8px 25px; border-radius:30px; color:var(--primary-color); font-weight:bold; font-size:0.9rem; letter-spacing:0.05em; border:1px solid rgba(0,0,0,0.05); cursor:pointer; transition:all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--white)';" onmouseout="this.style.background='rgba(255,255,255,0.8)'; this.style.color='var(--primary-color)';">システム開発</span>
+            <!-- Functional Category & Industry Filters -->
+            <?php
+            $current_cat = isset($_GET['work_cat']) ? sanitize_text_field($_GET['work_cat']) : '';
+            $current_ind = isset($_GET['industry']) ? sanitize_text_field($_GET['industry']) : '';
+
+            $categories = get_terms(['taxonomy' => 'work_cat', 'hide_empty' => false]);
+
+            $schema_json = get_option('blank_works_schema') ?: (function_exists('blank_works_get_default_schema') ? blank_works_get_default_schema() : '');
+            $schema = json_decode($schema_json, true) ?: [];
+            $industry_fields = [];
+            if(isset($schema['tabs']['industry']['groups'])) {
+                foreach($schema['tabs']['industry']['groups'] as $group) {
+                    if(isset($group['fields'])) {
+                        foreach($group['fields'] as $f) {
+                            $industry_fields[$f['id']] = $f['label'] ?? '';
+                        }
+                    }
+                }
+            }
+            ?>
+            <div style="display:flex; flex-direction:column; gap:20px; align-items:center; margin-top:30px;">
+                <!-- Taxonomy (Work Category) -->
+                <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+                    <a href="?industry=<?php echo urlencode($current_ind); ?>" style="<?php echo empty($current_cat) ? 'background:var(--primary-color); color:var(--white); box-shadow:0 5px 15px rgba(11,19,43,0.2);' : 'background:rgba(255,255,255,0.8); backdrop-filter:blur(5px); color:var(--primary-color);'; ?> padding:8px 25px; border-radius:30px; font-weight:bold; font-size:0.9rem; letter-spacing:0.05em; border:1px solid rgba(0,0,0,0.05); text-decoration:none; transition:all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--white)';" onmouseout="<?php echo empty($current_cat) ? "this.style.background='var(--primary-color)'; this.style.color='var(--white)';" : "this.style.background='rgba(255,255,255,0.8)'; this.style.color='var(--primary-color)';"; ?>">すべて</a>
+                    
+                    <?php foreach($categories as $cat): ?>
+                        <a href="?work_cat=<?php echo $cat->slug; ?>&industry=<?php echo urlencode($current_ind); ?>" style="<?php echo $current_cat === $cat->slug ? 'background:var(--primary-color); color:var(--white); box-shadow:0 5px 15px rgba(11,19,43,0.2);' : 'background:rgba(255,255,255,0.8); backdrop-filter:blur(5px); color:var(--primary-color);'; ?> padding:8px 25px; border-radius:30px; font-weight:bold; font-size:0.9rem; letter-spacing:0.05em; border:1px solid rgba(0,0,0,0.05); text-decoration:none; transition:all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--white)';" onmouseout="<?php echo $current_cat === $cat->slug ? "this.style.background='var(--primary-color)'; this.style.color='var(--white)';" : "this.style.background='rgba(255,255,255,0.8)'; this.style.color='var(--primary-color)';"; ?>"><?php echo esc_html($cat->name); ?></a>
+                    <?php endforeach; ?>
+                </div>
+
+                <!-- JSON Meta (Industry Hashtags) -->
+                <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin-top:5px;">
+                    <a href="?work_cat=<?php echo urlencode($current_cat); ?>" style="<?php echo empty($current_ind) ? 'color:#1a56db; border-bottom:2px solid #1a56db;' : 'color:#91a6b4;'; ?> font-weight:bold; font-size:0.95rem; letter-spacing:0.05em; text-decoration:none; padding:5px 10px; transition:color 0.3s;" onmouseover="this.style.color='#1a56db';" onmouseout="<?php echo empty($current_ind) ? "this.style.color='#1a56db';" : "this.style.color='#91a6b4';"; ?>">#すべての業種・用途</a>
+                    
+                    <?php foreach($industry_fields as $id => $label): ?>
+                         <a href="?work_cat=<?php echo urlencode($current_cat); ?>&industry=<?php echo urlencode($id); ?>" style="<?php echo $current_ind === $id ? 'color:#1a56db; border-bottom:2px solid #1a56db;' : 'color:#91a6b4;'; ?> font-weight:bold; font-size:0.95rem; letter-spacing:0.05em; text-decoration:none; padding:5px 10px; transition:color 0.3s;" onmouseover="this.style.color='#1a56db';" onmouseout="<?php echo $current_ind === $id ? "this.style.color='#1a56db';" : "this.style.color='#91a6b4';"; ?>">#<?php echo esc_html($label); ?></a>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
 
-        <div class="works-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px;">
+        <div class="works-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; margin-top:50px;">
             <?php 
-            if ( have_posts() ) : while ( have_posts() ) : the_post(); 
-                $terms = get_the_terms($post->ID, 'work_cat'); 
-                $cat_name = $terms ? esc_html($terms[0]->name) : '実績';
+            global $wp_query;
+            $paged = (get_query_var('paged')) ? get_query_var('paged') : ((get_query_var('page')) ? get_query_var('page') : 1);
+            $query_args = array(
+                'post_type' => 'works',
+                'paged' => $paged,
+                'posts_per_page' => 12
+            );
+
+            if(!empty($current_cat)) {
+                $query_args['tax_query'] = array(
+                    array(
+                        'taxonomy' => 'work_cat',
+                        'field' => 'slug',
+                        'terms' => $current_cat
+                    )
+                );
+            }
+
+            if(!empty($current_ind)) {
+                $query_args['meta_query'] = array(
+                    array(
+                        'key' => 'works_features',
+                        'value' => '"' . $current_ind . '"',
+                        'compare' => 'LIKE'
+                    )
+                );
+            }
+
+            $wp_query = new WP_Query($query_args);
+
+            if ( $wp_query->have_posts() ) : while ( $wp_query->have_posts() ) : $wp_query->the_post(); 
             ?>
             <a href="<?php the_permalink(); ?>" class="gsap-works-card" style="display:block; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                 
@@ -55,15 +115,53 @@
 
                     <!-- Right: Info Area (Badge, Date, Title) -->
                     <div style="flex-grow:1; display:flex; flex-direction:column; padding-top:10px;">
-                        <div class="work-meta" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
-                            <span style="font-size:0.8rem; background:#e53935; color:#ffffff; padding:5px 16px; border-radius:30px; font-weight:bold; letter-spacing:0.05em; display:inline-block;">
-                                <?php echo $cat_name; ?>
-                            </span>
-                            <span style="font-size:0.85rem; color:#50575e; font-weight:bold; font-family:'Courier New', monospace; letter-spacing:0.1em; line-height:2.2;">
+                        <div class="work-meta" style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:10px;">
+                            <span style="font-size:0.85rem; color:#91a6b4; font-weight:bold; font-family:'Courier New', monospace; letter-spacing:0.1em;">
                                 <?php echo get_the_date('Y.m.d'); ?>
                             </span>
                         </div>
-                        <h3 style="font-size:1.3rem; font-weight:800; color:#1c2541; margin:0; line-height:1.5; text-align:left;"><?php the_title(); ?></h3>
+                        <h3 style="font-size:1.3rem; font-weight:800; color:#1c2541; margin:0 0 15px; line-height:1.5; text-align:left;"><?php the_title(); ?></h3>
+                        
+                        <!-- Tags -->
+                        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                            <?php 
+                            // Category / Industry Tags
+                            $card_industry_tags = [];
+                            $card_terms = get_the_terms($post->ID, 'work_cat'); 
+                            if($card_terms) {
+                                foreach($card_terms as $t) {
+                                    $card_industry_tags[] = $t->name;
+                                }
+                            }
+                            
+                            $selected_features = get_post_meta( $post->ID, 'works_features', true ) ?: [];
+                            if(!empty($selected_features)) {
+                                foreach($industry_fields as $fid => $flabel) {
+                                    if(in_array($fid, $selected_features)) {
+                                        $card_industry_tags[] = $flabel;
+                                    }
+                                }
+                            }
+                            
+                            $card_industry_tags = array_filter(array_unique($card_industry_tags));
+                            if(empty($card_industry_tags)) $card_industry_tags[] = '実績';
+                            
+                            foreach($card_industry_tags as $tag_name): ?>
+                                <span style="font-size:0.75rem; background:#ffebee; color:#c62828; border:1px solid #ffcdd2; padding:4px 10px; border-radius:4px; font-weight:bold; white-space:nowrap;">
+                                    <?php echo esc_html($tag_name); ?>
+                                </span>
+                            <?php endforeach; ?>
+                            
+                            <?php 
+                            // Scope Tags
+                            $scope = get_post_meta( $post->ID, 'scope', true ) ?: [];
+                            if (!is_array($scope)) $scope = [];
+                            foreach($scope as $s): ?>
+                                <span style="font-size:0.75rem; background:#f0f4f8; color:#4a5568; border:1px solid #e2e8f0; padding:4px 10px; border-radius:4px; font-weight:bold; white-space:nowrap;">
+                                    <?php echo esc_html($s); ?>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
                 
