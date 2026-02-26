@@ -69,7 +69,7 @@
                 
                 <!-- Bottom Area: Read More CTA -->
                 <div style="display:block; width:100%;">
-                    <div style="display:flex; align-items:center; justify-content:center; gap:8px; font-size:1rem; font-weight:bold; color:#ffffff; background:#e53935; border-radius:8px; padding:14px 30px; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); width:100%; text-align:center;" class="read-more-btn">
+                    <div style="display:flex; align-items:center; justify-content:center; box-sizing:border-box; gap:8px; font-size:1rem; font-weight:bold; color:#ffffff; background:#e53935; border-radius:8px; padding:14px 30px; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); width:100%; text-align:center;" class="read-more-btn">
                         詳しく見る <span style="font-size:1.2rem; transition:transform 0.3s;" class="arrow">&rarr;</span>
                     </div>
                 </div>
