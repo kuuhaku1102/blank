@@ -94,7 +94,7 @@ get_header(); ?>
                     blankは、単なるWeb制作会社ではなく、デジタル領域の戦略的インテグレーターです。常にその先にある「ユーザー体験」と「事業成長」を見据え、最新のテクノロジーを活用した強力なソリューションを提供し続けます。
                 </p>
                 <p style="text-align:right; font-size:1.2rem; font-weight:900; color:var(--primary-color); margin-top:30px; position:relative; z-index:1;">
-                    代表取締役<span style="font-size:1.6rem; margin-left:15px; border-bottom:2px solid var(--highlight-color); padding-bottom:5px;">〇〇 〇〇</span>
+                    代表取締役<span style="font-size:1.6rem; margin-left:15px; border-bottom:2px solid var(--highlight-color); padding-bottom:5px;">本田 純一</span>
                 </p>
             </div>
         </section>
@@ -115,15 +115,15 @@ get_header(); ?>
                         </tr>
                         <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
                             <th style="padding: 25px 30px; font-size:1.1rem; color:var(--primary-color); background:rgba(145,166,180,0.05); font-weight:800;">設立</th>
-                            <td style="padding: 25px 30px; font-size:1.1rem; color:var(--text-color); font-weight:bold;">20XX年X月X日</td>
+                            <td style="padding: 25px 30px; font-size:1.1rem; color:var(--text-color); font-weight:bold;">2026年2月20日</td>
                         </tr>
                         <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
                             <th style="padding: 25px 30px; font-size:1.1rem; color:var(--primary-color); background:rgba(145,166,180,0.05); font-weight:800;">代表取締役</th>
-                            <td style="padding: 25px 30px; font-size:1.1rem; color:var(--text-color); font-weight:bold;">〇〇 〇〇</td>
+                            <td style="padding: 25px 30px; font-size:1.1rem; color:var(--text-color); font-weight:bold;">本田 純一</td>
                         </tr>
                         <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
                             <th style="padding: 25px 30px; font-size:1.1rem; color:var(--primary-color); background:rgba(145,166,180,0.05); font-weight:800;">所在地</th>
-                            <td style="padding: 25px 30px; font-size:1.1rem; color:var(--text-color); font-weight:bold; line-height:1.6;">〒000-0000<br>東京都〇〇区〇〇 1-2-3 blankビル5F</td>
+                            <td style="padding: 25px 30px; font-size:1.1rem; color:var(--text-color); font-weight:bold; line-height:1.6;">〒744-0028<br>山口県下松市藤光町</td>
                         </tr>
                         <tr>
                             <th style="padding: 25px 30px; font-size:1.1rem; color:var(--primary-color); background:rgba(145,166,180,0.05); font-weight:800; vertical-align:top;">事業内容</th>
@@ -131,7 +131,8 @@ get_header(); ?>
                                 <span style="color:var(--highlight-color); margin-right:5px;">/</span> 高機能Webサイト・コーポレートサイト構築<br>
                                 <span style="color:var(--highlight-color); margin-right:5px;">/</span> UI/UX情報設計・ランディングページ制作<br>
                                 <span style="color:var(--highlight-color); margin-right:5px;">/</span> Webシステム開発・インフラ構築<br>
-                                <span style="color:var(--highlight-color); margin-right:5px;">/</span> デジタルマーケティング・SEOコンサルティング
+                                <span style="color:var(--highlight-color); margin-right:5px;">/</span> デジタルマーケティング・SEOコンサルティング<br>
+                                <span style="color:var(--highlight-color); margin-right:5px;">/</span> 古物商取引
                             </td>
                         </tr>
                     </tbody>
