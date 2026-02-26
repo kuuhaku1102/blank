@@ -7,11 +7,16 @@ get_header(); ?>
 <?php if(have_posts()): while(have_posts()): the_post(); ?>
 
 <?php 
-// 判定フラグ: 現在の投稿がWeb制作関連のものか（スラッグやタイトルで簡易判定）
-$is_web_service = (strpos(urldecode($post->post_name), 'web') !== false || strpos(urldecode($post->post_title), 'Web') !== false || strpos(urldecode($post->post_title), 'コーポレート') !== false);
+// 判定フラグ: 現在の投稿がWeb制作関連のものか、LP関連のものか簡易判定
+$t_title = urldecode($post->post_title);
+$t_slug = urldecode($post->post_name);
+$is_web_service = (strpos($t_slug, 'web') !== false || strpos($t_title, 'Web') !== false || strpos($t_title, 'コーポレート') !== false);
+$is_lp_service = (strpos($t_slug, 'lp') !== false || strpos($t_title, 'LP') !== false || strpos($t_title, 'ランディングページ') !== false);
 ?>
 
-<?php if($is_web_service): ?>
+<?php if($is_lp_service): ?>
+    <?php get_template_part('template-parts/service', 'lp'); ?>
+<?php elseif($is_web_service): ?>
 <!-- ==========================================
      WEB DESIGN SERVICE SPECIAL LAYOUT
 =========================================== -->
@@ -333,7 +338,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Initial load animations
     const isWebLayout = document.querySelector('.service-hero');
-    if(isWebLayout) {
+    const isLpLayout = document.querySelector('.lp-layout');
+    
+    if(isWebLayout || isLpLayout) {
         const tl = gsap.timeline();
         tl.from(".gsap-hero-elem", {
             y: 50,
@@ -375,46 +382,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const group = new THREE.Group();
         scene.add(group);
 
-        // Advanced Wireframe terrain/architecture to match "Design/Build"
-        const geometry = new THREE.PlaneGeometry(200, 200, 50, 50);
-        // Distort vertices slightly to make it organic/wavey
-        const vertices = geometry.attributes.position.array;
-        for ( let i = 0; i < vertices.length; i += 3 ) {
-            vertices[i + 2] = Math.sin(vertices[i]*0.1) * Math.cos(vertices[i+1]*0.1) * 3;
-        }
-        geometry.computeVertexNormals();
-
-        const material = new THREE.MeshBasicMaterial({ 
-            color: '#1a56db', 
-            wireframe: true, 
-            transparent: true, 
-            opacity: 0.06 
-        });
-        
-        const plane = new THREE.Mesh(geometry, material);
-        plane.rotation.x = -Math.PI / 2.5; // Tilt it to look like an infinite floor wrapping into background
-        plane.position.y = -10;
-        group.add(plane);
-
-        // Add some floating high-tech elements (Red Accent)
-        const accentGeo = new THREE.OctahedronGeometry(1.5, 0);
-        const accentMat = new THREE.MeshBasicMaterial({ color: '#e53935', wireframe: true, transparent: true, opacity: 0.2 });
-        const floaters = [];
-        for(let i = 0; i < 15; i++) {
-            const mesh = new THREE.Mesh(accentGeo, accentMat);
-            mesh.position.set(
-                (Math.random() - 0.5) * 80,
-                Math.random() * 20 - 5,
-                (Math.random() - 0.5) * 80
-            );
-            floaters.push({
-                mesh: mesh,
-                speed: Math.random() * 0.02 + 0.005,
-                rotY: Math.random() * 0.02
-            });
-            group.add(mesh);
-        }
-
         let mouseX = 0, mouseY = 0;
         let targetX = 0, targetY = 0;
         document.addEventListener('mousemove', (e) => {
@@ -423,35 +390,118 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         const clock = new THREE.Clock();
-        function animate() {
-            requestAnimationFrame(animate);
-            const time = clock.getElapsedTime();
 
-            // Make the terrain wave continuously
-            const positions = plane.geometry.attributes.position.array;
-            for ( let i = 0; i < positions.length; i += 3 ) {
-                positions[i + 2] = Math.sin((positions[i]*0.1) + time * 0.5) * Math.cos((positions[i+1]*0.1) + time * 0.5) * 4;
-            }
-            plane.geometry.attributes.position.needsUpdate = true;
-
-            // Animate floaters
-            floaters.forEach(f => {
-                f.mesh.position.y += Math.sin(time * f.speed * 10) * 0.05;
-                f.mesh.rotation.y += f.rotY;
-                f.mesh.rotation.x += f.rotY * 0.5;
+        if (isLpLayout) {
+            // LP layout gets a fast "Vortex/Conversion Tunnel" effect
+            scene.fog = new THREE.FogExp2('#ffffff', 0.005);
+            
+            const tubeGeo = new THREE.CylinderGeometry(15, 2, 80, 24, 10, true);
+            const tubeMat = new THREE.MeshBasicMaterial({ 
+                color: '#e53935', 
+                wireframe: true, 
+                transparent: true, 
+                opacity: 0.1 
             });
+            const tube = new THREE.Mesh(tubeGeo, tubeMat);
+            tube.rotation.x = Math.PI / 2;
+            tube.position.z = -20;
+            group.add(tube);
+            
+            const pGeo = new THREE.BufferGeometry();
+            const pCount = 600;
+            const pArr = new Float32Array(pCount * 3);
+            for(let i=0; i<pCount*3; i++) { pArr[i] = (Math.random() - 0.5) * 60; }
+            pGeo.setAttribute('position', new THREE.BufferAttribute(pArr, 3));
+            const pMat = new THREE.PointsMaterial({ size: 0.2, color: '#1a56db', transparent: true, opacity: 0.6 });
+            const particles = new THREE.Points(pGeo, pMat);
+            group.add(particles);
 
-            // Smooth mouse camera parallax
-            targetX = mouseX * 0.005;
-            targetY = mouseY * 0.005;
-            camera.position.x += (targetX - camera.position.x) * 0.02;
-            camera.position.y += (-targetY - camera.position.y + 5) * 0.02; // Keep base Y at 5
-            camera.lookAt(scene.position);
+            function animateLP() {
+                requestAnimationFrame(animateLP);
+                tube.rotation.y -= 0.005;
+                particles.rotation.z += 0.001;
+                particles.position.z += 0.1;
+                if(particles.position.z > 20) particles.position.z = -20;
+                
+                targetX = mouseX * 0.005;
+                targetY = mouseY * 0.005;
+                camera.position.x += (targetX - camera.position.x) * 0.05;
+                camera.position.y += (-targetY - camera.position.y) * 0.05;
+                camera.lookAt(scene.position);
+                renderer.render(scene, camera);
+            }
+            animateLP();
+            
+        } else {
+            // Default Web Layout (Terrain)
+            // Advanced Wireframe terrain/architecture to match "Design/Build"
+            const geometry = new THREE.PlaneGeometry(200, 200, 50, 50);
+            const vertices = geometry.attributes.position.array;
+            for ( let i = 0; i < vertices.length; i += 3 ) {
+                vertices[i + 2] = Math.sin(vertices[i]*0.1) * Math.cos(vertices[i+1]*0.1) * 3;
+            }
+            geometry.computeVertexNormals();
 
-            renderer.render(scene, camera);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: '#1a56db', 
+                wireframe: true, 
+                transparent: true, 
+                opacity: 0.06 
+            });
+            
+            const plane = new THREE.Mesh(geometry, material);
+            plane.rotation.x = -Math.PI / 2.5; 
+            plane.position.y = -10;
+            group.add(plane);
+
+            const accentGeo = new THREE.OctahedronGeometry(1.5, 0);
+            const accentMat = new THREE.MeshBasicMaterial({ color: '#e53935', wireframe: true, transparent: true, opacity: 0.2 });
+            const floaters = [];
+            for(let i = 0; i < 15; i++) {
+                const mesh = new THREE.Mesh(accentGeo, accentMat);
+                mesh.position.set(
+                    (Math.random() - 0.5) * 80,
+                    Math.random() * 20 - 5,
+                    (Math.random() - 0.5) * 80
+                );
+                floaters.push({
+                    mesh: mesh,
+                    speed: Math.random() * 0.02 + 0.005,
+                    rotY: Math.random() * 0.02
+                });
+                group.add(mesh);
+            }
+
+            function animateTerrain() {
+                requestAnimationFrame(animateTerrain);
+                const time = clock.getElapsedTime();
+
+                // Make the terrain wave continuously
+                const positions = plane.geometry.attributes.position.array;
+                for ( let i = 0; i < positions.length; i += 3 ) {
+                    positions[i + 2] = Math.sin((positions[i]*0.1) + time * 0.5) * Math.cos((positions[i+1]*0.1) + time * 0.5) * 4;
+                }
+                plane.geometry.attributes.position.needsUpdate = true;
+
+                // Animate floaters
+                floaters.forEach(f => {
+                    f.mesh.position.y += Math.sin(time * f.speed * 10) * 0.05;
+                    f.mesh.rotation.y += f.rotY;
+                    f.mesh.rotation.x += f.rotY * 0.5;
+                });
+
+                // Smooth mouse camera parallax
+                targetX = mouseX * 0.005;
+                targetY = mouseY * 0.005;
+                camera.position.x += (targetX - camera.position.x) * 0.02;
+                camera.position.y += (-targetY - camera.position.y + 5) * 0.02; 
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+            }
+            animateTerrain();
         }
-        animate();
-        
+
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
