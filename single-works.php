@@ -106,7 +106,7 @@
                     foreach($schema['tabs'] as $tab) {
                         if(isset($tab['groups'])) {
                             foreach($tab['groups'] as $group) {
-                                $group_title = $group['title'];
+                                $group_title = $group['label'] ?? ($group['title'] ?? 'カテゴリ');
                                 $group_matches = [];
                                 if(isset($group['fields'])) {
                                     foreach($group['fields'] as $field) {
