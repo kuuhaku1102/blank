@@ -10,11 +10,14 @@ get_header(); ?>
 // 判定フラグ: 現在の投稿がWeb制作関連のものか、LP関連のものか簡易判定
 $t_title = urldecode($post->post_title);
 $t_slug = urldecode($post->post_name);
-$is_web_service = (strpos($t_slug, 'web') !== false || strpos($t_title, 'Web') !== false || strpos($t_title, 'コーポレート') !== false);
+$is_web_service = (strpos($t_slug, 'web') !== false || strpos($t_title, 'Web') !== false || strpos($t_title, 'コーポレート') !== false || strpos($t_slug, '%e3%82%a6%e3%82%a7%e3%83%96') !== false);
 $is_lp_service = (strpos($t_slug, 'lp') !== false || strpos($t_title, 'LP') !== false || strpos($t_title, 'ランディングページ') !== false);
+$is_mk_service = (strpos($t_slug, 'marketing') !== false || strpos($t_title, 'マーケティング') !== false || strpos($t_slug, '%e3%83%8e%e3%83%bc%e3%82%b1%e3%83%86') !== false || strpos($t_slug, '%e3%83%87%e3%82%b8%e3%82%bf%e3%83%ab') !== false);
 ?>
 
-<?php if($is_lp_service): ?>
+<?php if($is_mk_service): ?>
+    <?php get_template_part('template-parts/service', 'marketing'); ?>
+<?php elseif($is_lp_service): ?>
     <?php get_template_part('template-parts/service', 'lp'); ?>
 <?php elseif($is_web_service): ?>
 <!-- ==========================================
@@ -339,8 +342,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // Initial load animations
     const isWebLayout = document.querySelector('.service-hero');
     const isLpLayout = document.querySelector('.lp-layout');
+    const isMkLayout = document.querySelector('.marketing-layout');
     
-    if(isWebLayout || isLpLayout) {
+    if(isWebLayout || isLpLayout || isMkLayout) {
         const tl = gsap.timeline();
         tl.from(".gsap-hero-elem", {
             y: 50,
@@ -391,7 +395,78 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const clock = new THREE.Clock();
 
-        if (isLpLayout) {
+        if (isMkLayout) {
+            // MARKETING layout gets a "Network Nodes / Neural" effect (Green)
+            scene.fog = new THREE.FogExp2('#ffffff', 0.003);
+            
+            const nodeGeo = new THREE.IcosahedronGeometry(1.5, 1);
+            const nodeMat = new THREE.MeshBasicMaterial({ color: '#10b981', wireframe: true, transparent: true, opacity: 0.15 });
+            
+            const mGroup = new THREE.Group();
+            group.add(mGroup);
+            
+            const nodes = [];
+            for(let i=0; i<40; i++) {
+                const mesh = new THREE.Mesh(nodeGeo, nodeMat);
+                mesh.position.set(
+                    (Math.random() - 0.5) * 80,
+                    (Math.random() - 0.5) * 40 + 10,
+                    (Math.random() - 0.5) * 80
+                );
+                nodes.push({
+                    mesh: mesh,
+                    vX: (Math.random() - 0.5) * 0.02,
+                    vY: (Math.random() - 0.5) * 0.02,
+                    vZ: (Math.random() - 0.5) * 0.02
+                });
+                mGroup.add(mesh);
+            }
+            
+            // Connecting lines
+            const lineMat = new THREE.LineBasicMaterial({ color: '#10b981', transparent: true, opacity: 0.04 });
+            const lineGeo = new THREE.BufferGeometry();
+            const lines = new THREE.LineSegments(lineGeo, lineMat);
+            mGroup.add(lines);
+
+            function animateMK() {
+                requestAnimationFrame(animateMK);
+                
+                // Update nodes
+                const linePositions = [];
+                nodes.forEach((n, idx) => {
+                    n.mesh.position.x += n.vX; n.mesh.position.y += n.vY; n.mesh.position.z += n.vZ;
+                    n.mesh.rotation.y += 0.005; n.mesh.rotation.x += 0.005;
+                    
+                    // Bounce bounds
+                    if(Math.abs(n.mesh.position.x) > 50) n.vX *= -1;
+                    if(Math.abs(n.mesh.position.y - 10) > 30) n.vY *= -1;
+                    if(Math.abs(n.mesh.position.z) > 50) n.vZ *= -1;
+                    
+                    // Draw lines
+                    for(let j = idx + 1; j < nodes.length; j++) {
+                        const dist = n.mesh.position.distanceTo(nodes[j].mesh.position);
+                        if(dist < 20) {
+                            linePositions.push(
+                                n.mesh.position.x, n.mesh.position.y, n.mesh.position.z,
+                                nodes[j].mesh.position.x, nodes[j].mesh.position.y, nodes[j].mesh.position.z
+                            );
+                        }
+                    }
+                });
+                
+                lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+                
+                targetX = mouseX * 0.003;
+                targetY = mouseY * 0.003;
+                camera.position.x += (targetX - camera.position.x) * 0.03;
+                camera.position.y += (-targetY - camera.position.y + 10) * 0.03;
+                camera.lookAt(new THREE.Vector3(0, 10, 0));
+                
+                renderer.render(scene, camera);
+            }
+            animateMK();
+
+        } else if (isLpLayout) {
             // LP layout gets a fast "Vortex/Conversion Tunnel" effect
             scene.fog = new THREE.FogExp2('#ffffff', 0.005);
             
