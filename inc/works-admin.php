@@ -176,9 +176,8 @@ function blank_works_meta_html( $post ) {
     wp_nonce_field( '_blank_works_meta_nonce', 'blank_works_meta_nonce' );
 
     $issue = get_post_meta( $post->ID, 'issue', true );
-    $measure = get_post_meta( $post->ID, 'measure', true );
-    $result = get_post_meta( $post->ID, 'result', true );
     $scope = get_post_meta( $post->ID, 'scope', true );
+    if (!is_array($scope)) $scope = [];
     $works_url = get_post_meta( $post->ID, 'works_url', true );
     
     $schema_json = get_option('blank_works_schema', blank_works_get_default_schema());
@@ -220,18 +219,19 @@ function blank_works_meta_html( $post ) {
     </div>
 
     <div class="blank-meta-row">
-        <label>施策 (SOLUTION)</label>
-        <textarea name="measure" rows="3"><?php echo esc_textarea($measure); ?></textarea>
-    </div>
-
-    <div class="blank-meta-row">
-        <label>成果 (RESULTS / ACHIEVED)</label>
-        <input type="text" name="result" value="<?php echo esc_attr($result); ?>" placeholder="例：CVR150%向上" />
-    </div>
-
-    <div class="blank-meta-row">
         <label>制作範囲 (SCOPE OF WORK)</label>
-        <input type="text" name="scope" value="<?php echo esc_attr($scope); ?>" placeholder="要件定義 / デザイン / システム開発..." />
+        <div class="blank-checkbox-grid" style="margin-bottom:0;">
+            <?php 
+            $scope_options = ['テキスト構築', 'デザイン構築', 'コーディング', 'システム設計', 'ディレクション'];
+            foreach($scope_options as $opt): 
+                $checked = in_array($opt, $scope) ? 'checked' : '';
+            ?>
+                <label>
+                    <input type="checkbox" name="scope[]" value="<?php echo esc_attr($opt); ?>" <?php echo $checked; ?>>
+                    <?php echo esc_html($opt); ?>
+                </label>
+            <?php endforeach; ?>
+        </div>
     </div>
 
     <hr style="margin-top:30px;">
@@ -294,13 +294,24 @@ function blank_works_save_meta( $post_id ) {
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
     if ( ! current_user_can( 'edit_post', $post_id ) ) return;
 
-    $fields = ['issue', 'measure', 'result', 'scope', 'works_url'];
+    $fields = ['issue', 'works_url'];
     foreach($fields as $field) {
         if(isset($_POST[$field])) {
             update_post_meta($post_id, $field, sanitize_textarea_field($_POST[$field]));
         } else {
             delete_post_meta($post_id, $field);
         }
+    }
+    
+    // Clear removed old fields just in case
+    delete_post_meta($post_id, 'measure');
+    delete_post_meta($post_id, 'result');
+    
+    if(isset($_POST['scope']) && is_array($_POST['scope'])) {
+        $scope_arr = array_map('sanitize_text_field', $_POST['scope']);
+        update_post_meta($post_id, 'scope', $scope_arr);
+    } else {
+        update_post_meta($post_id, 'scope', []);
     }
     
     if(isset($_POST['works_features']) && is_array($_POST['works_features'])) {

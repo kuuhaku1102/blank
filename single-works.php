@@ -48,9 +48,16 @@
 
                 <h1 class="gsap-title" style="font-size: 2.5rem; font-weight: 800; line-height: 1.4; margin-bottom: 40px; color:var(--primary-color);"><?php the_title(); ?></h1>
                 
-                <!-- Tag area below title (if needed) -->
+                <!-- Scope of Work tags -->
                 <div style="margin-bottom:40px; display:flex; gap:10px; flex-wrap:wrap;">
-                    <!-- Additional generic tags could go here based on mockup -->
+                    <?php 
+                    $scope = get_post_meta( $post->ID, 'scope', true ) ?: [];
+                    if ( !is_array($scope) ) $scope = []; // Handle edge case for old text data
+                    foreach($scope as $s): ?>
+                        <span style="font-size:0.85rem; color:#1a56db; background:rgba(26,86,219,0.05); border:1px solid rgba(26,86,219,0.2); padding:6px 16px; border-radius:30px; font-weight:bold;">
+                            <span style="margin-right:4px;">✓</span> <?php echo esc_html($s); ?>
+                        </span>
+                    <?php endforeach; ?>
                 </div>
 
                 <!-- CTA Buttons -->
@@ -67,28 +74,6 @@
                 </div>
             </div>
         </div>
-                
-                <!-- KPI Dashboard Style Output -->
-                <div style="flex:1; min-width:300px; display:flex; flex-direction:column; gap:25px;">
-                    <div>
-                        <h3 style="font-size:1rem; color:var(--highlight-color); font-weight:800; letter-spacing:0.1em; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
-                            <span style="display:inline-block; width:20px; height:2px; background:var(--highlight-color);"></span> PROBLEM
-                        </h3>
-                        <p style="font-size:1.15rem; color:var(--primary-color); font-weight:bold; line-height:1.8; margin:0; padding-left:28px;">
-                            <?php echo nl2br(esc_html(get_post_meta($post->ID, 'issue', true) ?: '未入力')); ?>
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 style="font-size:1rem; color:var(--highlight-color); font-weight:800; letter-spacing:0.1em; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
-                            <span style="display:inline-block; width:20px; height:2px; background:var(--highlight-color);"></span> SOLUTION
-                        </h3>
-                        <p style="font-size:1.15rem; color:var(--primary-color); font-weight:bold; line-height:1.8; margin:0; padding-left:28px;">
-                            <?php echo nl2br(esc_html(get_post_meta($post->ID, 'measure', true) ?: '未入力')); ?>
-                        </p>
-                    </div>
-                </div>
-
         <article class="work-single-article" style="position:relative; border-top: 1px solid #e1e8f0; padding-top:60px;">
 
             <!-- 2. Implementation Features (Using JSON Schema Groups) -->
