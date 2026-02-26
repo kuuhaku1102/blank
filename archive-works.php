@@ -36,33 +36,40 @@
             ?>
             <a href="<?php the_permalink(); ?>" class="gsap-works-card" style="display:block; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                 
-                <div class="img-wrapper" style="border-radius:12px; overflow:hidden; margin-bottom:25px; position:relative; aspect-ratio: 5/6; background:#edf2f6; display:flex; align-items:center; justify-content:center; padding:45px 30px;">
-                    <?php if(has_post_thumbnail()): ?>
-                        <?php the_post_thumbnail('large', ['style' => 'width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 15px 25px rgba(0,0,0,0.15)); transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);', 'class' => 'works-img']); ?>
-                    <?php else: ?>
-                        <!-- カスタムプレースホルダー -->
-                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:rgba(145,166,180,0.1);" class="works-img">
-                            WORKS
+                <!-- Upper Flex Area: Image on Left, Details on Right -->
+                <div style="display:flex; gap:25px; margin-bottom:25px; align-items:flex-start;">
+                    
+                    <!-- Left: Compact Image Container -->
+                    <div class="img-wrapper" style="width:140px; flex-shrink:0; border-radius:12px; overflow:hidden; position:relative; aspect-ratio: 5/6; background:#edf2f6; display:flex; align-items:center; justify-content:center; padding:15px;">
+                        <?php if(has_post_thumbnail()): ?>
+                            <?php the_post_thumbnail('medium', ['style' => 'width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.15)); transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);', 'class' => 'works-img']); ?>
+                        <?php else: ?>
+                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1rem; font-weight:bold; background:rgba(145,166,180,0.1);" class="works-img">
+                                NO IMAGE
+                            </div>
+                        <?php endif; ?>
+                        <style>
+                            .gsap-works-card:hover .works-img { transform: translateY(-5px) scale(1.05); }
+                        </style>
+                    </div>
+
+                    <!-- Right: Info Area (Badge, Date, Title) -->
+                    <div style="flex-grow:1; display:flex; flex-direction:column; padding-top:10px;">
+                        <div class="work-meta" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                            <span style="font-size:0.8rem; background:#e53935; color:#ffffff; padding:5px 16px; border-radius:30px; font-weight:bold; letter-spacing:0.05em; display:inline-block;">
+                                <?php echo $cat_name; ?>
+                            </span>
+                            <span style="font-size:0.85rem; color:#50575e; font-weight:bold; font-family:'Courier New', monospace; letter-spacing:0.1em; line-height:2.2;">
+                                <?php echo get_the_date('Y.m.d'); ?>
+                            </span>
                         </div>
-                    <?php endif; ?>
-                    <style>
-                        .gsap-works-card:hover .works-img { transform: translateY(-5px) scale(1.05); }
-                    </style>
+                        <h3 style="font-size:1.3rem; font-weight:800; color:#1c2541; margin:0; line-height:1.5; text-align:left;"><?php the_title(); ?></h3>
+                    </div>
                 </div>
-
-                <div class="work-meta" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding:0 5px;">
-                    <span style="font-size:0.85rem; background:#e53935; color:#ffffff; padding:6px 20px; border-radius:30px; font-weight:bold; letter-spacing:0.05em; display:inline-block;">
-                        <?php echo $cat_name; ?>
-                    </span>
-                    <span style="font-size:0.9rem; color:#50575e; font-weight:bold; font-family:'Courier New', monospace; letter-spacing:0.1em;">
-                        <?php echo get_the_date('Y.m.d'); ?>
-                    </span>
-                </div>
-
-                <h3 style="font-size:1.6rem; font-weight:800; color:#91a6b4; margin:0 0 25px; line-height:1.4; text-align:left; padding:0 5px;"><?php the_title(); ?></h3>
                 
-                <div style="padding:0 5px;">
-                    <div style="display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:1rem; font-weight:bold; color:#ffffff; background:#e53935; border-radius:6px; padding:12px 30px; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);" class="read-more-btn">
+                <!-- Bottom Area: Read More CTA -->
+                <div style="display:block; width:100%;">
+                    <div style="display:flex; align-items:center; justify-content:center; gap:8px; font-size:1rem; font-weight:bold; color:#ffffff; background:#e53935; border-radius:8px; padding:14px 30px; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); width:100%; text-align:center;" class="read-more-btn">
                         詳しく見る <span style="font-size:1.2rem; transition:transform 0.3s;" class="arrow">&rarr;</span>
                     </div>
                 </div>
