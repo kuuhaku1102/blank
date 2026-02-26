@@ -2,16 +2,8 @@
 
 <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
-<!-- Clean Tech CSS Background for Works Single -->
-<div style="position:fixed; top:0; left:0; width:100%; height:100%; background-color:#fafcff; z-index:-1; pointer-events:none;">
-    <!-- Subtle Blueprint Grid -->
-    <div style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0.6; background-image: linear-gradient(rgba(145, 166, 180, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(145, 166, 180, 0.06) 1px, transparent 1px); background-size: 30px 30px;"></div>
-    <div style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0.4; background-image: linear-gradient(rgba(26, 86, 219, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(26, 86, 219, 0.04) 1px, transparent 1px); background-size: 150px 150px;"></div>
-    
-    <!-- Subtle Glowing Orbs -->
-    <div style="position:absolute; top:-10%; left:-10%; width:50%; height:50%; background:radial-gradient(circle, rgba(26,86,219,0.03) 0%, rgba(255,255,255,0) 70%); border-radius:50%; filter:blur(60px);"></div>
-    <div style="position:absolute; bottom:-10%; right:-10%; width:60%; height:60%; background:radial-gradient(circle, rgba(145,166,180,0.05) 0%, rgba(255,255,255,0) 70%); border-radius:50%; filter:blur(60px);"></div>
-</div>
+<!-- Clean Abstract Background for Works Single -->
+<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#fafcff; z-index:-1; pointer-events:none;"></div>
 
 <main style="background: transparent; position:relative; overflow:hidden; padding: 120px 0;">
     <div class="container" style="position:relative; z-index:2; max-width: 1100px;">
