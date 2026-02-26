@@ -231,7 +231,8 @@
                                 $schema = json_decode($schema_json, true);
                                 if(isset($schema['tabs']['industry']['groups'])) {
                                     foreach($schema['tabs']['industry']['groups'] as $group) {
-                                        if(isset($group['label']) && $group['label'] === '業界' && isset($group['fields'])) {
+                                        $label = $group['label'] ?? ($group['title'] ?? '');
+                                        if(($label === '業界' || $label === '用途') && isset($group['fields'])) {
                                             foreach($group['fields'] as $field) {
                                                 if(in_array($field['id'], $selected_features)) {
                                                     $industry_tags[] = $field['label'];
