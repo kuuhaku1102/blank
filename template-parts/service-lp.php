@@ -148,16 +148,25 @@
                     <div class="swiper-wrapper">
                         <?php while($lp_works_query->have_posts()): $lp_works_query->the_post(); ?>
                         <div class="swiper-slide">
-                            <a href="<?php the_permalink(); ?>" style="display:block; text-decoration:none; background:rgba(255,255,255,0.05); border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); transition:transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                <div style="width:100%; aspect-ratio:16/10; overflow:hidden; background:#000; position:relative;">
-                                    <?php if(has_post_thumbnail()): ?>
-                                        <?php the_post_thumbnail('medium_large', ['style' => 'width:100%; height:100%; object-fit:cover; opacity:0.85; transition:opacity 0.3s;', 'class' => 'lp-works-img']); ?>
-                                    <?php else: ?>
-                                        <div style="width:100%; height:100%; background:rgba(255,255,255,0.05);"></div>
-                                    <?php endif; ?>
-                                </div>
-                                <div style="padding:15px; text-align:left;">
-                                    <h4 style="color:white; font-size:1.05rem; font-weight:bold; margin:0; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;"><?php the_title(); ?></h4>
+                            <a href="<?php the_permalink(); ?>" style="display:block; text-decoration:none; background:rgba(255,255,255,0.05); border-radius:12px; padding:20px; border:1px solid rgba(255,255,255,0.1); transition:transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                                <div style="display:flex; gap:15px; align-items:flex-start;">
+                                    <div style="width: 100px; flex-shrink: 0; border-radius: 8px; overflow: hidden; aspect-ratio: 5/6; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 10px;">
+                                        <?php if(has_post_thumbnail()): ?>
+                                            <?php the_post_thumbnail('thumbnail', ['style' => 'width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 5px 10px rgba(0,0,0,0.3));', 'class' => 'lp-works-img']); ?>
+                                        <?php else: ?>
+                                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.3); font-size:0.8rem; font-weight:bold;">NO IMG</div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div style="flex-grow:1; display:flex; flex-direction:column;">
+                                        <div style="font-size:0.75rem; color:#ffcc80; font-weight:bold; font-family:'Courier New', monospace; margin-bottom:8px;">
+                                            <?php echo get_the_date('Y.m.d'); ?>
+                                        </div>
+                                        <h4 style="color:white; font-size:1.05rem; font-weight:bold; margin:0 0 10px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-align:left;"><?php the_title(); ?></h4>
+                                        <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                                            <span style="font-size:0.65rem; background:rgba(229,57,53,0.2); color:#ff5252; border:1px solid rgba(229,57,53,0.3); padding:2px 6px; border-radius:4px; font-weight:bold;">LP制作</span>
+                                            <!-- Additional tags can be loaded dynamically if needed -->
+                                        </div>
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -170,12 +179,12 @@
                 document.addEventListener('DOMContentLoaded', function() {
                     if (typeof Swiper !== 'undefined') {
                         const swiper = new Swiper('.lp-works-swiper', {
-                            slidesPerView: 1.2,
-                            spaceBetween: 20,
+                            slidesPerView: 1.1,
+                            spaceBetween: 15,
                             centeredSlides: true,
                             loop: true,
                             autoplay: {
-                                delay: 3500,
+                                delay: 3000,
                                 disableOnInteraction: false,
                             },
                             pagination: {
@@ -183,8 +192,8 @@
                                 clickable: true,
                             },
                             breakpoints: {
-                                640: { slidesPerView: 2, spaceBetween: 20, centeredSlides: false },
-                                1024: { slidesPerView: 3, spaceBetween: 30, centeredSlides: false },
+                                640: { slidesPerView: 2.2, spaceBetween: 20, centeredSlides: false },
+                                1024: { slidesPerView: 3.2, spaceBetween: 25, centeredSlides: false },
                             }
                         });
                     }
@@ -193,7 +202,8 @@
                 <style>
                     .lp-works-swiper .swiper-pagination-bullet { background: rgba(255,255,255,0.5); opacity:1; }
                     .lp-works-swiper .swiper-pagination-bullet-active { background: #e53935; }
-                    .lp-works-img:hover { opacity:1 !important; transform:scale(1.05) !important; }
+                    .lp-works-img { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+                    .swiper-slide a:hover .lp-works-img { transform: scale(1.1); }
                 </style>
                 <?php endif; ?>
             </div>
