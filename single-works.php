@@ -2,57 +2,70 @@
 
 <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
-<!-- Three.js Background Canvas (Shared for Works Single) -->
-<canvas id="three-canvas-works-single" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none;"></canvas>
+<!-- Clean Abstract Background for Works Single -->
+<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#fafcff; z-index:-1; pointer-events:none;"></div>
 
-<!-- Animated Gradient Background for Header -->
-<div class="page-header" style="position:relative; background:transparent; color:var(--primary-color); padding:150px 0 80px; text-align:center; overflow:hidden;">
-    <div class="container" style="position:relative; z-index:1; max-width: 900px;">
-        <div class="gsap-meta" style="margin-bottom:25px;">
-            <span style="font-size:0.9rem; background:rgba(28,37,65,0.05); border:1px solid rgba(28,37,65,0.1); color:var(--primary-color); padding:8px 30px; border-radius:30px; font-weight:bold; letter-spacing:0.1em; display:inline-flex; align-items:center; gap:10px;">
-                <span style="width:10px; height:10px; background:var(--highlight-color); border-radius:50%; box-shadow:0 0 10px var(--highlight-color); display:inline-block; animation: pulseRed 2s infinite;"></span>
-                PROJECT STATUS: SHIPPED
-            </span>
-            <style>@keyframes pulseRed { 0% { transform: scale(1); opacity:1; } 50% { transform: scale(1.5); opacity:0.5; box-shadow:0 0 20px var(--highlight-color); } 100% { transform: scale(1); opacity:1; } }</style>
-        </div>
-
-        <h1 class="gsap-title" style="font-size: 3.5rem; font-weight: 900; line-height: 1.3; margin-bottom: 30px; color:var(--primary-color); word-break: break-word;"><?php the_title(); ?></h1>
+<main style="background: transparent; position:relative; overflow:hidden; padding: 120px 0;">
+    <div class="container" style="position:relative; z-index:2; max-width: 1100px;">
         
-        <div class="gsap-cats" style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
-            <?php 
-            $terms = get_the_terms($post->ID, 'work_cat'); 
-            if($terms): foreach($terms as $term): ?>
-                <span style="font-size:0.95rem; background:var(--primary-color); color:var(--white); padding:5px 20px; border-radius:30px; font-weight:bold; letter-spacing:0.05em;"><?php echo esc_html($term->name); ?></span>
-            <?php endforeach; endif; ?>
-        </div>
-    </div>
-</div>
-
-<main style="background: transparent; position:relative; overflow:hidden; padding-bottom: 120px;">
-    
-    <!-- Central Tech Line scrub animation specifically for single -->
-    <div style="position: absolute; left: 15%; top: 0; bottom: 0; width: 1px; background: rgba(145,166,180,0.2); z-index: 0;" class="tech-line-bg d-none d-md-block"></div>
-    <div style="position: absolute; left: 15%; top: 0; height: 100%; width: 3px; background: linear-gradient(to bottom, var(--highlight-color), var(--accent-color)); transform: scaleY(0); transform-origin: top; z-index: 1;" class="tech-line-progress d-none d-md-block"></div>
-    <style>
-        @media (max-width: 991px) {
-            .tech-line-bg, .tech-line-progress { display: none; }
-        }
-    </style>
-
-    <div class="container" style="position:relative; z-index:2; max-width: 1000px;">
-        
-        <div class="gsap-feature-img" style="text-align:center; margin-bottom:80px;">
-            <?php if( has_post_thumbnail() ): ?>
-                <div style="border-radius:24px; overflow:hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.4); display:inline-block; position:relative;">
-                    <?php the_post_thumbnail('full', array('style'=>'max-width:100%; height:auto; display:block; transition:transform 0.5s ease;', 'class'=>'work-single-img')); ?>
-                    <div style="position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%); pointer-events:none; z-index:1;"></div>
-                </div>
-            <?php endif; ?>
+        <!-- Breadcrumbs (Simplified) -->
+        <div style="font-size:0.9rem; color:#91a6b4; margin-bottom: 40px;">
+            <a href="<?php echo home_url(); ?>" style="color:inherit; text-decoration:none;">Home</a> &raquo; 
+            <a href="<?php echo get_post_type_archive_link('works'); ?>" style="color:inherit; text-decoration:none;">制作実績</a> &raquo; 
+            <strong style="color:var(--primary-color);"><?php the_title(); ?></strong>
         </div>
 
-        <article class="work-single-article" style="position:relative;">
+        <!-- 1. Top Section: Image (Left) + Details (Right) -->
+        <div class="works-single-header" style="display:flex; flex-wrap:wrap; gap:60px; margin-bottom:80px; align-items:flex-start;">
             
-            <div class="gsap-work-section" style="display:flex; flex-wrap:wrap; gap:40px; margin-bottom:80px; background:rgba(255,255,255,0.85); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); padding:50px; border-radius:20px; box-shadow:0 15px 40px rgba(0,0,0,0.04); border-top: 5px solid var(--accent-color); border: 1px solid rgba(0,0,0,0.05);">
+            <!-- Left: Feature Image (Mobile Mockup style) -->
+            <div class="gsap-feature-img" style="flex: 0 0 320px; text-align:center;">
+                <?php if( has_post_thumbnail() ): ?>
+                    <div style="border-radius:30px; overflow:hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1); background:#fff; padding:10px; border: 1px solid rgba(145,166,180,0.2);">
+                        <?php the_post_thumbnail('full', array('style'=>'width:100%; height:auto; display:block; border-radius:24px;', 'class'=>'work-single-img')); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <!-- Right: Title, Meta, and Buttons -->
+            <div class="gsap-work-info" style="flex: 1; min-width: 300px; padding-top:20px;">
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid rgba(145,166,180,0.2); padding-bottom:15px;">
+                    <!-- Categories -->
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <?php 
+                        $terms = get_the_terms($post->ID, 'work_cat'); 
+                        if($terms): foreach($terms as $term): ?>
+                            <span style="font-size:0.85rem; background:#f0f4f8; color:#1c2541; border:1px solid #e1e8f0; padding:6px 16px; border-radius:30px; font-weight:bold;"><?php echo esc_html($term->name); ?></span>
+                        <?php endforeach; endif; ?>
+                    </div>
+                    <!-- Date -->
+                    <div style="font-size:0.95rem; color:#91a6b4; font-weight:bold;">
+                        <?php echo get_the_date('Y年n月j日'); ?>
+                    </div>
+                </div>
+
+                <h1 class="gsap-title" style="font-size: 2.5rem; font-weight: 800; line-height: 1.4; margin-bottom: 40px; color:var(--primary-color);"><?php the_title(); ?></h1>
+                
+                <!-- Tag area below title (if needed) -->
+                <div style="margin-bottom:40px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <!-- Additional generic tags could go here based on mockup -->
+                </div>
+
+                <!-- CTA Buttons -->
+                <div style="display:flex; gap:15px; flex-wrap:wrap;">
+                    <?php $works_url = get_post_meta( $post->ID, 'works_url', true ); ?>
+                    <?php if($works_url): ?>
+                        <a href="<?php echo esc_url($works_url); ?>" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:center; font-weight:bold; color:var(--white); background:var(--primary-color); padding:15px 35px; border-radius:8px; text-decoration:none; font-size:1rem; transition:background 0.3s ease;">
+                            サイトを見る
+                        </a>
+                    <?php endif; ?>
+                    <a href="<?php echo home_url('/contact'); ?>" style="display:inline-flex; align-items:center; justify-content:center; font-weight:bold; color:var(--primary-color); background:#ffffff; border:1px solid #d1d9e0; padding:15px 35px; border-radius:8px; text-decoration:none; font-size:1rem; transition:border-color 0.3s ease;" onmouseover="this.style.borderColor='var(--primary-color)';" onmouseout="this.style.borderColor='#d1d9e0';">
+                        制作のご相談
+                    </a>
+                </div>
+            </div>
+        </div>
                 
                 <!-- KPI Dashboard Style Output -->
                 <div style="flex:1; min-width:300px; display:flex; flex-direction:column; gap:25px;">
@@ -75,89 +88,71 @@
                     </div>
                 </div>
 
-                <!-- High-tech Score Card -->
-                <div style="flex:1; min-width:300px;">
-                    <div style="background:var(--primary-color); color:var(--white); padding:40px; border-radius:16px; box-shadow:0 20px 40px rgba(28,37,65,0.2); height:100%; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden;">
-                        <!-- SVG circuit line -->
-                        <svg style="position:absolute; right:0; top:0; height:100%; opacity:0.1;" viewBox="0 0 100 200" preserveAspectRatio="none">
-                            <path d="M100,0 L50,0 L50,50 L20,50 L20,100 L0,100 L0,150 L30,150 L30,200 L100,200 Z" fill="none" stroke="var(--white)" stroke-width="2"/>
-                        </svg>
-                        
-                        <h3 style="font-size:1.1rem; color:rgba(255,255,255,0.7); font-weight:800; letter-spacing:0.15em; margin-bottom:15px; position:relative; z-index:1;">RESULTS / ACHIEVED</h3>
-                        <p style="font-size:2rem; font-weight:900; line-height:1.4; color:var(--white); margin:0; position:relative; z-index:1;">
-                            <?php echo nl2br(esc_html(get_post_meta($post->ID, 'result', true) ?: '未入力')); ?>
-                        </p>
-                        
-                        <div style="margin-top:30px; pt-top:20px; border-top:1px dashed rgba(255,255,255,0.2); position:relative; z-index:1;">
-                            <h3 style="font-size:0.9rem; color:rgba(255,255,255,0.7); font-weight:800; letter-spacing:0.1em; margin:15px 0 10px;">SCOPE OF WORK</h3>
-                            <p style="font-size:1.1rem; color:var(--white); font-weight:bold; margin:0;">
-                                <?php echo esc_html(get_post_meta($post->ID, 'scope', true) ?: '要件定義 / デザイン / システム構成 / 保守'); ?>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <article class="work-single-article" style="position:relative; border-top: 1px solid #e1e8f0; padding-top:60px;">
 
+            <!-- 2. Implementation Features (Using JSON Schema Groups) -->
             <?php 
             $selected_features = get_post_meta( $post->ID, 'works_features', true ) ?: [];
-            $works_url = get_post_meta( $post->ID, 'works_url', true );
-            if(!empty($selected_features) || !empty($works_url)): 
+            if(!empty($selected_features)): 
+                // Load schema to group selected features
                 $schema_json = get_option('blank_works_schema');
                 if(!$schema_json && function_exists('blank_works_get_default_schema')) {
                     $schema_json = blank_works_get_default_schema();
                 }
                 $schema = json_decode($schema_json, true) ?: [];
                 
-                // create a map of id -> label from schema
-                $feature_map = [];
+                $grouped_features = [];
                 if(isset($schema['tabs'])) {
                     foreach($schema['tabs'] as $tab) {
                         if(isset($tab['groups'])) {
                             foreach($tab['groups'] as $group) {
+                                $group_title = $group['title'];
+                                $group_matches = [];
                                 if(isset($group['fields'])) {
                                     foreach($group['fields'] as $field) {
-                                        $feature_map[$field['id']] = $field['label'];
+                                        if(in_array($field['id'], $selected_features)) {
+                                            $group_matches[] = $field['label'];
+                                        }
                                     }
+                                }
+                                if(!empty($group_matches)) {
+                                    $grouped_features[$group_title] = $group_matches;
                                 }
                             }
                         }
                     }
                 }
-            ?>
-            <!-- Tech Specs & Features Matrix -->
-            <div class="gsap-work-section" style="margin-bottom:80px; background:rgba(28, 37, 65, 0.95); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-radius:20px; padding:50px; color:var(--white); box-shadow:0 15px 40px rgba(0,0,0,0.1); border-left:4px solid var(--highlight-color);">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:20px; margin-bottom:30px;">
-                    <h3 style="font-size:1.4rem; color:var(--white); font-weight:800; letter-spacing:0.1em; margin:0; display:flex; align-items:center; gap:10px;">
-                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                        TECH SPECS / FEATURES
-                    </h3>
-                    <?php if($works_url): ?>
-                    <a href="<?php echo esc_url($works_url); ?>" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; font-weight:bold; color:var(--white); background:var(--highlight-color); padding:10px 25px; border-radius:30px; text-decoration:none; font-size:0.95rem; transition:transform 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
-                        Launch Site <span style="font-size:1.2rem;">&nearr;</span>
-                    </a>
-                    <?php endif; ?>
-                </div>
-                
-                <?php if(!empty($selected_features)): ?>
-                <div style="display:flex; flex-wrap:wrap; gap:12px;">
-                    <?php foreach($selected_features as $fid): 
-                        if(isset($feature_map[$fid])):
-                    ?>
-                    <span style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); padding:8px 20px; border-radius:8px; font-size:0.95rem; font-weight:bold; color:var(--white);">
-                        <span style="color:var(--highlight-color); margin-right:5px;">✓</span> <?php echo esc_html($feature_map[$fid]); ?>
-                    </span>
-                    <?php endif; endforeach; ?>
-                </div>
-                <?php endif; ?>
-            </div>
-            <?php endif; ?>
 
-            <!-- Main Content Area -->
-            <div class="gsap-work-section contentArea" style="background:rgba(255,255,255,0.95); padding:60px; border-radius:20px; box-shadow:0 15px 40px rgba(0,0,0,0.03); border:1px solid rgba(0,0,0,0.05); line-height: 2.2; font-size:1.15rem; color:var(--primary-color);">
-                <?php the_content(); ?>
+                if(!empty($grouped_features)):
+            ?>
+            <div class="gsap-work-section feature-blocks" style="margin-bottom:80px;">
+                <h2 style="font-size:1.4rem; font-weight:bold; color:var(--primary-color); margin-bottom:30px; display:flex; align-items:center;">
+                    実装機能
+                </h2>
                 
+                <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:20px;">
+                    <?php foreach($grouped_features as $group_name => $features): ?>
+                        <div style="background:#ffffff; border:1px solid #e1e8f0; border-radius:12px; padding:25px; box-shadow:0 5px 15px rgba(0,0,0,0.02);">
+                            <h3 style="font-size:1.1rem; color:#1a56db; font-weight:bold; margin:0 0 20px;"><?php echo esc_html($group_name); ?></h3>
+                            <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                                <?php foreach($features as $f): ?>
+                                    <span style="font-size:0.9rem; color:#1c2541; background:#f8fafc; border:1px solid #e2e8f0; padding:6px 16px; border-radius:30px; font-weight:500;">
+                                        <?php echo esc_html($f); ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endif; endif; ?>
+
+            <!-- Main Content Area (Optional if user adds content in editor) -->
+            <?php if(trim(get_the_content())): ?>
+            <div class="gsap-work-section contentArea" style="margin-bottom:80px; font-size:1.1rem; color:#4a5568; line-height:2.0;">
+                <?php the_content(); ?>
                 <style>
-                    /* Custom styles for content to make it look tech-heavy and structured */
+                    /* Clean typography for content */
                     .work-single-article .contentArea h2 { font-size: 1.8rem; color: var(--primary-color); border-bottom: 2px solid rgba(145,166,180,0.2); padding-bottom: 15px; margin: 60px 0 30px; font-weight: 800; display:flex; align-items:center; gap:15px; }
                     .work-single-article .contentArea h2::before { content: "//"; font-family: 'Courier New', monospace; color: var(--highlight-color); font-size:1.4rem; font-weight:bold; }
                     .work-single-article .contentArea h3 { font-size: 1.5rem; color: var(--primary-color); margin: 40px 0 20px; font-weight: 700; border-left: 4px solid var(--accent-color); padding-left: 15px; }
@@ -202,103 +197,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 trigger: section,
                 start: "top 85%"
             },
-            y: 50,
+            y: 30,
             opacity: 0,
-            duration: 1.2,
+            duration: 1.0,
             ease: "power3.out"
         });
     });
-
-    // Dynamic Central Tech Line Animation scrubbed via scroll
-    if (document.querySelector('.tech-line-progress')) {
-        gsap.to(".tech-line-progress", {
-            scaleY: 1,
-            ease: "none",
-            scrollTrigger: {
-                trigger: "main",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: true
-            }
-        });
-    }
-
-    // Three.js Abstract Blueprint Data Core
-    const canvas = document.getElementById('three-canvas-works-single');
-    if(canvas) {
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2('#f8f9fa', 0.003); 
-
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 80;
-        
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        const group = new THREE.Group();
-        scene.add(group);
-
-        // Core data structure: highly detailed wireframe cylinder simulating logic flows
-        const geometry = new THREE.CylinderGeometry(20, 20, 100, 32, 10, true);
-        const material = new THREE.MeshBasicMaterial({
-            color: '#91a6b4',
-            wireframe: true,
-            transparent: true,
-            opacity: 0.15
-        });
-
-        // Add 3 interlocking rotating tubes
-        for(let i=0; i<3; i++) {
-            const tube = new THREE.Mesh(geometry, material);
-            tube.scale.set(1 + i*0.5, 1, 1 + i*0.5);
-            
-            // Randomly flip orientations
-            tube.rotation.x = Math.random() * Math.PI;
-            tube.userData = {
-                rx: (Math.random() - 0.5) * 0.005,
-                ry: (Math.random() - 0.5) * 0.005
-            };
-            group.add(tube);
-        }
-
-        // Add a single bright core line
-        const coreLineGeo = new THREE.CylinderGeometry(0.5, 0.5, 200, 8);
-        const coreLineMat = new THREE.MeshBasicMaterial({ color: '#e53935' });
-        const coreLine = new THREE.Mesh(coreLineGeo, coreLineMat);
-        group.add(coreLine);
-
-        let mouseX = 0, mouseY = 0;
-        document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.05;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.05;
-        });
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Rotate outer tubes
-            group.children.forEach(mesh => {
-                if(mesh.userData.rx) {
-                    mesh.rotation.x += mesh.userData.rx;
-                    mesh.rotation.y += mesh.userData.ry;
-                }
-            });
-
-            // Parallax tracking
-            camera.position.x += (mouseX - camera.position.x) * 0.02;
-            camera.position.y += (-mouseY - camera.position.y) * 0.02;
-            camera.lookAt(scene.position);
-
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    }
 });
 </script>
 
