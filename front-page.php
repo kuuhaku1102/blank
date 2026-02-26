@@ -203,15 +203,34 @@
                         <?php endif; ?>
                     </div>
                     <div style="flex-grow:1; display:flex; flex-direction:column; padding-top:5px;">
-                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-                            <span style="font-size:0.75rem; background:#e53935; color:#ffffff; padding:4px 12px; border-radius:30px; font-weight:bold; letter-spacing:0.05em;">
-                                <?php $terms = get_the_terms($post->ID, 'work_cat'); echo $terms ? esc_html($terms[0]->name) : '実績'; ?>
-                            </span>
-                            <span style="font-size:0.8rem; color:#50575e; font-weight:bold; font-family:'Courier New', monospace;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <span style="font-size:0.8rem; color:#91a6b4; font-weight:bold; font-family:'Courier New', monospace;">
                                 <?php echo get_the_date('Y.m.d'); ?>
                             </span>
                         </div>
-                        <h3 style="font-size:1.25rem; font-weight:800; color:#1c2541; margin:0; line-height:1.4; text-align:left;"><?php the_title(); ?></h3>
+                        <h3 style="font-size:1.15rem; font-weight:800; color:#1c2541; margin:0 0 12px; line-height:1.4; text-align:left;"><?php the_title(); ?></h3>
+                        
+                        <!-- 業種 & 制作範囲 タグ -->
+                        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                            <?php 
+                            // 業種 (Category)
+                            $terms = get_the_terms($post->ID, 'work_cat'); 
+                            if($terms): foreach($terms as $term): ?>
+                                <span style="font-size:0.7rem; background:#ffebee; color:#c62828; border:1px solid #ffcdd2; padding:3px 8px; border-radius:4px; font-weight:bold; white-space:nowrap;">
+                                    <?php echo esc_html($term->name); ?>
+                                </span>
+                            <?php endforeach; endif; ?>
+                            
+                            <?php 
+                            // 制作範囲 (Scope)
+                            $scope = get_post_meta( $post->ID, 'scope', true ) ?: [];
+                            if (!is_array($scope)) $scope = [];
+                            foreach($scope as $s): ?>
+                                <span style="font-size:0.7rem; background:#f0f4f8; color:#4a5568; border:1px solid #e2e8f0; padding:3px 8px; border-radius:4px; font-weight:bold; white-space:nowrap;">
+                                    <?php echo esc_html($s); ?>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
                 <div style="display:block; width:100%;">
@@ -235,8 +254,16 @@
                             <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1rem; font-weight:bold;">WORK <?php echo $i; ?></div>
                         </div>
                         <div style="flex-grow:1; display:flex; flex-direction:column; padding-top:5px;">
-                            <span style="font-size:0.75rem; background:#e53935; color:#ffffff; padding:4px 12px; border-radius:30px; font-weight:bold; align-self:flex-start; margin-bottom:10px;">LP制作</span>
-                            <h3 style="font-size:1.25rem; font-weight:800; color:#1c2541; margin:0; line-height:1.4;">Sample Work <?php echo $i; ?></h3>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <span style="font-size:0.8rem; color:#91a6b4; font-weight:bold; font-family:'Courier New', monospace;">
+                                    2024.01.01
+                                </span>
+                            </div>
+                            <h3 style="font-size:1.15rem; font-weight:800; color:#1c2541; margin:0 0 12px; line-height:1.4; text-align:left;">Sample Work <?php echo $i; ?></h3>
+                            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                                <span style="font-size:0.7rem; background:#ffebee; color:#c62828; border:1px solid #ffcdd2; padding:3px 8px; border-radius:4px; font-weight:bold; white-space:nowrap;">LP制作</span>
+                                <span style="font-size:0.7rem; background:#f0f4f8; color:#4a5568; border:1px solid #e2e8f0; padding:3px 8px; border-radius:4px; font-weight:bold; white-space:nowrap;">デザイン構築</span>
+                            </div>
                         </div>
                     </div>
                     <div class="marquee-btn">詳しく見る <span class="arrow">&rarr;</span></div>
