@@ -206,8 +206,8 @@
     </section>
 
     <!-- Generic Contact Footer attached inside the layout -->
-    <section class="contact-section" style="padding:140px 0; background:var(--secondary-color); text-align:center; color:var(--white);">
-        <div class="container fade-up">
+    <section class="contact-section" style="padding:140px 0; background:var(--secondary-color); text-align:center; color:var(--white); position:relative; z-index:2;">
+        <div class="container">
             <h2 style="font-size: 2.5rem; color:var(--white); margin-bottom: 25px; font-weight:700;">CVRを即効で引き上げませんか？</h2>
             <p style="margin-bottom: 50px; color:rgba(255,255,255,0.8); font-size:1.15rem; line-height:1.8;">既存LPの無料診断や、成果が出るLP改善・新規構築の構想から<br>専門のマーケター・エンジニアが直接ご提案いたします。</p>
             <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="cta-btn" style="font-size: 1.25rem; padding: 20px 60px; background:#e53935; color:white; border:none;">無料相談・LP診断へ進む</a>

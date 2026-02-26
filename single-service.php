@@ -272,8 +272,8 @@ $is_lp_service = (strpos($t_slug, 'lp') !== false || strpos($t_title, 'LP') !== 
     </section>
 
     <!-- Generic Contact Footer attached inside the layout -->
-    <section class="contact-section" style="padding:140px 0; background:var(--secondary-color); text-align:center; color:var(--white);">
-        <div class="container fade-up">
+    <section class="contact-section" style="padding:140px 0; background:var(--secondary-color); text-align:center; color:var(--white); position:relative; z-index:2;">
+        <div class="container">
             <h2 style="font-size: 2.5rem; color:var(--white); margin-bottom: 25px; font-weight:700;">ビジネスをデジタルで加速させませんか？</h2>
             <p style="margin-bottom: 50px; color:rgba(255,255,255,0.8); font-size:1.15rem; line-height:1.8;">新規サイト構築のご相談、予算に合わせたお見積りなど<br>些細なことでもお気軽にお問い合わせください。専門のコンサルタントが伴走いたします。</p>
             <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="cta-btn" style="font-size: 1.25rem; padding: 20px 60px; background:#e53935; color:white; border:none;">無料相談・お問い合わせへ進む</a>
@@ -316,8 +316,8 @@ $is_lp_service = (strpos($t_slug, 'lp') !== false || strpos($t_title, 'LP') !== 
     </div>
 
     <!-- Contact -->
-    <section class="contact-section" style="padding:140px 0; background:var(--secondary-color); text-align:center; color:var(--white);">
-        <div class="container fade-up">
+    <section class="contact-section" style="padding:140px 0; background:var(--secondary-color); text-align:center; color:var(--white); position:relative; z-index:2;">
+        <div class="container">
             <h2 style="font-size: 2.5rem; color:var(--white); margin-bottom: 25px; font-weight:700;">ビジネスを加速させませんか？</h2>
             <p style="margin-bottom: 50px; color:rgba(255,255,255,0.8); font-size:1.15rem; line-height:1.8;">新規プロジェクトのご相談、お見積り、DX推進に関するお悩みなど<br>些細なことでもお気軽にお問い合わせください。</p>
             <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="cta-btn" style="font-size: 1.25rem; padding: 20px 60px;">無料相談・お問い合わせフォームへ</a>
