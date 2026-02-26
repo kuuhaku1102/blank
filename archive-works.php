@@ -34,7 +34,7 @@
                 $terms = get_the_terms($post->ID, 'work_cat'); 
                 $cat_name = $terms ? esc_html($terms[0]->name) : '実績';
             ?>
-            <a href="<?php the_permalink(); ?>" class="gsap-works-card" style="display:block; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; transition:all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(11,19,43,0.8); padding:25px; position:relative;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+            <a href="<?php the_permalink(); ?>" class="gsap-works-card" style="display:block; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                 
                 <div class="img-wrapper" style="border-radius:12px; overflow:hidden; margin-bottom:25px; position:relative; aspect-ratio: 5/6; background:#edf2f6; display:flex; align-items:center; justify-content:center; padding:45px 30px;">
                     <?php if(has_post_thumbnail()): ?>
