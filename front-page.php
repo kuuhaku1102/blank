@@ -224,24 +224,26 @@
                                 }
                             }
                             
-                            // 2. JSON Schema (works_features) - 業界
+                            // 2. JSON Schema (works_features) - 業界・用途
                             $selected_features = get_post_meta( $post->ID, 'works_features', true ) ?: [];
                             if(!empty($selected_features) && function_exists('blank_works_get_default_schema')) {
                                 $schema_json = get_option('blank_works_schema') ?: blank_works_get_default_schema();
-                                $schema = json_decode($schema_json, true);
+                                $schema = json_decode($schema_json, true) ?: [];
+                                
                                 if(isset($schema['tabs']['industry']['groups'])) {
                                     foreach($schema['tabs']['industry']['groups'] as $group) {
-                                        $label = $group['label'] ?? ($group['title'] ?? '');
-                                        if(($label === '業界' || $label === '用途') && isset($group['fields'])) {
+                                        if(isset($group['fields'])) {
                                             foreach($group['fields'] as $field) {
                                                 if(in_array($field['id'], $selected_features)) {
-                                                    $industry_tags[] = $field['label'];
+                                                    $industry_tags[] = $field['label'] ?? '';
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
+                            // Clean up empty tags if any
+                            $industry_tags = array_filter($industry_tags);
                             
                             // Fallback
                             if(empty($industry_tags)) {
