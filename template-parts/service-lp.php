@@ -130,83 +130,85 @@
             
             <p style="font-size: 1.5rem; font-weight:800; color:white; margin:0;">単なる“改善”ではなく、事業インパクトを出します。</p>
             <p style="font-size: 0.85rem; color:rgba(255,255,255,0.6); margin-top:10px; font-weight:bold;">※成果を保証するものではありません。</p>
+        </div>
 
-            <!-- Embedded Swiper CSS & JS -->
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
-            <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+        <!-- Embedded Swiper CSS & JS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-            <div style="margin-top:60px;" class="gsap-fade-up">
-                <?php
-                $args = [
-                    'post_type'      => 'works',
-                    'posts_per_page' => 8,
-                ];
-                $lp_works_query = new WP_Query($args);
-                if($lp_works_query->have_posts()):
-                ?>
-                <div class="swiper lp-works-swiper" style="padding: 20px 0 50px;">
-                    <div class="swiper-wrapper">
-                        <?php while($lp_works_query->have_posts()): $lp_works_query->the_post(); ?>
-                        <div class="swiper-slide">
-                            <a href="<?php the_permalink(); ?>" style="display:block; text-decoration:none; background:rgba(255,255,255,0.05); border-radius:12px; padding:20px; border:1px solid rgba(255,255,255,0.1); transition:transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                <div style="display:flex; gap:15px; align-items:flex-start;">
-                                    <div style="width: 100px; flex-shrink: 0; border-radius: 8px; overflow: hidden; aspect-ratio: 5/6; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 10px;">
-                                        <?php if(has_post_thumbnail()): ?>
-                                            <?php the_post_thumbnail('thumbnail', ['style' => 'width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 5px 10px rgba(0,0,0,0.3));', 'class' => 'lp-works-img']); ?>
-                                        <?php else: ?>
-                                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.3); font-size:0.8rem; font-weight:bold;">NO IMG</div>
-                                        <?php endif; ?>
+        <div class="gsap-fade-up" style="position:relative; z-index:2; margin-top:60px; width:100%;">
+            <?php
+            $args = [
+                'post_type'      => 'works',
+                'posts_per_page' => 8,
+            ];
+            $lp_works_query = new WP_Query($args);
+            if($lp_works_query->have_posts()):
+            ?>
+            <div class="swiper lp-works-swiper" style="padding: 20px 0 60px;">
+                <div class="swiper-wrapper">
+                    <?php while($lp_works_query->have_posts()): $lp_works_query->the_post(); ?>
+                    <div class="swiper-slide">
+                        <a href="<?php the_permalink(); ?>" style="display:block; text-decoration:none; background:#ffffff; border-radius:16px; padding:25px; box-shadow:0 15px 35px rgba(0,0,0,0.2); transition:transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.2)';">
+                            <div style="display:flex; gap:20px; align-items:flex-start;">
+                                <div style="width: 130px; flex-shrink: 0; border-radius: 10px; overflow: hidden; aspect-ratio: 5/6; background: #edf2f6; display: flex; align-items: center; justify-content: center; padding: 15px;">
+                                    <?php if(has_post_thumbnail()): ?>
+                                        <?php the_post_thumbnail('medium', ['style' => 'width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.15));', 'class' => 'lp-works-img']); ?>
+                                    <?php else: ?>
+                                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(11,19,43,0.3); font-size:1rem; font-weight:bold;">NO IMG</div>
+                                    <?php endif; ?>
+                                </div>
+                                <div style="flex-grow:1; display:flex; flex-direction:column;">
+                                    <div style="font-size:0.8rem; color:#91a6b4; font-weight:bold; font-family:'Courier New', monospace; margin-bottom:8px; text-align:left;">
+                                        <?php echo get_the_date('Y.m.d'); ?>
                                     </div>
-                                    <div style="flex-grow:1; display:flex; flex-direction:column;">
-                                        <div style="font-size:0.75rem; color:#ffcc80; font-weight:bold; font-family:'Courier New', monospace; margin-bottom:8px;">
-                                            <?php echo get_the_date('Y.m.d'); ?>
-                                        </div>
-                                        <h4 style="color:white; font-size:1.05rem; font-weight:bold; margin:0 0 10px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-align:left;"><?php the_title(); ?></h4>
-                                        <div style="display:flex; flex-wrap:wrap; gap:4px;">
-                                            <span style="font-size:0.65rem; background:rgba(229,57,53,0.2); color:#ff5252; border:1px solid rgba(229,57,53,0.3); padding:2px 6px; border-radius:4px; font-weight:bold;">LP制作</span>
-                                            <!-- Additional tags can be loaded dynamically if needed -->
-                                        </div>
+                                    <h4 style="color:#1c2541; font-size:1.15rem; font-weight:800; margin:0 0 12px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-align:left;"><?php the_title(); ?></h4>
+                                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                                        <span style="font-size:0.7rem; background:#ffebee; color:#c62828; border:1px solid #ffcdd2; padding:3px 8px; border-radius:4px; font-weight:bold;">LP制作</span>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                        <?php endwhile; wp_reset_postdata(); ?>
+                            </div>
+                        </a>
                     </div>
-                    <!-- Pagination -->
-                    <div class="swiper-pagination"></div>
+                    <?php endwhile; wp_reset_postdata(); ?>
                 </div>
-                <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    if (typeof Swiper !== 'undefined') {
-                        const swiper = new Swiper('.lp-works-swiper', {
-                            slidesPerView: 1.1,
-                            spaceBetween: 15,
-                            centeredSlides: true,
-                            loop: true,
-                            autoplay: {
-                                delay: 3000,
-                                disableOnInteraction: false,
-                            },
-                            pagination: {
-                                el: '.lp-works-swiper .swiper-pagination',
-                                clickable: true,
-                            },
-                            breakpoints: {
-                                640: { slidesPerView: 2.2, spaceBetween: 20, centeredSlides: false },
-                                1024: { slidesPerView: 3.2, spaceBetween: 25, centeredSlides: false },
-                            }
-                        });
-                    }
-                });
-                </script>
-                <style>
-                    .lp-works-swiper .swiper-pagination-bullet { background: rgba(255,255,255,0.5); opacity:1; }
-                    .lp-works-swiper .swiper-pagination-bullet-active { background: #e53935; }
-                    .lp-works-img { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-                    .swiper-slide a:hover .lp-works-img { transform: scale(1.1); }
-                </style>
-                <?php endif; ?>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
             </div>
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof Swiper !== 'undefined') {
+                    const swiper = new Swiper('.lp-works-swiper', {
+                        slidesPerView: 'auto',
+                        spaceBetween: 30,
+                        centeredSlides: true,
+                        loop: true,
+                        autoplay: {
+                            delay: 3500,
+                            disableOnInteraction: false,
+                        },
+                        pagination: {
+                            el: '.lp-works-swiper .swiper-pagination',
+                            clickable: true,
+                        }
+                    });
+                }
+            });
+            </script>
+            <style>
+                .lp-works-swiper .swiper-slide {
+                    width: 380px; 
+                    max-width: 90vw;
+                    height: auto;
+                }
+                .lp-works-swiper .swiper-slide > a { height: 100%; box-sizing: border-box; }
+                .lp-works-swiper .swiper-pagination-bullet { background: rgba(255,255,255,0.5); opacity:1; width:10px; height:10px; }
+                .lp-works-swiper .swiper-pagination-bullet-active { background: #e53935; }
+                .lp-works-img { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+                .swiper-slide a:hover .lp-works-img { transform: translateY(-4px) scale(1.05); }
+            </style>
+            <?php endif; ?>
+        </div>
         </div>
     </section>
 
