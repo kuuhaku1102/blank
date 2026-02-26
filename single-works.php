@@ -4,6 +4,7 @@
 
 <!-- Clean Abstract Background for Works Single -->
 <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#fafcff; z-index:-1; pointer-events:none;"></div>
+<canvas id="three-canvas-works-single" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:0.8;"></canvas>
 
 <main style="background: transparent; position:relative; overflow:hidden; padding: 120px 0;">
     <div class="container" style="position:relative; z-index:2; max-width: 1100px;">
@@ -245,6 +246,127 @@ document.addEventListener("DOMContentLoaded", function() {
             ease: "power3.out"
         });
     });
+
+    // Subtle Tech Background (Three.js Connected Nodes)
+    const canvas = document.getElementById('three-canvas-works-single');
+    if(canvas) {
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2('#fafcff', 0.003);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 120;
+        
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const group = new THREE.Group();
+        scene.add(group);
+
+        const particleCount = 120;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const velocities = [];
+
+        for(let i=0; i<particleCount; i++) {
+            positions[i*3]   = (Math.random() - 0.5) * 350;
+            positions[i*3+1] = (Math.random() - 0.5) * 350;
+            positions[i*3+2] = (Math.random() - 0.5) * 150;
+            velocities.push({
+                x: (Math.random() - 0.5) * 0.15,
+                y: (Math.random() - 0.5) * 0.15,
+                z: (Math.random() - 0.5) * 0.15
+            });
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            color: '#1a56db', // tech blue point
+            size: 1.5,
+            transparent: true,
+            opacity: 0.3
+        });
+        
+        const particles = new THREE.Points(geometry, material);
+        group.add(particles);
+
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: '#91a6b4',
+            transparent: true,
+            opacity: 0.1
+        });
+        
+        const lineGeo = new THREE.BufferGeometry();
+        const lineMesh = new THREE.LineSegments(lineGeo, lineMaterial);
+        group.add(lineMesh);
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.02;     // Subtle reaction
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.02;
+        });
+
+        // Add a very subtle rotating wireframe ring to suggest data processing
+        const ringGeo = new THREE.TorusGeometry(80, 0.1, 16, 100);
+        const ringMat = new THREE.MeshBasicMaterial({ color:'#1a56db', wireframe:true, transparent:true, opacity:0.05 });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = Math.PI / 2;
+        group.add(ring);
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const posAttr = geometry.attributes.position;
+            const positionsArray = posAttr.array;
+
+            // Move particles slowly over time
+            for(let i=0; i<particleCount; i++) {
+                positionsArray[i*3]   += velocities[i].x;
+                positionsArray[i*3+1] += velocities[i].y;
+                positionsArray[i*3+2] += velocities[i].z;
+
+                // Bounce
+                if(Math.abs(positionsArray[i*3]) > 175) velocities[i].x *= -1;
+                if(Math.abs(positionsArray[i*3+1]) > 175) velocities[i].y *= -1;
+                if(Math.abs(positionsArray[i*3+2]) > 75) velocities[i].z *= -1;
+            }
+            posAttr.needsUpdate = true;
+
+            // Calculate connections
+            const linePositions = [];
+            for(let i=0; i<particleCount; i++) {
+                for(let j=i+1; j<particleCount; j++) {
+                    const dx = positionsArray[i*3] - positionsArray[j*3];
+                    const dy = positionsArray[i*3+1] - positionsArray[j*3+1];
+                    const dz = positionsArray[i*3+2] - positionsArray[j*3+2];
+                    const distSq = dx*dx + dy*dy + dz*dz;
+                    
+                    // Connect nearest neighbors within 45 unit threshold
+                    if(distSq < 2025) {
+                        linePositions.push(
+                            positionsArray[i*3], positionsArray[i*3+1], positionsArray[i*3+2],
+                            positionsArray[j*3], positionsArray[j*3+1], positionsArray[j*3+2]
+                        );
+                    }
+                }
+            }
+            lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+
+            ring.rotation.z += 0.001;
+
+            camera.position.x += (mouseX - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    }
 });
 </script>
 
