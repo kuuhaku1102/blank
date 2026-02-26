@@ -315,6 +315,99 @@
     </div>
 </section>
 
+<!-- 5.5. Digital Marketing -->
+<section class="top-marketing section-padding" style="background:#f4f7f9; padding: 120px 0; position:relative; overflow:hidden;">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <div class="container" style="display:flex; flex-wrap:wrap; align-items:center; gap:60px; position:relative; z-index:2;">
+        
+        <!-- Left Text Area -->
+        <div class="fade-up" style="flex:1 1 400px; display:flex; flex-direction:column; justify-content:center;">
+            <div style="border-left: 5px solid #1a56db; padding-left: 20px; margin-bottom: 30px;">
+                <h2 style="font-size: 2.2rem; font-weight: 800; color:var(--primary-color); margin:0; line-height:1.4;">デジタルマーケティング領域</h2>
+            </div>
+            <p style="color:var(--accent-color); font-size:1.1rem; line-height:2; font-weight:bold;">
+                蓄積されたナレッジと最新のノウハウを駆使し、<br>
+                成果創出に向けた導線設計をデータドリブンで最適化します。
+            </p>
+        </div>
+
+        <!-- Right Circular Icons Area -->
+        <div class="fade-in" style="flex:1 1 500px; display:flex; justify-content:center; position:relative; min-height:500px;">
+            <!-- Subtle gradient glow -->
+            <div style="position:absolute; width:450px; height:450px; background:radial-gradient(circle, rgba(229,57,53,0.06) 0%, rgba(229,57,53,0) 60%); top:50%; left:50%; transform:translate(-50%, -50%); pointer-events:none; border-radius:50%;"></div>
+            
+            <div class="marketing-circle-container" style="position:relative; width:480px; height:480px; display:flex; align-items:center; justify-content:center;">
+                <!-- Center Text -->
+                <div style="position:absolute; z-index:10; text-align:center;">
+                    <span style="display:block; color:#1a56db; font-size:1.3rem; font-weight:900; letter-spacing:0.05em; margin-bottom:6px;">Marketing Medias</span>
+                    <span style="display:block; color:#1a56db; font-size:0.95rem; font-weight:bold;">対応可能なメディア</span>
+                </div>
+
+                <!-- Orbit Container -->
+                <div class="orbit-run" style="position:absolute; width:100%; height:100%; animation: spinOrbit 50s linear infinite;">
+                    <?php
+                    $medias = [
+                        ['name' => 'ジモティー', 'icon' => 'mdi:bullhorn', 'color' => '#000000'],
+                        ['name' => 'グノシー', 'icon' => 'icon-park-solid:send', 'color' => '#E53935'],
+                        ['name' => 'メルカリ', 'icon' => 'mdi:alpha-m-box', 'color' => '#e60012'],
+                        ['name' => 'ABEMA', 'icon' => 'mdi:television-classic', 'color' => '#000000'],
+                        ['name' => 'Google', 'icon' => 'logos:google-icon'],
+                        ['name' => 'LINEYahoo', 'icon' => 'none', 'text_logo' => 'LY', 'color' => '#000000'],
+                        ['name' => 'Meta', 'icon' => 'logos:meta-icon'],
+                        ['name' => 'Microsoft', 'icon' => 'logos:microsoft-edge', 'color' => '#0078D7'],
+                        ['name' => 'X', 'icon' => 'ri:twitter-x-fill', 'color' => '#000000'],
+                        ['name' => 'TikTok', 'icon' => 'logos:tiktok-icon'],
+                        ['name' => 'Smart News', 'icon' => 'fluent:news-28-filled', 'color' => '#000']
+                    ];
+                    $total = count($medias);
+                    $radius = 190; 
+                    $center = 240; 
+                    
+                    foreach($medias as $index => $media) {
+                        $angle = ($index / $total) * 2 * pi() - (pi() / 2); // Start from top
+                        $x = $center + $radius * cos($angle) - 40; 
+                        $y = $center + $radius * sin($angle) - 40;
+                        
+                        $icon_color = isset($media['color']) ? 'style="color:'.$media['color'].';"' : '';
+                        
+                        echo '<div class="marketing-node" style="position:absolute; left:'.$x.'px; top:'.$y.'px; width:80px; height:80px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#ffffff; border-radius:50%; box-shadow:0 8px 25px rgba(0,0,0,0.06); animation: spinCounter 50s linear infinite; gap:4px; padding:10px; box-sizing:border-box;">';
+                        
+                        if(isset($media['text_logo'])) {
+                            echo '<span style="font-size:1.4rem; font-weight:900; letter-spacing:-0.1em; line-height:1;" '.$icon_color.'>'.$media['text_logo'].'</span>';
+                        } else {
+                            echo '<iconify-icon icon="'.$media['icon'].'" width="28" height="28" '.$icon_color.'></iconify-icon>';
+                        }
+                        
+                        echo '<span style="font-size:0.5rem; color:#50575e; font-weight:bold; text-align:center; line-height:1.2; word-break:keep-all; transform:scale(0.95);">'.$media['name'].'</span>';
+                        echo '</div>';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+@keyframes spinOrbit {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes spinCounter {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+.marketing-circle-container:hover .orbit-run {
+    animation-play-state: paused;
+}
+.marketing-circle-container:hover .marketing-node {
+    animation-play-state: paused;
+}
+@media (max-width: 768px) {
+    .marketing-circle-container { transform: scale(0.65); transform-origin: center center; }
+}
+</style>
+
 <!-- 6. Case Studies -->
 <section class="top-works section-padding" style="background: rgba(248, 249, 250, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 120px 0; position:relative; overflow:hidden;">
     <!-- Elegant geometric abstract data network for professional tech feel -->
