@@ -72,6 +72,19 @@
                         制作のご相談
                     </a>
                 </div>
+
+                <!-- Problem / Issue -->
+                <?php $issue = get_post_meta($post->ID, 'issue', true); if($issue): ?>
+                <div style="margin-top: 50px; background:#f8fafc; border-left: 4px solid #1a56db; padding: 25px 30px; border-radius: 0 12px 12px 0;">
+                    <h3 style="font-size:1.1rem; color:var(--primary-color); font-weight:800; letter-spacing:0.05em; margin-bottom:15px; display:flex; align-items:center; gap:10px;">
+                        課題 (PROBLEM)
+                    </h3>
+                    <p style="font-size:1.05rem; color:#4a5568; font-weight:500; line-height:1.8; margin:0;">
+                        <?php echo nl2br(esc_html($issue)); ?>
+                    </p>
+                </div>
+                <?php endif; ?>
+
             </div>
         </div>
         <article class="work-single-article" style="position:relative; border-top: 1px solid #e1e8f0; padding-top:60px;">
