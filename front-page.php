@@ -335,7 +335,7 @@
         </div>
 
         <!-- Right Circular Icons Area -->
-        <div class="fade-in" style="flex:1 1 100%; display:flex; justify-content:center; position:relative; min-height:500px; margin-top:40px;">
+        <div class="fade-in" style="flex:1 1 500px; display:flex; justify-content:center; position:relative; min-height:500px;">
             <!-- Subtle gradient glow -->
             <div style="position:absolute; width:450px; height:450px; background:radial-gradient(circle, rgba(229,57,53,0.06) 0%, rgba(229,57,53,0) 60%); top:50%; left:50%; transform:translate(-50%, -50%); pointer-events:none; border-radius:50%;"></div>
             
