@@ -35,21 +35,25 @@ get_header(); ?>
                     ['name' => 'お問い合わせフォーム実装', 'price' => 30000, 'type' => 'checkbox'],
                     ['name' => 'WordPress構築・CMS化', 'price' => 100000, 'type' => 'checkbox']
                 ],
+                'hp_options' => [],
                 'lp' => [
                     ['name' => 'LP構成・ワイヤーフレーム設計', 'price' => 100000, 'type' => 'checkbox'],
                     ['name' => 'LPデザイン・コーディング', 'price' => 200000, 'type' => 'checkbox'],
                     ['name' => '特急対応（2週間以内）', 'price' => 100000, 'type' => 'checkbox']
                 ],
+                'lp_options' => [],
                 'marketing' => [
                     ['name' => '広告アカウント初期構築', 'price' => 100000, 'type' => 'checkbox'],
                     ['name' => '月額広告運用代行（最低出稿額ベース）', 'price' => 50000, 'type' => 'checkbox'],
                     ['name' => '月次改善定例ミーティング', 'price' => 30000, 'type' => 'checkbox']
                 ],
+                'marketing_options' => [],
                 'block_lp' => [
                     ['name' => 'ブロックLP基本設計・ワイヤー', 'price' => 50000, 'type' => 'checkbox'],
                     ['name' => 'LPブロック追加作成', 'price' => 15000, 'type' => 'number'],
                     ['name' => 'FV（ファーストビュー）デザイン', 'price' => 30000, 'type' => 'checkbox']
-                ]
+                ],
+                'block_lp_options' => []
             ];
         }
         ?>
@@ -100,7 +104,12 @@ get_header(); ?>
             }
             
             // Merge defaults in case of missing data (e.g. old saves)
-            const rawData = Object.assign({ 'hp': [], 'lp': [], 'block_lp': [], 'marketing': [] }, rawDataRaw);
+            const rawData = Object.assign({ 
+                'hp': [], 'hp_options': [], 
+                'lp': [], 'lp_options': [], 
+                'block_lp': [], 'block_lp_options': [], 
+                'marketing': [], 'marketing_options': [] 
+            }, rawDataRaw);
 
             const tabs = document.querySelectorAll('.sim-tab');
             const container = document.getElementById('sim-items-container');
@@ -108,10 +117,10 @@ get_header(); ?>
             
             // local state to store user inputs across tabs
             let simState = {
-                'hp': {},
-                'lp': {},
-                'block_lp': {},
-                'marketing': {}
+                'hp': {}, 'hp_options': {},
+                'lp': {}, 'lp_options': {},
+                'block_lp': {}, 'block_lp_options': {},
+                'marketing': {}, 'marketing_options': {}
             };
             let currentTab = 'hp';
             
@@ -119,24 +128,19 @@ get_header(); ?>
                 return new Intl.NumberFormat('ja-JP').format(price);
             };
             
-            const renderItems = () => {
-                const items = rawData[currentTab] || [];
+            const buildItemsHtml = (items, tabKey) => {
+                if(!items || items.length === 0) return '';
                 let html = '';
-                
-                if(items.length === 0) {
-                    html = '<p style="text-align:center; color:#91a6b4;">項目が設定されていません。</p>';
-                }
-                
                 items.forEach((item, index) => {
-                    let val = simState[currentTab][index] || 0;
+                    let val = simState[tabKey][index] || 0;
                     
                     if(item.type === 'checkbox') {
                         let checked = val === 1 ? 'checked' : '';
                         html += `
-                        <label class="sim-item" style="display:flex; justify-content:space-between; align-items:center; padding:20px; border:2px solid ${checked ? 'var(--primary-color)' : 'rgba(0,0,0,0.05)'}; border-radius:12px; cursor:pointer; transition:all 0.3s; background:${checked ? 'rgba(145,166,180,0.05)' : '#fff'}; box-shadow:${checked ? '0 5px 15px rgba(0,0,0,0.03)' : 'none'};">
+                        <label class="sim-item" style="display:flex; justify-content:space-between; align-items:center; padding:20px; border:2px solid ${checked ? 'var(--primary-color)' : 'rgba(0,0,0,0.05)'}; border-radius:12px; cursor:pointer; transition:all 0.3s; background:${checked ? 'rgba(145,166,180,0.05)' : '#fff'}; box-shadow:${checked ? '0 5px 15px rgba(0,0,0,0.03)' : 'none'}; margin-bottom:15px;">
                             <div style="display:flex; align-items:center; gap:15px;">
                                 <div style="position:relative; width:24px; height:24px; flex-shrink:0;">
-                                    <input type="checkbox" onchange="updateSim('${currentTab}', ${index}, this.checked ? 1 : 0)" ${checked} style="position:absolute; opacity:0; cursor:pointer; width:100%; height:100%; z-index:2;">
+                                    <input type="checkbox" onchange="updateSim('${tabKey}', ${index}, this.checked ? 1 : 0)" ${checked} style="position:absolute; opacity:0; cursor:pointer; width:100%; height:100%; z-index:2;">
                                     <div style="width:24px; height:24px; border-radius:6px; border:2px solid ${checked ? 'var(--primary-color)' : '#cbd5e1'}; background:${checked ? 'var(--primary-color)' : '#fff'}; display:flex; align-items:center; justify-content:center; transition:all 0.2s;">
                                         <svg width="14" height="10" viewBox="0 0 14 10" fill="none" style="opacity:${checked ? '1' : '0'};"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                     </div>
@@ -149,7 +153,7 @@ get_header(); ?>
                         </label>`;
                     } else if (item.type === 'number') {
                         html += `
-                        <div class="sim-item" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; padding:20px; border:2px solid ${val > 0 ? 'var(--primary-color)' : 'rgba(0,0,0,0.05)'}; border-radius:12px; transition:all 0.3s; background:${val > 0 ? 'rgba(145,166,180,0.05)' : '#fff'}; box-shadow:${val > 0 ? '0 5px 15px rgba(0,0,0,0.03)' : 'none'};">
+                        <div class="sim-item" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; padding:20px; border:2px solid ${val > 0 ? 'var(--primary-color)' : 'rgba(0,0,0,0.05)'}; border-radius:12px; transition:all 0.3s; background:${val > 0 ? 'rgba(145,166,180,0.05)' : '#fff'}; box-shadow:${val > 0 ? '0 5px 15px rgba(0,0,0,0.03)' : 'none'}; margin-bottom:15px;">
                             <div style="display:flex; align-items:center; gap:15px; flex:1; min-width:200px;">
                                 <div style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; color:var(--primary-color); font-weight:bold; flex-shrink:0;">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
@@ -161,24 +165,51 @@ get_header(); ?>
                                     ¥${formatPrice(item.price)} <span style="font-size:0.9rem; color:#91a6b4; font-weight:normal;">/ 個</span>
                                 </div>
                                 <div style="display:flex; align-items:center; border:2px solid #e2e8f0; border-radius:8px; overflow:hidden; background:#fff;">
-                                    <button onclick="updateSim('${currentTab}', ${index}, Math.max(0, ${val} - 1))" style="border:none; background:#f8fafc; padding:8px 15px; font-weight:bold; font-size:1.2rem; color:var(--primary-color); cursor:pointer; transition:background 0.2s;">-</button>
-                                    <input type="number" min="0" value="${val}" onchange="updateSim('${currentTab}', ${index}, Math.max(0, parseInt(this.value)||0))" style="width:50px; text-align:center; border:none; padding:8px 0; font-weight:bold; font-size:1.1rem; color:var(--primary-color); outline:none;">
-                                    <button onclick="updateSim('${currentTab}', ${index}, ${val} + 1)" style="border:none; background:#f8fafc; padding:8px 15px; font-weight:bold; font-size:1.2rem; color:var(--primary-color); cursor:pointer; transition:background 0.2s;">+</button>
+                                    <button onclick="updateSim('${tabKey}', ${index}, Math.max(0, ${val} - 1))" style="border:none; background:#f8fafc; padding:8px 15px; font-weight:bold; font-size:1.2rem; color:var(--primary-color); cursor:pointer; transition:background 0.2s;">-</button>
+                                    <input type="number" min="0" value="${val}" onchange="updateSim('${tabKey}', ${index}, Math.max(0, parseInt(this.value)||0))" style="width:50px; text-align:center; border:none; padding:8px 0; font-weight:bold; font-size:1.1rem; color:var(--primary-color); outline:none;">
+                                    <button onclick="updateSim('${tabKey}', ${index}, ${val} + 1)" style="border:none; background:#f8fafc; padding:8px 15px; font-weight:bold; font-size:1.2rem; color:var(--primary-color); cursor:pointer; transition:background 0.2s;">+</button>
                                 </div>
                             </div>
                         </div>`;
                     }
                 });
+                return html;
+            };
+
+            const renderItems = () => {
+                const baseItems = rawData[currentTab] || [];
+                const optItems = rawData[currentTab + '_options'] || [];
+                let html = '';
                 
+                if(baseItems.length === 0 && optItems.length === 0) {
+                    html = '<p style="text-align:center; color:#91a6b4;">項目が設定されていません。</p>';
+                } else {
+                    if(baseItems.length > 0) {
+                        html += '<h3 style="font-size:1.2rem; font-weight:bold; color:var(--primary-color); margin-bottom:20px; border-left:4px solid var(--primary-color); padding-left:15px; text-align:left;">基本項目</h3>';
+                        html += buildItemsHtml(baseItems, currentTab);
+                    }
+                    if(optItems.length > 0) {
+                        html += '<h3 style="font-size:1.2rem; font-weight:bold; color:var(--highlight-color); margin-top:40px; margin-bottom:20px; border-left:4px solid var(--highlight-color); padding-left:15px; text-align:left;">オプション</h3>';
+                        html += buildItemsHtml(optItems, currentTab + '_options');
+                    }
+                }
                 container.innerHTML = html;
             };
             
             const calcTotal = () => {
                 let total = 0;
-                // Sum only current active tab items to keep them siloed per user request image
-                const items = rawData[currentTab] || [];
-                items.forEach((item, index) => {
+                
+                // Base items
+                const baseItems = rawData[currentTab] || [];
+                baseItems.forEach((item, index) => {
                     let val = simState[currentTab][index] || 0;
+                    total += item.price * val;
+                });
+                
+                // Options
+                const optItems = rawData[currentTab + '_options'] || [];
+                optItems.forEach((item, index) => {
+                    let val = simState[currentTab + '_options'][index] || 0;
                     total += item.price * val;
                 });
                 
