@@ -633,19 +633,178 @@ h6 {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-    .header-inner {
-        flex-direction: column;
-        gap: 15px;
+/* =========================================
+   Responsive Global Rules
+   Breakpoints: 1440px (Base), 1024px, 768px, 480px
+========================================= */
+
+img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+.container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+/* =========================================
+   1024px (Tablet)
+========================================= */
+@media screen and (max-width: 1024px) {
+
+    /* Hamburger Menu Setup (CSS Only Box Hack) */
+    .site-header .header-inner {
+        position: relative;
+    }
+
+    .main-nav {
+        position: static !important;
+    }
+
+    .main-nav::before {
+        content: "≡";
+        display: block;
+        font-size: 38px;
+        line-height: 1;
+        font-weight: normal;
+        color: var(--primary-color);
+        cursor: pointer;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 0 10px;
+        border-radius: 6px;
     }
 
     .main-nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
+        display: none !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 0;
+        margin: 0;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        text-align: center;
+        gap: 0;
     }
 
+    .main-nav:hover ul,
+    .main-nav:focus-within ul,
+    .main-nav:active ul {
+        display: flex !important;
+    }
+
+    .main-nav ul li a {
+        display: block;
+        padding: 18px 20px;
+        font-size: 1.1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .main-nav ul li:last-child a {
+        border-bottom: none;
+        display: inline-block;
+        margin: 15px auto;
+        padding: 12px 30px;
+    }
+}
+
+/* =========================================
+   768px (SP)
+========================================= */
+@media screen and (max-width: 768px) {
+
+    /* 1. Layout: PC 3-column to SP 1-column */
+    /* Target flex/grid containers holding multi-column layouts */
+    .service-grid,
+    .news-list,
+    .works-grid,
+    .concept-cards,
+    .members-grid,
+    [style*="display:grid"],
+    [style*="display: grid"],
+    .container>[style*="display:flex"],
+    .container>[style*="display: flex"] {
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        gap: 20px !important;
+    }
+
+    [style*="flex: 1 1"],
+    [style*="flex:1 1"] {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+    }
+
+    /* Prevent breaking horizontal components */
+    .header-inner,
+    .work-meta,
+    .pagination,
+    .marketing-circle-container,
+    .works-grid-horizontal,
+    .swiper-wrapper,
+    .swiper-slide>a>div {
+        flex-direction: row !important;
+    }
+
+    /* 2. SP 余白 (Padding) */
+    /* Section PC 120px -> SP 60px */
+    section,
+    .section-padding,
+    [style*="padding: 120px"],
+    [style*="padding: 100px"],
+    [style*="padding: 150px"] {
+        padding-top: 60px !important;
+        padding-bottom: 60px !important;
+    }
+
+    /* 横padding SPのみ20px */
+    .container {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    /* 3. absolute要素をrelativeに変更 */
+    /* Exclude background overlays, canvas, SVG, and specific interactive nodes to avoid breaking graphics */
+    *[style*="position: absolute"]:not(canvas):not(svg):not(.overlay):not([style*="pointer-events:none"]):not([style*="pointer-events: none"]):not([style*="inset:0"]):not(.marketing-node):not(.orbit-run):not(#recruit-vivus-text) {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 15px;
+    }
+
+    /* 4. heroセクション SPでは height: auto に変更 */
+    .mv,
+    .service-hero,
+    [style*="min-height:90vh"],
+    [style*="min-height: 90vh"] {
+        height: auto !important;
+        min-height: auto !important;
+        padding-top: 100px !important;
+        padding-bottom: 60px !important;
+    }
+
+    /* Additional Text/UI Adjustments for SP */
     .mv-catch {
-        font-size: 2.4rem;
+        font-size: 2.2rem !important;
+    }
+
+    .section-title {
+        font-size: 2rem !important;
+    }
+
+    h1[style*="font-size: clamp"] {
+        font-size: 2.5rem !important;
     }
 
     .mv-sub {
@@ -653,19 +812,27 @@ h6 {
         margin-bottom: 28px;
     }
 
-    .mv-highlight-data {
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
-        text-align: center;
+    .marketing-circle-container {
+        transform: scale(0.65) !important;
+    }
+}
+
+/* =========================================
+   480px (Small SP)
+========================================= */
+@media screen and (max-width: 480px) {
+
+    .mv-catch,
+    h1[style*="font-size"] {
+        font-size: 1.8rem !important;
     }
 
-    .mv-highlight-item {
-        text-align: center;
+    h2[style*="font-size"] {
+        font-size: 1.6rem !important;
     }
 
-    .numbers .grid {
-        flex-direction: column;
-        gap: 30px;
+    .cta-btn {
+        padding: 12px 20px !important;
+        font-size: 1rem !important;
     }
 }
