@@ -802,8 +802,8 @@ img {
         text-align: center !important;
     }
 
-    /* Hide Recruit Vivus bracket animation on SP as requested */
-    #recruit-vivus {
+    /* Hide Recruit Vivus bracket animation container on SP as requested */
+    .top-recruit>.fade-in {
         display: none !important;
     }
 
