@@ -400,9 +400,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const clock = new THREE.Clock();
 
         if (isAiLayout) {
-            // AI layout gets a "Digital Rain / Data Particles" effect (Deep Purple / Cyan)
-            scene.fog = new THREE.FogExp2('#ffffff', 0.003);
-            const pcount = 5000;
+            // AI layout gets a "Digital Rain / Data Particles" effect (Deep Purple / Cyan) - Toned down
+            scene.fog = new THREE.FogExp2('#ffffff', 0.006);
+            const pcount = 1500;
             const geom = new THREE.BufferGeometry();
             const pos = new Float32Array(pcount * 3);
             const cols = new Float32Array(pcount * 3);
@@ -421,7 +421,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
             geom.setAttribute('color', new THREE.BufferAttribute(cols, 3));
-            const mat = new THREE.PointsMaterial({size: 0.8, vertexColors: true, transparent: true, opacity:0.8});
+            const mat = new THREE.PointsMaterial({size: 0.5, vertexColors: true, transparent: true, opacity:0.35});
             const points = new THREE.Points(geom, mat);
             group.add(points);
             
@@ -429,11 +429,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 requestAnimationFrame(animateAI);
                 const posArr = geom.attributes.position.array;
                 for(let i=0; i<pcount; i++){
-                    posArr[i*3+1] -= (Math.random() * 0.15 + 0.05); // fall down
+                    posArr[i*3+1] -= (Math.random() * 0.08 + 0.02); // slower fall down
                     if(posArr[i*3+1] < -50) posArr[i*3+1] = 50; // reset to top
                 }
                 geom.attributes.position.needsUpdate = true;
-                group.rotation.y += 0.001;
+                group.rotation.y += 0.0005; // slower rotation
                 
                 targetX = mouseX * 0.005;
                 targetY = mouseY * 0.005;
