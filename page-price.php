@@ -153,7 +153,7 @@ get_header(); ?>
         
         <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const rawDataRaw = <?php echo json_encode($sim_data, JSON_UNESCAPED_UNICODE) ?: '{}'; ?>;
+            const rawDataRaw = <?php echo json_encode($sim_data ? $sim_data : new stdClass(), JSON_UNESCAPED_UNICODE); ?>;
             // Merge defaults in case of missing data (e.g. old saves)
             const rawData = Object.assign({ 'hp': [], 'lp': [], 'block_lp': [], 'marketing': [] }, rawDataRaw);
 
