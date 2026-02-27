@@ -638,11 +638,6 @@ h6 {
    Breakpoints: 1440px (Base), 1024px, 768px, 480px
 ========================================= */
 
-img {
-    max-width: 100% !important;
-    height: auto !important;
-}
-
 .container {
     max-width: 1200px !important;
     margin: 0 auto !important;
