@@ -95,7 +95,7 @@
                 $card_index++;
                 $is_hidden = $card_index > 9;
             ?>
-            <a href="<?php the_permalink(); ?>" class="gsap-works-card <?php echo $is_hidden ? 'hidden-card' : 'initial-load'; ?>" style="display:<?php echo $is_hidden ? 'none' : 'block'; ?>; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;">
+            <a href="<?php the_permalink(); ?>" class="gsap-works-card <?php echo $is_hidden ? 'hidden-card' : 'initial-load'; ?>" style="display:<?php echo $is_hidden ? 'none' : 'block'; ?>; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;">
                 
                 <!-- Upper Flex Area: Image on Left, Details on Right -->
                 <div style="display:flex; gap:25px; margin-bottom:25px; align-items:flex-start;">
@@ -261,17 +261,15 @@ document.addEventListener("DOMContentLoaded", function() {
             const cardsToShow = hiddenCards.splice(0, 9); // Take next 9
             
             if(cardsToShow.length > 0) {
-                let loadTl = gsap.timeline();
-                cardsToShow.forEach((card, index) => {
+                cardsToShow.forEach((card) => {
                     card.style.display = "block";
                     card.classList.remove("hidden-card");
-                    
-                    loadTl.fromTo(card, 
-                        {opacity: 0, y: 50, rotationX: 10, scale: 0.95}, 
-                        {opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 0.8, ease: "power3.out"},
-                        index * 0.1
-                    );
                 });
+                
+                gsap.fromTo(cardsToShow, 
+                    {opacity: 0, y: 50, rotationX: 10, scale: 0.95}, 
+                    {opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 0.8, ease: "power3.out", stagger: 0.1}
+                );
                 
                 setTimeout(() => ScrollTrigger.refresh(), 500);
             }
