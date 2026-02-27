@@ -335,11 +335,11 @@
         </div>
 
         <!-- Right Circular Icons Area -->
-        <div class="fade-in" style="flex:1 1 500px; display:flex; justify-content:center; position:relative; min-height:500px;">
+        <div class="fade-in" style="flex:1 1 100%; display:flex; justify-content:center; position:relative; min-height:500px; margin-top:40px;">
             <!-- Subtle gradient glow -->
             <div style="position:absolute; width:450px; height:450px; background:radial-gradient(circle, rgba(229,57,53,0.06) 0%, rgba(229,57,53,0) 60%); top:50%; left:50%; transform:translate(-50%, -50%); pointer-events:none; border-radius:50%;"></div>
             
-            <div class="marketing-circle-container" style="position:relative; width:480px; height:480px; display:flex; align-items:center; justify-content:center;">
+            <div class="marketing-circle-container" style="position:relative; width:480px; height:480px; display:flex; align-items:center; justify-content:center; margin: 0 auto;">
                 <!-- Center Text -->
                 <div style="position:absolute; z-index:10; text-align:center;">
                     <span style="display:block; color:#1a56db; font-size:1.3rem; font-weight:900; letter-spacing:0.05em; margin-bottom:6px;">Marketing Medias</span>
@@ -407,7 +407,10 @@
     animation-play-state: paused;
 }
 @media (max-width: 768px) {
-    .marketing-circle-container { transform: scale(0.65); transform-origin: center center; }
+    .marketing-circle-container { transform: scale(0.85); transform-origin: center center; margin-top: -30px; }
+}
+@media (max-width: 480px) {
+    .marketing-circle-container { transform: scale(0.70); }
 }
 </style>
 
