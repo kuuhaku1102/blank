@@ -15,7 +15,7 @@ get_header(); ?>
 
 <main style="background: transparent; position:relative; overflow:hidden; padding-bottom: 100px;">
     
-    <div class="container" style="text-align:center; margin-bottom: 80px;">
+    <div class="container" style="text-align:center; margin-bottom: 120px; position:relative; z-index:10;">
         <p class="gsap-fade-up" style="font-size:1.15rem; font-weight:bold; color:var(--primary-color); line-height:2;">
             プロジェクト規模や目標ごとの目標となる料金体系です。<br>
             詳細はお見積りをご依頼ください。
