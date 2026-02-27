@@ -169,8 +169,9 @@ get_header(); ?>
                 items.forEach((item, index) => {
                     let val = simState[tabKey][index] || 0;
                     
-                    if(item.type === 'checkbox') {
+                    if(item.type === 'checkbox' || item.type === 'consult') {
                         let checked = val === 1 ? 'checked' : '';
+                        let priceDisplay = item.type === 'consult' ? '要お見積り' : `¥${formatPrice(item.price)}`;
                         html += `
                         <label class="sim-item" style="display:flex; justify-content:space-between; align-items:center; padding:20px; border:2px solid ${checked ? 'var(--primary-color)' : 'rgba(0,0,0,0.05)'}; border-radius:12px; cursor:pointer; transition:all 0.3s; background:${checked ? 'rgba(145,166,180,0.05)' : '#fff'}; box-shadow:${checked ? '0 5px 15px rgba(0,0,0,0.03)' : 'none'}; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
                             <div style="display:flex; align-items:center; gap:15px; flex:1; min-width:200px;">
@@ -183,7 +184,7 @@ get_header(); ?>
                                 <span class="sim-item-name" style="font-size:1.1rem; font-weight:bold; color:var(--primary-color); line-height:1.4;">${item.name}</span>
                             </div>
                             <div class="sim-price-col" style="font-weight:900; font-size:1.2rem; color:var(--accent-color); white-space:nowrap; text-align:right;">
-                                ¥${formatPrice(item.price)}
+                                ${priceDisplay}
                             </div>
                         </label>`;
                     } else if (item.type === 'number') {
@@ -233,21 +234,32 @@ get_header(); ?>
             
             const calcTotal = () => {
                 let total = 0;
+                let hasConsult = false;
                 
                 // Base items
                 const baseItems = rawData[currentTab] || [];
                 baseItems.forEach((item, index) => {
                     let val = simState[currentTab][index] || 0;
-                    total += item.price * val;
+                    if(item.type !== 'consult') {
+                        total += item.price * val;
+                    } else if(val > 0) {
+                        hasConsult = true;
+                    }
                 });
                 
                 // Options
                 const optItems = rawData[currentTab + '_options'] || [];
                 optItems.forEach((item, index) => {
                     let val = simState[currentTab + '_options'][index] || 0;
-                    total += item.price * val;
+                    if(item.type !== 'consult') {
+                        total += item.price * val;
+                    } else if(val > 0) {
+                        hasConsult = true;
+                    }
                 });
                 
+                let consultSuffix = hasConsult ? '<span style="font-size:1.8rem;"> ＋ 要見積</span>' : '';
+
                 // Animate total text elegantly using GSAP if available
                 if(window.gsap) {
                     const proxy = { val: parseInt(totalEl.innerText.replace(/,/g, '')) || 0 };
@@ -256,11 +268,11 @@ get_header(); ?>
                         duration: 0.8, 
                         ease: "power2.out",
                         onUpdate: function() {
-                            totalEl.innerHTML = formatPrice(Math.round(proxy.val));
+                            totalEl.innerHTML = formatPrice(Math.round(proxy.val)) + consultSuffix;
                         }
                     });
                 } else {
-                    totalEl.innerHTML = formatPrice(total);
+                    totalEl.innerHTML = formatPrice(total) + consultSuffix;
                 }
             };
             

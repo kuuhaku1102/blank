@@ -100,6 +100,7 @@ function blank_pricing_page_html() {
                             <select onchange="updateData('${tab}', ${index}, 'type', this.value)" style="width:100%;">
                                 <option value="checkbox" ${item.type === 'checkbox' ? 'selected' : ''}>チェックボックス</option>
                                 <option value="number" ${item.type === 'number' ? 'selected' : ''}>個数入力（掛け算）</option>
+                                <option value="consult" ${item.type === 'consult' ? 'selected' : ''}>要お見積り（チェックボックス）</option>
                             </select>
                         </td>
                         <td><button type="button" class="button button-link-delete" style="color:#b32d2e;" onclick="removeRow('${tab}', ${index})">削除</button></td>
@@ -127,6 +128,7 @@ function blank_pricing_page_html() {
                             <select onchange="updateData('${optTab}', ${index}, 'type', this.value)" style="width:100%;">
                                 <option value="checkbox" ${item.type === 'checkbox' ? 'selected' : ''}>チェックボックス</option>
                                 <option value="number" ${item.type === 'number' ? 'selected' : ''}>個数入力（掛け算）</option>
+                                <option value="consult" ${item.type === 'consult' ? 'selected' : ''}>要お見積り（チェックボックス）</option>
                             </select>
                         </td>
                         <td><button type="button" class="button button-link-delete" style="color:#b32d2e;" onclick="removeRow('${optTab}', ${index})">削除</button></td>
