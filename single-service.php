@@ -13,9 +13,12 @@ $t_slug = urldecode($post->post_name);
 $is_web_service = (strpos($t_slug, 'web') !== false || strpos($t_title, 'Web') !== false || strpos($t_title, 'コーポレート') !== false || strpos($t_slug, '%e3%82%a6%e3%82%a7%e3%83%96') !== false);
 $is_lp_service = (strpos($t_slug, 'lp') !== false || strpos($t_title, 'LP') !== false || strpos($t_title, 'ランディングページ') !== false);
 $is_mk_service = (strpos($t_slug, 'marketing') !== false || strpos($t_title, 'マーケティング') !== false || strpos($t_slug, '%e3%83%8e%e3%83%bc%e3%82%b1%e3%83%86') !== false || strpos($t_slug, '%e3%83%87%e3%82%b8%e3%82%bf%e3%83%ab') !== false);
+$is_ai_service = (strpos($t_slug, 'ai') !== false || strpos($t_title, 'AI') !== false || strpos($t_slug, '%e8%87%aa%e5%8b%95%e5%8c%96') !== false);
 ?>
 
-<?php if($is_mk_service): ?>
+<?php if($is_ai_service): ?>
+    <?php get_template_part('template-parts/service', 'ai'); ?>
+<?php elseif($is_mk_service): ?>
     <?php get_template_part('template-parts/service', 'marketing'); ?>
 <?php elseif($is_lp_service): ?>
     <?php get_template_part('template-parts/service', 'lp'); ?>
@@ -343,8 +346,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const isWebLayout = document.querySelector('.service-hero');
     const isLpLayout = document.querySelector('.lp-layout');
     const isMkLayout = document.querySelector('.marketing-layout');
+    const isAiLayout = document.querySelector('.ai-layout');
     
-    if(isWebLayout || isLpLayout || isMkLayout) {
+    if(isWebLayout || isLpLayout || isMkLayout || isAiLayout) {
         const tl = gsap.timeline();
         tl.from(".gsap-hero-elem", {
             y: 50,
@@ -395,7 +399,52 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const clock = new THREE.Clock();
 
-        if (isMkLayout) {
+        if (isAiLayout) {
+            // AI layout gets a "Digital Rain / Data Particles" effect (Deep Purple / Cyan)
+            scene.fog = new THREE.FogExp2('#ffffff', 0.003);
+            const pcount = 5000;
+            const geom = new THREE.BufferGeometry();
+            const pos = new Float32Array(pcount * 3);
+            const cols = new Float32Array(pcount * 3);
+            const color1 = new THREE.Color('#7000ff');
+            const color2 = new THREE.Color('#00f0ff');
+            
+            for(let i=0; i<pcount; i++){
+                pos[i*3] = (Math.random() - 0.5) * 150;
+                pos[i*3+1] = (Math.random() - 0.5) * 100;
+                pos[i*3+2] = (Math.random() - 0.5) * 150;
+                const mix = Math.random();
+                const mixedColor = color1.clone().lerp(color2, mix);
+                cols[i*3] = mixedColor.r;
+                cols[i*3+1] = mixedColor.g;
+                cols[i*3+2] = mixedColor.b;
+            }
+            geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+            geom.setAttribute('color', new THREE.BufferAttribute(cols, 3));
+            const mat = new THREE.PointsMaterial({size: 0.8, vertexColors: true, transparent: true, opacity:0.8});
+            const points = new THREE.Points(geom, mat);
+            group.add(points);
+            
+            function animateAI() {
+                requestAnimationFrame(animateAI);
+                const posArr = geom.attributes.position.array;
+                for(let i=0; i<pcount; i++){
+                    posArr[i*3+1] -= (Math.random() * 0.15 + 0.05); // fall down
+                    if(posArr[i*3+1] < -50) posArr[i*3+1] = 50; // reset to top
+                }
+                geom.attributes.position.needsUpdate = true;
+                group.rotation.y += 0.001;
+                
+                targetX = mouseX * 0.005;
+                targetY = mouseY * 0.005;
+                camera.position.x += (targetX - camera.position.x) * 0.03;
+                camera.position.y += (-targetY - camera.position.y + 10) * 0.03;
+                camera.lookAt(new THREE.Vector3(0, 10, 0));
+                renderer.render(scene, camera);
+            }
+            animateAI();
+
+        } else if (isMkLayout) {
             // MARKETING layout gets a "Network Nodes / Neural" effect (Green)
             scene.fog = new THREE.FogExp2('#ffffff', 0.003);
             
