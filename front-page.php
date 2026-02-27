@@ -504,7 +504,7 @@
 
 <!-- 6. Recruit & Culture (Half image layout) -->
 <section class="top-recruit" style="background:var(--white); display:flex; flex-wrap:wrap;">
-    <div class="fade-up" style="flex:1 1 50%; min-width:300px; padding: 120px 5% 120px 10%; display:flex; flex-direction:column; justify-content:center;">
+    <div class="fade-up" style="flex:1 1 50%; min-width:300px; padding: 120px 5% 120px 10%; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box;">
         <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">RECRUIT</p>
         <h2 style="font-size: 2.8rem; font-weight: 700; margin:0 0 30px; color:var(--primary-color);">共に、デジタルの<br>最前線を開拓する。</h2>
         <p style="color:var(--accent-color); line-height:2; margin-bottom:50px; font-size:1.1rem;">
@@ -516,91 +516,88 @@
             <a href="<?php echo esc_url(home_url('/recruit/')); ?>" class="cta-btn" style="display:inline-block; font-size:1.1rem; padding: 16px 40px;">採用情報を見る</a>
         </div>
     </div>
-    <div class="fade-in" style="flex:1 1 50%; min-width:300px; background:var(--white); position:relative; min-height:400px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+    <div class="fade-in" style="flex:1 1 50%; min-width:300px; background:var(--white); position:relative; min-height:500px; display:flex; align-items:center; justify-content:center; overflow:hidden; box-sizing:border-box; padding:50px;">
         <div style="position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
-            <!-- Stylish Brackets SVG Animation -->
-            <svg viewBox="0 0 500 500" style="width: 80%; max-width: 450px; height: auto;" xmlns="http://www.w3.org/2000/svg">
-                <style>
-                    .anim-bracket {
-                        fill: none;
-                        stroke: var(--highlight-color);
-                        stroke-width: 8;
-                        stroke-linecap: square;
-                        stroke-linejoin: miter;
-                        stroke-dasharray: 400;
-                        stroke-dashoffset: 400;
-                        animation: drawBrackets 5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-                    }
-                    .anim-bracket-bg {
-                        fill: none;
-                        stroke: rgba(229,57,53,0.08); /* Highlight color with opacity */
-                        stroke-width: 8;
-                        stroke-linecap: square;
-                        stroke-linejoin: miter;
-                    }
-                    .anim-text-stroke {
-                        fill: transparent;
-                        stroke: var(--primary-color);
-                        stroke-width: 1.5;
-                        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                        font-size: 42px;
-                        font-weight: 900;
-                        letter-spacing: 0.15em;
-                        stroke-dasharray: 500;
-                        stroke-dashoffset: 500;
-                        animation: drawTextSVG 5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-                    }
-                    .anim-text-fill {
-                        fill: var(--primary-color);
-                        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                        font-size: 42px;
-                        font-weight: 900;
-                        letter-spacing: 0.15em;
-                        opacity: 0;
-                        animation: fillTextSVG 5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-                    }
-                    @keyframes drawBrackets {
-                        0% { stroke-dashoffset: 400; }
-                        30% { stroke-dashoffset: 0; }
-                        80% { stroke-dashoffset: 0; opacity: 1; }
-                        90% { stroke-dashoffset: 0; opacity: 0; }
-                        100% { stroke-dashoffset: 400; opacity: 0; }
-                    }
-                    @keyframes drawTextSVG {
-                        0% { stroke-dashoffset: 500; }
-                        20% { stroke-dashoffset: 500; }
-                        50% { stroke-dashoffset: 0; }
-                        80% { stroke-dashoffset: 0; opacity: 1; }
-                        90% { stroke-dashoffset: 0; opacity: 0; }
-                        100% { stroke-dashoffset: 500; opacity: 0; }
-                    }
-                    @keyframes fillTextSVG {
-                        0% { opacity: 0; }
-                        45% { opacity: 0; }
-                        55% { opacity: 1; }
-                        80% { opacity: 1; }
-                        90% { opacity: 0; }
-                        100% { opacity: 0; }
-                    }
-                </style>
-                
-                <!-- Background static track for brackets -->
-                <path class="anim-bracket-bg" d="M 80 200 L 80 80 L 220 80" />
-                <path class="anim-bracket-bg" d="M 420 300 L 420 420 L 280 420" />
+            
+            <!-- Dynamic Brackets SVG driven by Vivus -->
+            <svg id="recruit-vivus" viewBox="0 0 500 500" style="width: 100%; max-width: 480px; height: auto;">
+                <defs>
+                    <linearGradient id="gradRecruit" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:var(--primary-color); stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#1a56db; stop-opacity:1" />
+                    </linearGradient>
+                </defs>
 
-                <!-- Animated Brackets 「 」 -->
-                <path class="anim-bracket" d="M 80 200 L 80 80 L 220 80" />
-                <path class="anim-bracket" d="M 420 300 L 420 420 L 280 420" />
-                
-                <!-- BEYOND -->
-                <text x="53%" y="45%" text-anchor="middle" dominant-baseline="middle" class="anim-text-stroke">BEYOND</text>
-                <text x="53%" y="45%" text-anchor="middle" dominant-baseline="middle" class="anim-text-fill">BEYOND</text>
+                <!-- Top Left Bracket 「 -->
+                <path d="M 120 220 L 120 120 L 280 120" fill="none" stroke="url(#gradRecruit)" stroke-width="24" stroke-linecap="square" stroke-linejoin="miter" />
+                <path d="M 90 250 L 90 90 L 310 90" fill="none" stroke="var(--highlight-color)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter" />
+                <path d="M 150 190 L 150 150 L 250 150" fill="none" stroke="rgba(11,19,43,0.1)" stroke-width="4" stroke-linecap="square" />
 
-                <!-- LIMITS -->
-                <text x="53%" y="58%" text-anchor="middle" dominant-baseline="middle" class="anim-text-stroke">LIMITS</text>
-                <text x="53%" y="58%" text-anchor="middle" dominant-baseline="middle" class="anim-text-fill">LIMITS</text>
+                <!-- Bottom Right Bracket 」 -->
+                <path d="M 380 280 L 380 380 L 220 380" fill="none" stroke="url(#gradRecruit)" stroke-width="24" stroke-linecap="square" stroke-linejoin="miter" />
+                <path d="M 410 250 L 410 410 L 190 410" fill="none" stroke="var(--highlight-color)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter" />
+                <path d="M 350 310 L 350 350 L 250 350" fill="none" stroke="rgba(11,19,43,0.1)" stroke-width="4" stroke-linecap="square" />
+
+                <!-- Center abstract tech pulse -->
+                <circle cx="250" cy="250" r="40" fill="none" stroke="rgba(26,86,219,0.3)" stroke-width="2" stroke-dasharray="6 6" />
+                <path d="M 230 250 L 270 250 M 250 230 L 250 270" fill="none" stroke="var(--highlight-color)" stroke-width="3" />
+                <circle cx="250" cy="250" r="80" fill="none" stroke="rgba(11,19,43,0.05)" stroke-width="1" />
             </svg>
+
+            <!-- Text that fades in AFTER Vivus draws the brackets -->
+            <div id="recruit-vivus-text" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center; opacity:0; transition:opacity 1s ease; pointer-events:none;">
+                <span style="display:block; font-size:2rem; font-weight:900; color:var(--primary-color); letter-spacing:0.2em; line-height:1.2; margin-bottom:5px;">BEYOND</span>
+                <span style="display:block; font-size:2rem; font-weight:900; color:var(--primary-color); letter-spacing:0.2em; line-height:1.2;">LIMITS</span>
+                <span style="display:block; font-size:0.85rem; font-weight:bold; color:var(--highlight-color); letter-spacing:0.1em; margin-top:15px; background:rgba(229,57,53,0.1); padding:4px 12px; border-radius:20px; display:inline-block;">限界を超えろ</span>
+            </div>
+
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vivus@0.4.6/dist/vivus.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const textElem = document.getElementById('recruit-vivus-text');
+                
+                function playVivus() {
+                    textElem.style.opacity = '0';
+                    textElem.style.animation = 'none';
+                    
+                    new Vivus('recruit-vivus', {
+                        type: 'delayed',      
+                        duration: 120,
+                        animTimingFunction: Vivus.EASE_OUT,
+                    }, function (obj) {
+                        // On complete -> fade in text
+                        textElem.style.opacity = '1';
+                        textElem.style.animation = 'pulse-text 2s infinite alternate ease-in-out';
+                        
+                        setTimeout(function() {
+                            textElem.style.animation = 'none';
+                            textElem.style.opacity = '0';
+                            
+                            // Let the paths fade out by re-drawing backwards, or just reset & replay
+                            setTimeout(() => { obj.reset().play(); }, 800);
+                        }, 5000);
+                    });
+                }
+
+                // Intersection Observer to start precisely when user scrolls nicely into view
+                const svObserver = new IntersectionObserver((entries) => {
+                    if(entries[0].isIntersecting) {
+                        playVivus();
+                        svObserver.disconnect();
+                    }
+                }, { threshold: 0.3 });
+                
+                svObserver.observe(document.getElementById('recruit-vivus'));
+            });
+        </script>
+        <style>
+            @keyframes pulse-text {
+                0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; filter: drop-shadow(0 0 0 rgba(229,57,53,0)); }
+                100% { transform: translate(-50%, -50%) scale(1.03); opacity: 1; filter: drop-shadow(0 5px 10px rgba(229,57,53,0.15)); }
+            }
+        </style>
     </div>
 </section>
 
