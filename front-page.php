@@ -516,16 +516,90 @@
             <a href="<?php echo esc_url(home_url('/recruit/')); ?>" class="cta-btn" style="display:inline-block; font-size:1.1rem; padding: 16px 40px;">採用情報を見る</a>
         </div>
     </div>
-    <div class="fade-in" style="flex:1 1 50%; min-width:300px; background:linear-gradient(135deg, rgba(229,57,53,0.9), rgba(11,19,43,0.95)); position:relative; min-height:400px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-        <!-- Geometric pattern to represent digital space -->
-        <svg style="position:absolute; width:150%; height:150%; top:-25%; left:-25%; opacity:0.1; animation: fluidMorph 30s infinite linear;" viewBox="0 0 100 100">
-             <circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="0.5" stroke-dasharray="2 4" />
-             <polygon points="50,10 90,90 10,90" fill="none" stroke="#fff" stroke-width="0.5" />
-             <rect x="25" y="25" width="50" height="50" fill="none" stroke="#e53935" stroke-width="0.8" />
-        </svg>
-        <div style="position:absolute; inset:0; background: url('<?php echo get_template_directory_uri(); ?>/assets/img/service1.jpg') center/cover no-repeat; opacity: 0.2; mix-blend-mode: luminosity;"></div>
-        <div style="text-align:center; position:relative; z-index:1;">
-            <p style="color:rgba(255,255,255,0.8); font-size:1.5rem; letter-spacing:0.3em; font-weight:300;">JOIN OUR TEAM</p>
+    <div class="fade-in" style="flex:1 1 50%; min-width:300px; background:var(--white); position:relative; min-height:400px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+        <div style="position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+            <!-- Stylish Brackets SVG Animation -->
+            <svg viewBox="0 0 500 500" style="width: 80%; max-width: 450px; height: auto;" xmlns="http://www.w3.org/2000/svg">
+                <style>
+                    .anim-bracket {
+                        fill: none;
+                        stroke: var(--highlight-color);
+                        stroke-width: 8;
+                        stroke-linecap: square;
+                        stroke-linejoin: miter;
+                        stroke-dasharray: 400;
+                        stroke-dashoffset: 400;
+                        animation: drawBrackets 5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+                    }
+                    .anim-bracket-bg {
+                        fill: none;
+                        stroke: rgba(229,57,53,0.08); /* Highlight color with opacity */
+                        stroke-width: 8;
+                        stroke-linecap: square;
+                        stroke-linejoin: miter;
+                    }
+                    .anim-text-stroke {
+                        fill: transparent;
+                        stroke: var(--primary-color);
+                        stroke-width: 1.5;
+                        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                        font-size: 42px;
+                        font-weight: 900;
+                        letter-spacing: 0.15em;
+                        stroke-dasharray: 500;
+                        stroke-dashoffset: 500;
+                        animation: drawTextSVG 5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+                    }
+                    .anim-text-fill {
+                        fill: var(--primary-color);
+                        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                        font-size: 42px;
+                        font-weight: 900;
+                        letter-spacing: 0.15em;
+                        opacity: 0;
+                        animation: fillTextSVG 5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+                    }
+                    @keyframes drawBrackets {
+                        0% { stroke-dashoffset: 400; }
+                        30% { stroke-dashoffset: 0; }
+                        80% { stroke-dashoffset: 0; opacity: 1; }
+                        90% { stroke-dashoffset: 0; opacity: 0; }
+                        100% { stroke-dashoffset: 400; opacity: 0; }
+                    }
+                    @keyframes drawTextSVG {
+                        0% { stroke-dashoffset: 500; }
+                        20% { stroke-dashoffset: 500; }
+                        50% { stroke-dashoffset: 0; }
+                        80% { stroke-dashoffset: 0; opacity: 1; }
+                        90% { stroke-dashoffset: 0; opacity: 0; }
+                        100% { stroke-dashoffset: 500; opacity: 0; }
+                    }
+                    @keyframes fillTextSVG {
+                        0% { opacity: 0; }
+                        45% { opacity: 0; }
+                        55% { opacity: 1; }
+                        80% { opacity: 1; }
+                        90% { opacity: 0; }
+                        100% { opacity: 0; }
+                    }
+                </style>
+                
+                <!-- Background static track for brackets -->
+                <path class="anim-bracket-bg" d="M 80 200 L 80 80 L 220 80" />
+                <path class="anim-bracket-bg" d="M 420 300 L 420 420 L 280 420" />
+
+                <!-- Animated Brackets 「 」 -->
+                <path class="anim-bracket" d="M 80 200 L 80 80 L 220 80" />
+                <path class="anim-bracket" d="M 420 300 L 420 420 L 280 420" />
+                
+                <!-- BEYOND -->
+                <text x="53%" y="45%" text-anchor="middle" dominant-baseline="middle" class="anim-text-stroke">BEYOND</text>
+                <text x="53%" y="45%" text-anchor="middle" dominant-baseline="middle" class="anim-text-fill">BEYOND</text>
+
+                <!-- LIMITS -->
+                <text x="53%" y="58%" text-anchor="middle" dominant-baseline="middle" class="anim-text-stroke">LIMITS</text>
+                <text x="53%" y="58%" text-anchor="middle" dominant-baseline="middle" class="anim-text-fill">LIMITS</text>
+            </svg>
         </div>
     </div>
 </section>
