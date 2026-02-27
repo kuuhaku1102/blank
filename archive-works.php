@@ -95,7 +95,7 @@
                 $card_index++;
                 $is_hidden = $card_index > 9;
             ?>
-            <a href="<?php the_permalink(); ?>" class="gsap-works-card <?php echo $is_hidden ? 'hidden-card' : 'initial-load'; ?>" style="display:<?php echo $is_hidden ? 'none' : 'block'; ?>; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+            <a href="<?php the_permalink(); ?>" class="gsap-works-card <?php echo $is_hidden ? 'hidden-card' : 'initial-load'; ?>" style="display:<?php echo $is_hidden ? 'none' : 'block'; ?>; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;">
                 
                 <!-- Upper Flex Area: Image on Left, Details on Right -->
                 <div style="display:flex; gap:25px; margin-bottom:25px; align-items:flex-start;">
