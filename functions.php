@@ -247,3 +247,6 @@ add_action( 'init', 'blank_seed_case_studies' );
 
 // カスタム制作実績 JSONメタ管理の読み込み
 require_once get_template_directory() . '/inc/works-admin.php';
+
+// 料金シミュレーター管理の読み込み
+require_once get_template_directory() . '/inc/pricing-admin.php';

@@ -5,7 +5,6 @@
 
 <!-- 1. TOP MV -->
 <section class="mv" style="position:relative; overflow:hidden; min-height: 100vh; display:flex; align-items:center; background: transparent;">
-    
     <div class="mv-content container" style="position:relative; z-index:1; text-align:center; background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 80px 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 20px 50px rgba(0,0,0,0.05); max-width: 900px; margin-top: 50px;">
         <p class="mv-kicker" style="color:var(--highlight-color); font-weight:bold; letter-spacing:0.2em; margin-bottom:15px;">CONTROL THE BLANK</p>
         <h2 class="mv-catch" style="color:var(--primary-color); font-size:clamp(3.5rem, 7vw, 6rem); font-weight:900; margin-bottom:30px; line-height:1.2; letter-spacing:0.02em;">「」を、支配せよ。</h2>
