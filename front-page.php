@@ -537,47 +537,21 @@
                 <path d="M 380 280 L 380 380 L 220 380" fill="none" stroke="url(#gradRecruit)" stroke-width="24" stroke-linecap="square" stroke-linejoin="miter" />
                 <path d="M 410 250 L 410 410 L 190 410" fill="none" stroke="var(--highlight-color)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter" />
                 <path d="M 350 310 L 350 350 L 250 350" fill="none" stroke="rgba(11,19,43,0.1)" stroke-width="4" stroke-linecap="square" />
-
-                <!-- Center abstract tech pulse -->
-                <circle cx="250" cy="250" r="40" fill="none" stroke="rgba(26,86,219,0.3)" stroke-width="2" stroke-dasharray="6 6" />
-                <path d="M 230 250 L 270 250 M 250 230 L 250 270" fill="none" stroke="var(--highlight-color)" stroke-width="3" />
-                <circle cx="250" cy="250" r="80" fill="none" stroke="rgba(11,19,43,0.05)" stroke-width="1" />
             </svg>
-
-            <!-- Text that fades in AFTER Vivus draws the brackets -->
-            <div id="recruit-vivus-text" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center; opacity:0; transition:opacity 1s ease; pointer-events:none;">
-                <span style="display:block; font-size:2rem; font-weight:900; color:var(--primary-color); letter-spacing:0.2em; line-height:1.2; margin-bottom:5px;">BEYOND</span>
-                <span style="display:block; font-size:2rem; font-weight:900; color:var(--primary-color); letter-spacing:0.2em; line-height:1.2;">LIMITS</span>
-                <span style="display:block; font-size:0.85rem; font-weight:bold; color:var(--highlight-color); letter-spacing:0.1em; margin-top:15px; background:rgba(229,57,53,0.1); padding:4px 12px; border-radius:20px; display:inline-block;">限界を超えろ</span>
-            </div>
 
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/vivus@0.4.6/dist/vivus.min.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                const textElem = document.getElementById('recruit-vivus-text');
-                
                 function playVivus() {
-                    textElem.style.opacity = '0';
-                    textElem.style.animation = 'none';
-                    
                     new Vivus('recruit-vivus', {
                         type: 'delayed',      
                         duration: 120,
                         animTimingFunction: Vivus.EASE_OUT,
                     }, function (obj) {
-                        // On complete -> fade in text
-                        textElem.style.opacity = '1';
-                        textElem.style.animation = 'pulse-text 2s infinite alternate ease-in-out';
-                        
-                        setTimeout(function() {
-                            textElem.style.animation = 'none';
-                            textElem.style.opacity = '0';
-                            
-                            // Let the paths fade out by re-drawing backwards, or just reset & replay
-                            setTimeout(() => { obj.reset().play(); }, 800);
-                        }, 5000);
+                        // Loop the animation clean
+                        setTimeout(() => { obj.reset().play(); }, 2000);
                     });
                 }
 
@@ -592,12 +566,6 @@
                 svObserver.observe(document.getElementById('recruit-vivus'));
             });
         </script>
-        <style>
-            @keyframes pulse-text {
-                0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; filter: drop-shadow(0 0 0 rgba(229,57,53,0)); }
-                100% { transform: translate(-50%, -50%) scale(1.03); opacity: 1; filter: drop-shadow(0 5px 10px rgba(229,57,53,0.15)); }
-            }
-        </style>
     </div>
 </section>
 
