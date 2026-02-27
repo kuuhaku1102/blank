@@ -341,7 +341,7 @@
             
             <div class="marketing-circle-container" style="position:relative; width:480px; height:480px; display:flex; align-items:center; justify-content:center; margin: 0 auto;">
                 <!-- Center Text -->
-                <div style="position:absolute; z-index:10; text-align:center;">
+                <div class="marketing-center-text" style="position:absolute; z-index:10; text-align:center;">
                     <span style="display:block; color:#1a56db; font-size:1.3rem; font-weight:900; letter-spacing:0.05em; margin-bottom:6px;">Marketing Medias</span>
                     <span style="display:block; color:#1a56db; font-size:0.95rem; font-weight:bold;">対応可能なメディア</span>
                 </div>
@@ -407,10 +407,17 @@
     animation-play-state: paused;
 }
 @media (max-width: 768px) {
-    .marketing-circle-container { transform: scale(0.85); transform-origin: center center; margin-top: -30px; }
+    .marketing-circle-container { 
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) scale(0.9) !important; 
+        transform-origin: center center; 
+    }
 }
 @media (max-width: 480px) {
-    .marketing-circle-container { transform: scale(0.70); }
+    .marketing-circle-container { 
+        transform: translateX(-50%) scale(0.75) !important; 
+    }
 }
 </style>
 
