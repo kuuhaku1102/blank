@@ -95,7 +95,7 @@
                 $card_index++;
                 $is_hidden = $card_index > 9;
             ?>
-            <a href="<?php the_permalink(); ?>" class="gsap-works-card <?php echo $is_hidden ? 'hidden-card' : 'initial-load'; ?>" style="display:<?php echo $is_hidden ? 'none' : 'block'; ?>; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;">
+            <a href="<?php the_permalink(); ?>" class="gsap-works-card <?php echo $is_hidden ? 'hidden-card' : 'initial-load'; ?>" style="display:<?php echo $is_hidden ? 'none' : 'flex'; ?>; flex-direction:column; justify-content:space-between; height:100%; box-sizing:border-box; text-decoration:none; color:inherit; background:#ffffff; border-radius:16px; border: 1px solid rgba(11,19,43,0.1); padding:25px; position:relative; z-index:2;">
                 
                 <!-- Upper Flex Area: Image on Left, Details on Right -->
                 <div style="display:flex; gap:25px; margin-bottom:25px; align-items:flex-start;">
@@ -167,7 +167,7 @@
                 </div>
                 
                 <!-- Bottom Area: Read More CTA -->
-                <div style="display:block; width:100%;">
+                <div style="display:block; width:100%; margin-top:auto;">
                     <div style="display:flex; align-items:center; justify-content:center; box-sizing:border-box; gap:8px; font-size:1rem; font-weight:bold; color:#ffffff; background:#e53935; border-radius:8px; padding:14px 30px; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); width:100%; text-align:center;" class="read-more-btn">
                         詳しく見る <span style="font-size:1.2rem; transition:transform 0.3s;" class="arrow">&rarr;</span>
                     </div>
@@ -183,7 +183,7 @@
             <?php endif; ?>
         </div>
         
-        <div class="load-more-container gsap-fade-up" style="margin-top: 80px; text-align:center;">
+        <div class="load-more-container gsap-fade-up" style="margin-top: 100px; padding-bottom: 40px; text-align:center;">
             <?php if ($wp_query->post_count > 9): ?>
             <button id="load-more-btn" style="background:#ffffff; color:var(--primary-color); border:2px solid var(--primary-color); padding:15px 50px; border-radius:30px; font-weight:bold; font-size:1.1rem; letter-spacing:0.1em; cursor:pointer; transition:all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='#ffffff';" onmouseout="this.style.background='#ffffff'; this.style.color='var(--primary-color)';">
                 もっと見る &darr;
@@ -262,13 +262,13 @@ document.addEventListener("DOMContentLoaded", function() {
             
             if(cardsToShow.length > 0) {
                 cardsToShow.forEach((card) => {
-                    card.style.display = "block";
+                    card.style.display = "flex";
                     card.classList.remove("hidden-card");
                 });
                 
                 gsap.fromTo(cardsToShow, 
-                    {opacity: 0, y: 50, rotationX: 10, scale: 0.95}, 
-                    {opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 0.8, ease: "power3.out", stagger: 0.1}
+                    {opacity: 0, y: 20, rotationX: 5, scale: 0.98}, 
+                    {opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 0.8, ease: "power3.out", stagger: 0.05}
                 );
                 
                 setTimeout(() => ScrollTrigger.refresh(), 500);
