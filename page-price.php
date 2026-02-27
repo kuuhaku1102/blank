@@ -112,6 +112,11 @@ get_header(); ?>
                     ['name' => '広告アカウント初期構築', 'price' => 100000, 'type' => 'checkbox'],
                     ['name' => '月額広告運用代行（最低出稿額ベース）', 'price' => 50000, 'type' => 'checkbox'],
                     ['name' => '月次改善定例ミーティング', 'price' => 30000, 'type' => 'checkbox']
+                ],
+                'block_lp' => [
+                    ['name' => 'ブロックLP基本設計・ワイヤー', 'price' => 50000, 'type' => 'checkbox'],
+                    ['name' => 'LPブロック追加作成', 'price' => 15000, 'type' => 'number'],
+                    ['name' => 'FV（ファーストビュー）デザイン', 'price' => 30000, 'type' => 'checkbox']
                 ]
             ];
         }
@@ -125,6 +130,7 @@ get_header(); ?>
             <div class="sim-tabs" style="display:flex; border-bottom:1px solid rgba(0,0,0,0.1); flex-wrap:wrap;">
                 <div class="sim-tab active" data-tab="hp" style="flex:1; min-width:120px; padding:20px 10px; text-align:center; font-weight:bold; cursor:pointer; color:var(--primary-color); background:rgba(145,166,180,0.05); border-right:1px solid rgba(0,0,0,0.1); border-bottom:3px solid var(--primary-color); transition:all 0.3s;">HP制作</div>
                 <div class="sim-tab" data-tab="lp" style="flex:1; min-width:120px; padding:20px 10px; text-align:center; font-weight:bold; cursor:pointer; color:var(--accent-color); background:#fff; border-right:1px solid rgba(0,0,0,0.1); border-bottom:3px solid transparent; transition:all 0.3s;">LP制作</div>
+                <div class="sim-tab" data-tab="block_lp" style="flex:1; min-width:120px; padding:20px 10px; text-align:center; font-weight:bold; cursor:pointer; color:var(--accent-color); background:#fff; border-right:1px solid rgba(0,0,0,0.1); border-bottom:3px solid transparent; transition:all 0.3s;">ブロック式LP</div>
                 <div class="sim-tab" data-tab="marketing" style="flex:1; min-width:120px; padding:20px 10px; text-align:center; font-weight:bold; cursor:pointer; color:var(--accent-color); background:#fff; border-bottom:3px solid transparent; transition:all 0.3s;">マーケティング</div>
             </div>
             
@@ -156,6 +162,7 @@ get_header(); ?>
             let simState = {
                 'hp': {},
                 'lp': {},
+                'block_lp': {},
                 'marketing': {}
             };
             let currentTab = 'hp';

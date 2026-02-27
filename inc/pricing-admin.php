@@ -32,6 +32,11 @@ function blank_pricing_page_html() {
             ['name' => '広告アカウント初期構築', 'price' => 100000, 'type' => 'checkbox'],
             ['name' => '月額広告運用代行（最低出稿額ベース）', 'price' => 50000, 'type' => 'checkbox'],
             ['name' => '月次改善定例ミーティング', 'price' => 30000, 'type' => 'checkbox']
+        ],
+        'block_lp' => [
+            ['name' => 'ブロックLP基本設計・ワイヤー', 'price' => 50000, 'type' => 'checkbox'],
+            ['name' => 'LPブロック追加作成', 'price' => 15000, 'type' => 'number'],
+            ['name' => 'FV（ファーストビュー）デザイン', 'price' => 30000, 'type' => 'checkbox']
         ]
     ];
     
@@ -42,7 +47,7 @@ function blank_pricing_page_html() {
     ?>
     <div class="wrap">
         <h1>料金シミュレーター設定</h1>
-        <p>「HP制作」「LP制作」「マーケティング」の各タブで表示されるシミュレーション項目を設定します。</p>
+        <p>「HP制作」「LP制作」「マーケティング」「ブロック式LP」の各タブで表示されるシミュレーション項目を設定します。</p>
         
         <form method="post" action="">
             <?php wp_nonce_field('blank_pricing_save', 'blank_pricing_nonce'); ?>
@@ -63,8 +68,8 @@ function blank_pricing_page_html() {
         
         const render = () => {
             let html = '';
-            ['hp', 'lp', 'marketing'].forEach(tab => {
-                let tabName = tab === 'hp' ? 'HP制作' : (tab === 'lp' ? 'LP制作' : 'マーケティング');
+            ['hp', 'lp', 'marketing', 'block_lp'].forEach(tab => {
+                let tabName = tab === 'hp' ? 'HP制作' : (tab === 'lp' ? 'LP制作' : (tab === 'marketing' ? 'マーケティング' : 'ブロック式LP'));
                 html += `<div style="background:#fff; border:1px solid #ccd0d4; padding:20px; margin-bottom:20px; box-shadow:0 1px 1px rgba(0,0,0,0.04);">
                     <h2 style="margin-top:0; border-bottom:1px solid #eee; padding-bottom:10px;">${tabName} タブ</h2>
                     <table class="wp-list-table widefat fixed striped" style="margin-bottom:15px; border:none;">
