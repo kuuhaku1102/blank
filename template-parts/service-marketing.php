@@ -160,15 +160,15 @@
         <div class="gsap-fade-up" style="position:relative; z-index:2; margin-top:60px; width:100%;">
             <?php
             $args = [
-                'post_type'      => 'works',
+                'post_type'      => 'case_study',
                 'posts_per_page' => 8,
             ];
-            $mk_works_query = new WP_Query($args);
-            if($mk_works_query->have_posts()):
+            $mk_cs_query = new WP_Query($args);
+            if($mk_cs_query->have_posts()):
             ?>
             <div class="swiper mk-works-swiper" style="padding: 20px 0 60px;">
                 <div class="swiper-wrapper">
-                    <?php while($mk_works_query->have_posts()): $mk_works_query->the_post(); ?>
+                    <?php while($mk_cs_query->have_posts()): $mk_cs_query->the_post(); ?>
                     <div class="swiper-slide">
                         <a href="<?php the_permalink(); ?>" style="display:block; text-decoration:none; background:#ffffff; border-radius:16px; padding:25px; box-shadow:0 15px 35px rgba(0,0,0,0.2); transition:transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.2)';">
                             <div style="display:flex; gap:20px; align-items:flex-start;">
@@ -185,7 +185,7 @@
                                     </div>
                                     <h4 style="color:#1c2541; font-size:1.15rem; font-weight:800; margin:0 0 12px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-align:left;"><?php the_title(); ?></h4>
                                     <div style="display:flex; flex-wrap:wrap; gap:6px;">
-                                        <span style="font-size:0.7rem; background:#e6fcf5; color:#0ca678; border:1px solid #c3fae8; padding:3px 8px; border-radius:4px; font-weight:bold;">WEBマーケティング</span>
+                                        <span style="font-size:0.7rem; background:#e6fcf5; color:#0ca678; border:1px solid #c3fae8; padding:3px 8px; border-radius:4px; font-weight:bold;">CASE STUDY</span>
                                     </div>
                                 </div>
                             </div>
