@@ -802,9 +802,8 @@ img {
         text-align: center !important;
     }
 
-    /* Hide decorative background SVGs on SP to prevent noise/overlap */
-    .top-works>svg,
-    .top-services>svg {
+    /* Hide Recruit Vivus bracket animation on SP as requested */
+    #recruit-vivus {
         display: none !important;
     }
 
