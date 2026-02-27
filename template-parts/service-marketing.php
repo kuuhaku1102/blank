@@ -288,6 +288,61 @@
         </div>
     </section>
 
+    <!-- 6.5. TECH STACK / TOOLS -->
+    <section class="service-techstack section-padding" style="padding: 100px 0; background:rgba(244, 249, 247, 0.5); position:relative;">
+        <div class="container gsap-fade-up" style="max-width:1000px;">
+            <div style="text-align:center; margin-bottom:50px;">
+                <h3 style="font-size: 2.2rem; font-weight: 800; color:var(--primary-color); margin-bottom:15px;">使用ツール / 技術スタック</h3>
+                <p style="color:var(--accent-color); font-weight:bold;">データ解析・可視化を支える主要ツール</p>
+            </div>
+            
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
+                <div style="background:#fff; border:1px solid #e2e8f0; padding:25px; border-radius:12px; display:flex; align-items:center; gap:15px; box-shadow:0 10px 20px rgba(0,0,0,0.03); transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width:50px; height:50px; background:#e6fcf5; color:#10b981; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.2rem;">GA</div>
+                    <div>
+                        <h4 style="font-weight:800; color:var(--primary-color); font-size:1.1rem; margin:0 0 5px;">Google Analytics 4</h4>
+                        <span style="font-size:0.85rem; color:#50575e; font-weight:bold;">GA4</span>
+                    </div>
+                </div>
+                <div style="background:#fff; border:1px solid #e2e8f0; padding:25px; border-radius:12px; display:flex; align-items:center; gap:15px; box-shadow:0 10px 20px rgba(0,0,0,0.03); transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width:50px; height:50px; background:#e6fcf5; color:#10b981; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.2rem;">GTM</div>
+                    <div>
+                        <h4 style="font-weight:800; color:var(--primary-color); font-size:1.1rem; margin:0 0 5px;">Google Tag Manager</h4>
+                        <span style="font-size:0.85rem; color:#50575e; font-weight:bold;">GTM</span>
+                    </div>
+                </div>
+                <div style="background:#fff; border:1px solid #e2e8f0; padding:25px; border-radius:12px; display:flex; align-items:center; gap:15px; box-shadow:0 10px 20px rgba(0,0,0,0.03); transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width:50px; height:50px; background:#e6fcf5; color:#10b981; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.2rem;">MC</div>
+                    <div>
+                        <h4 style="font-weight:800; color:var(--primary-color); font-size:1.1rem; margin:0 0 5px;">Microsoft Clarity</h4>
+                        <span style="font-size:0.85rem; color:#50575e; font-weight:bold;">ヒートマップ</span>
+                    </div>
+                </div>
+                <div style="background:#fff; border:1px solid #e2e8f0; padding:25px; border-radius:12px; display:flex; align-items:center; gap:15px; box-shadow:0 10px 20px rgba(0,0,0,0.03); transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width:50px; height:50px; background:#e6fcf5; color:#10b981; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.2rem;">LS</div>
+                    <div>
+                        <h4 style="font-weight:800; color:var(--primary-color); font-size:1.1rem; margin:0 0 5px;">Looker Studio</h4>
+                        <span style="font-size:0.85rem; color:#50575e; font-weight:bold;">ダッシュボード</span>
+                    </div>
+                </div>
+                <div style="background:#fff; border:1px solid #e2e8f0; padding:25px; border-radius:12px; display:flex; align-items:center; gap:15px; box-shadow:0 10px 20px rgba(0,0,0,0.03); transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width:50px; height:50px; background:#e6fcf5; color:#10b981; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.2rem;">BQ</div>
+                    <div>
+                        <h4 style="font-weight:800; color:var(--primary-color); font-size:1.1rem; margin:0 0 5px;">BigQuery</h4>
+                        <span style="font-size:0.85rem; color:#50575e; font-weight:bold;">大規模データ処理</span>
+                    </div>
+                </div>
+                <div style="background:#fff; border:1px solid #e2e8f0; padding:25px; border-radius:12px; display:flex; align-items:center; gap:15px; box-shadow:0 10px 20px rgba(0,0,0,0.03); transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width:50px; height:50px; background:#e6fcf5; color:#10b981; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.2rem;">GS</div>
+                    <div>
+                        <h4 style="font-weight:800; color:var(--primary-color); font-size:1.1rem; margin:0 0 5px;">Google Sheets</h4>
+                        <span style="font-size:0.85rem; color:#50575e; font-weight:bold;">データ・API連携</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 7. PHILOSOPHY & CONTACT -->
     <section class="service-philosophy section-padding" style="padding: 150px 0; background:transparent; text-align:center; position:relative;">
         <div class="container gsap-fade-up" style="max-width:800px; position:relative; z-index:2;">
