@@ -24,7 +24,7 @@ get_header(); ?>
 
     <!-- Pricing Cards Layout -->
     <div class="container" style="max-width: 1100px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-bottom: 100px; align-items: stretch; align-content: start;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-bottom: 100px; align-items: stretch;">
             
             <!-- Web制作プラン -->
             <div class="gsap-price-card" style="display:flex; flex-direction:column; background:rgba(255,255,255,0.85); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.04); border-top: 4px solid var(--primary-color); border-bottom: 1px solid rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-right: 1px solid rgba(0,0,0,0.05); padding: 50px 30px; text-align:center; position:relative; transition:transform 0.4s ease, box-shadow 0.4s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 25px 50px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.04)';">
