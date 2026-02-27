@@ -24,10 +24,10 @@ get_header(); ?>
 
     <!-- Pricing Cards Layout -->
     <div class="container" style="max-width: 1100px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-bottom: 100px; align-items: center;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-bottom: 100px; align-items: stretch; align-content: start;">
             
             <!-- Web制作プラン -->
-            <div class="gsap-price-card" style="background:rgba(255,255,255,0.85); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.04); border-top: 4px solid var(--primary-color); border-bottom: 1px solid rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-right: 1px solid rgba(0,0,0,0.05); padding: 50px 30px; text-align:center; position:relative; transition:transform 0.4s ease, box-shadow 0.4s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 25px 50px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.04)';">
+            <div class="gsap-price-card" style="display:flex; flex-direction:column; background:rgba(255,255,255,0.85); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.04); border-top: 4px solid var(--primary-color); border-bottom: 1px solid rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-right: 1px solid rgba(0,0,0,0.05); padding: 50px 30px; text-align:center; position:relative; transition:transform 0.4s ease, box-shadow 0.4s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 25px 50px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.04)';">
                 <h3 style="font-size:1.6rem; color:var(--primary-color); margin-bottom:15px; font-weight:800;">Web制作プラン</h3>
                 <p style="color:var(--accent-color); font-size:0.95rem; margin-bottom:30px; line-height:1.6;">企業ブランディングを強化する<br>高品質なコーポレートサイト</p>
                 <div style="font-size:3rem; font-weight:900; color:var(--primary-color); margin-bottom:30px; line-height:1;">
@@ -41,11 +41,11 @@ get_header(); ?>
                     <li style="position:relative; padding-left:25px;"><span style="position:absolute; left:0; color:var(--highlight-color); font-weight:bold;">✓</span>お問い合わせフォーム実装</li>
                     <li style="position:relative; padding-left:25px;"><span style="position:absolute; left:0; color:var(--highlight-color); font-weight:bold;">✓</span>基本SEO対策設定</li>
                 </ul>
-                <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" style="display:inline-block; width:100%; border:2px solid var(--primary-color); color:var(--primary-color); padding: 15px 0; border-radius: 8px; font-weight:bold; transition:all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='var(--primary-color)';">詳細を見る</a>
+                <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" style="display:inline-block; width:100%; border:2px solid var(--primary-color); color:var(--primary-color); padding: 15px 0; border-radius: 8px; font-weight:bold; transition:all 0.3s; margin-top:auto;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='var(--primary-color)';">詳細を見る</a>
             </div>
 
             <!-- LP制作プラン (Premium/Popular) -->
-            <div class="gsap-price-card" style="background:rgba(28, 37, 65, 0.95); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-radius:16px; box-shadow:0 20px 50px rgba(229, 57, 53, 0.2); border-top: 6px solid var(--highlight-color); border-bottom: 1px solid rgba(255,255,255,0.1); border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); padding: 60px 30px; text-align:center; position:relative; transform:scale(1.05); z-index:2; transition:transform 0.4s ease, box-shadow 0.4s ease;" onmouseover="this.style.transform='scale(1.05) translateY(-10px)'; this.style.boxShadow='0 30px 60px rgba(229, 57, 53, 0.3)';" onmouseout="this.style.transform='scale(1.05) translateY(0)'; this.style.boxShadow='0 20px 50px rgba(229, 57, 53, 0.2)';">
+            <div class="gsap-price-card" style="display:flex; flex-direction:column; background:rgba(28, 37, 65, 0.95); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-radius:16px; box-shadow:0 20px 50px rgba(229, 57, 53, 0.2); border-top: 6px solid var(--highlight-color); border-bottom: 1px solid rgba(255,255,255,0.1); border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); padding: 60px 30px; text-align:center; position:relative; transform:scale(1.05); z-index:2; transition:transform 0.4s ease, box-shadow 0.4s ease;" onmouseover="this.style.transform='scale(1.05) translateY(-10px)'; this.style.boxShadow='0 30px 60px rgba(229, 57, 53, 0.3)';" onmouseout="this.style.transform='scale(1.05) translateY(0)'; this.style.boxShadow='0 20px 50px rgba(229, 57, 53, 0.2)';">
                 <div style="position:absolute; top:-18px; left:50%; transform:translateX(-50%); background:var(--highlight-color); color:var(--white); padding:8px 30px; border-radius:30px; font-weight:900; font-size:1rem; letter-spacing:0.1em; box-shadow: 0 4px 15px rgba(229, 57, 53, 0.5);">RECOMMENDED</div>
                 <h3 style="font-size:2rem; color:var(--white); margin-bottom:15px; font-weight:900;">LP特化制作プラン</h3>
                 <p style="color:rgba(255,255,255,0.7); font-size:1rem; margin-bottom:30px; line-height:1.6;">圧倒的なコンバージョンを生む<br>成果特化型のランディングページ</p>
@@ -60,7 +60,7 @@ get_header(); ?>
                     <li style="position:relative; padding-left:25px;"><span style="position:absolute; left:0; color:var(--highlight-color); font-weight:bold;">✓</span>スクロール追従CTA実装</li>
                     <li style="position:relative; padding-left:25px;"><span style="position:absolute; left:0; color:var(--highlight-color); font-weight:bold;">✓</span>ヒートマップ導入支援</li>
                 </ul>
-                <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn" style="display:inline-block; width:100%; font-size:1.1rem; padding: 18px 0; border-radius: 8px;">お見積りを依頼する</a>
+                <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="cta-btn" style="display:inline-block; width:100%; font-size:1.1rem; padding: 18px 0; border-radius: 8px; margin-top:auto;">お見積りを依頼する</a>
             <!-- Keep scale correct for mobile -->
             <style>
                 @media (max-width: 900px) {
@@ -71,7 +71,7 @@ get_header(); ?>
             </div>
 
             <!-- 月額改善プラン -->
-            <div class="gsap-price-card" style="background:rgba(255,255,255,0.85); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.04); border-top: 4px solid var(--accent-color); border-bottom: 1px solid rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-right: 1px solid rgba(0,0,0,0.05); padding: 50px 30px; text-align:center; position:relative; transition:transform 0.4s ease, box-shadow 0.4s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 25px 50px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.04)';">
+            <div class="gsap-price-card" style="display:flex; flex-direction:column; background:rgba(255,255,255,0.85); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.04); border-top: 4px solid var(--accent-color); border-bottom: 1px solid rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-right: 1px solid rgba(0,0,0,0.05); padding: 50px 30px; text-align:center; position:relative; transition:transform 0.4s ease, box-shadow 0.4s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 25px 50px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.04)';">
                 <h3 style="font-size:1.6rem; color:var(--primary-color); margin-bottom:15px; font-weight:800;">月額改善プラン</h3>
                 <p style="color:var(--accent-color); font-size:0.95rem; margin-bottom:30px; line-height:1.6;">サイト公開後のLPO・CRO<br>継続的なデータドリブン改善</p>
                 <div style="font-size:3rem; font-weight:900; color:var(--primary-color); margin-bottom:30px; line-height:1;">
@@ -85,7 +85,7 @@ get_header(); ?>
                     <li style="position:relative; padding-left:25px;"><span style="position:absolute; left:0; color:var(--highlight-color); font-weight:bold;">✓</span>定例ミーティング</li>
                     <li style="position:relative; padding-left:25px;"><span style="position:absolute; left:0; color:var(--highlight-color); font-weight:bold;">✓</span>広告運用連携</li>
                 </ul>
-                <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" style="display:inline-block; width:100%; border:2px solid var(--accent-color); color:var(--accent-color); padding: 15px 0; border-radius: 8px; font-weight:bold; transition:all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='#fff'; this.style.borderColor='var(--primary-color)';" onmouseout="this.style.background='transparent'; this.style.color='var(--accent-color)'; this.style.borderColor='var(--accent-color)';">詳細を見る</a>
+                <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" style="display:inline-block; width:100%; border:2px solid var(--accent-color); color:var(--accent-color); padding: 15px 0; border-radius: 8px; font-weight:bold; transition:all 0.3s; margin-top:auto;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='#fff'; this.style.borderColor='var(--primary-color)';" onmouseout="this.style.background='transparent'; this.style.color='var(--accent-color)'; this.style.borderColor='var(--accent-color)';">詳細を見る</a>
             </div>
 
         </div>
@@ -153,7 +153,13 @@ get_header(); ?>
         
         <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const rawData = <?php echo json_encode($sim_data); ?>;
+            const rawDataRaw = <?php 
+                $encoded = json_encode($sim_data, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+                echo $encoded ? $encoded : '{}';
+            ?>;
+            // Merge defaults in case of missing data (e.g. old saves)
+            const rawData = Object.assign({ 'hp': [], 'lp': [], 'block_lp': [], 'marketing': [] }, rawDataRaw);
+
             const tabs = document.querySelectorAll('.sim-tab');
             const container = document.getElementById('sim-items-container');
             const totalEl = document.getElementById('sim-total');

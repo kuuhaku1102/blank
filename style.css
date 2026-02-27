@@ -766,7 +766,7 @@ h6 {
 
     /* 3. absolute要素をrelativeに変更 */
     /* Exclude background overlays, canvas, SVG, and specific interactive nodes to avoid breaking graphics */
-    *[style*="position: absolute"]:not(canvas):not(svg):not(.overlay):not([style*="pointer-events:none"]):not([style*="pointer-events: none"]):not([style*="inset:0"]):not(.marketing-node):not(.orbit-run):not(#recruit-vivus-text):not(.marketing-center-text) {
+    *[style*="position: absolute"]:not(canvas):not(svg):not(.overlay):not([style*="pointer-events:none"]):not([style*="pointer-events: none"]):not([style*="inset:0"]):not(.marketing-node):not(.orbit-run):not(#recruit-vivus-text):not(.marketing-center-text):not(.gsap-price-card *):not(#pricing-simulator *) {
         position: relative !important;
         top: auto !important;
         left: auto !important;
