@@ -58,6 +58,41 @@ get_header(); ?>
         }
         ?>
         <div id="pricing-simulator" class="gsap-fade-up container" style="background:rgba(255,255,255,0.9); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-radius: 16px; box-shadow:0 15px 40px rgba(0,0,0,0.05); border:1px solid rgba(0,0,0,0.05); margin-bottom:100px; display:block; max-width:800px; margin: 0 auto 100px; overflow:hidden;">
+            <style>
+                @media (max-width: 768px) {
+                    .sim-tabs {
+                        flex-wrap: wrap;
+                    }
+                    .sim-tabs .sim-tab {
+                        flex: 1 1 48% !important;
+                        min-width: 48% !important;
+                        font-size: 0.85rem !important;
+                        padding: 15px 5px !important;
+                    }
+                    .sim-item {
+                        padding: 15px !important;
+                    }
+                    .sim-item > div:first-child {
+                        min-width: 100% !important;
+                        margin-bottom: 5px;
+                    }
+                    .sim-item-name {
+                        font-size: 1rem !important;
+                    }
+                    .sim-price-col {
+                        width: 100%;
+                        justify-content: flex-end !important;
+                        margin-top: 5px;
+                    }
+                    .sim-price-col-number {
+                        gap: 10px !important;
+                        justify-content: flex-end !important;
+                    }
+                    #pricing-simulator h2 {
+                        font-size: 1.4rem !important;
+                    }
+                }
+            </style>
             <div style="background:var(--primary-color); padding: 30px; text-align:center; color:#fff;">
                 <h2 style="margin:0; font-size:1.8rem; font-weight:800; letter-spacing:0.1em; color:#fff;">料金シミュレーター</h2>
                 <p style="margin:10px 0 0; font-size:0.95rem; opacity:0.9;">必要項目を選択して概算お見積りをご確認いただけます。</p>
@@ -137,17 +172,17 @@ get_header(); ?>
                     if(item.type === 'checkbox') {
                         let checked = val === 1 ? 'checked' : '';
                         html += `
-                        <label class="sim-item" style="display:flex; justify-content:space-between; align-items:center; padding:20px; border:2px solid ${checked ? 'var(--primary-color)' : 'rgba(0,0,0,0.05)'}; border-radius:12px; cursor:pointer; transition:all 0.3s; background:${checked ? 'rgba(145,166,180,0.05)' : '#fff'}; box-shadow:${checked ? '0 5px 15px rgba(0,0,0,0.03)' : 'none'}; margin-bottom:15px;">
-                            <div style="display:flex; align-items:center; gap:15px;">
+                        <label class="sim-item" style="display:flex; justify-content:space-between; align-items:center; padding:20px; border:2px solid ${checked ? 'var(--primary-color)' : 'rgba(0,0,0,0.05)'}; border-radius:12px; cursor:pointer; transition:all 0.3s; background:${checked ? 'rgba(145,166,180,0.05)' : '#fff'}; box-shadow:${checked ? '0 5px 15px rgba(0,0,0,0.03)' : 'none'}; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                            <div style="display:flex; align-items:center; gap:15px; flex:1; min-width:200px;">
                                 <div style="position:relative; width:24px; height:24px; flex-shrink:0;">
                                     <input type="checkbox" onchange="updateSim('${tabKey}', ${index}, this.checked ? 1 : 0)" ${checked} style="position:absolute; opacity:0; cursor:pointer; width:100%; height:100%; z-index:2;">
                                     <div style="width:24px; height:24px; border-radius:6px; border:2px solid ${checked ? 'var(--primary-color)' : '#cbd5e1'}; background:${checked ? 'var(--primary-color)' : '#fff'}; display:flex; align-items:center; justify-content:center; transition:all 0.2s;">
                                         <svg width="14" height="10" viewBox="0 0 14 10" fill="none" style="opacity:${checked ? '1' : '0'};"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                     </div>
                                 </div>
-                                <span style="font-size:1.1rem; font-weight:bold; color:var(--primary-color);">${item.name}</span>
+                                <span class="sim-item-name" style="font-size:1.1rem; font-weight:bold; color:var(--primary-color); line-height:1.4;">${item.name}</span>
                             </div>
-                            <div style="font-weight:900; font-size:1.2rem; color:var(--accent-color); white-space:nowrap; margin-left:15px;">
+                            <div class="sim-price-col" style="font-weight:900; font-size:1.2rem; color:var(--accent-color); white-space:nowrap; text-align:right;">
                                 ¥${formatPrice(item.price)}
                             </div>
                         </label>`;
@@ -158,9 +193,9 @@ get_header(); ?>
                                 <div style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; color:var(--primary-color); font-weight:bold; flex-shrink:0;">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                                 </div>
-                                <span style="font-size:1.1rem; font-weight:bold; color:var(--primary-color);">${item.name}</span>
+                                <span class="sim-item-name" style="font-size:1.1rem; font-weight:bold; color:var(--primary-color); line-height:1.4;">${item.name}</span>
                             </div>
-                            <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+                            <div class="sim-price-col sim-price-col-number" style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; justify-content:flex-end;">
                                 <div style="font-weight:900; font-size:1.2rem; color:var(--accent-color);">
                                     ¥${formatPrice(item.price)} <span style="font-size:0.9rem; color:#91a6b4; font-weight:normal;">/ 個</span>
                                 </div>
