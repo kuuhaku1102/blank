@@ -3,7 +3,7 @@
 // Can be used anywhere as a fallback thumbnail or cool tech visual
 
 function blank_get_animated_logo_html($size = 'large') {
-    $logo_url = get_template_directory_uri() . '/assets/images/logo-icon.png';
+    $logo_url = get_template_directory_uri() . '/assets/images/logo.jpg';
     $size_px = $size === 'small' ? '80px' : '180px';
     ob_start();
     ?>
@@ -23,7 +23,6 @@ function blank_get_animated_logo_html($size = 'large') {
             
             <!-- Shimmer effect overlay layer -->
             <div class="tech-logo-shimmer">
-                <img src="<?php echo esc_url($logo_url); ?>" class="tech-logo-mask" alt="">
                 <div class="shimmer-sweep"></div>
             </div>
             
@@ -79,6 +78,9 @@ function blank_get_animated_logo_html($size = 'large') {
             z-index: 1;
             /* Smooth floating animation */
             animation: logoHoverFloat 4s ease-in-out infinite;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(28, 37, 65, 0.15);
+            background: #fff;
         }
         
         .tech-logo-base {
@@ -86,7 +88,7 @@ function blank_get_animated_logo_html($size = 'large') {
             top: 0; left: 0;
             width: 100%; height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 15px 25px rgba(28, 37, 65, 0.08));
+            border-radius: 12px;
         }
 
         /* Shimmer Masking Setup */
@@ -95,18 +97,7 @@ function blank_get_animated_logo_html($size = 'large') {
             top: 0; left: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            mask-image: url('<?php echo esc_url($logo_url); ?>');
-            mask-size: contain;
-            mask-repeat: no-repeat;
-            mask-position: center;
-            -webkit-mask-image: url('<?php echo esc_url($logo_url); ?>');
-            -webkit-mask-size: contain;
-            -webkit-mask-repeat: no-repeat;
-            -webkit-mask-position: center;
-        }
-        
-        .tech-logo-mask {
-            display: none; /* fallback img just in case */
+            border-radius: 12px;
         }
 
         .shimmer-sweep {
