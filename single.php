@@ -68,9 +68,42 @@
                             echo '</h2>';
                         }
                         
-                        if(!empty($sec['img'])) {
+                        if(!empty($sec['anim']) && $sec['anim'] !== 'none') {
                             echo '<div style="margin-top:0; margin-bottom:30px; text-align:center;">';
-                            echo '<img src="'.esc_url($sec['img']).'" style="max-width:100%; height:auto; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid rgba(145,166,180,0.1);" alt="'.esc_attr($sec['heading']).'" />';
+                            
+                            if($sec['anim'] === 'custom_image' && !empty($sec['img'])) {
+                                // Default image behavior
+                                echo '<img src="'.esc_url($sec['img']).'" style="max-width:100%; height:auto; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid rgba(145,166,180,0.1);" alt="'.esc_attr($sec['heading']).'" />';
+                            } else if ($sec['anim'] !== 'custom_image') {
+                                // Lottie Animations mapped by selection
+                                $lottie_url = '';
+                                switch($sec['anim']) {
+                                    case 'tech_server': // Server/Cloud
+                                        $lottie_url = 'https://lottie.host/e2ba5d23-74ac-4fdc-88eb-10cbde686008/V9d0c6Zp8Y.json'; 
+                                        break;
+                                    case 'tech_code': // Coding/Development
+                                        $lottie_url = 'https://lottie.host/81de3c17-4ac9-4e78-be7c-b6aeb6fb44e5/DInuP50P9x.json';
+                                        break;
+                                    case 'tech_data': // Data/AI
+                                        $lottie_url = 'https://lottie.host/4a29a0eb-2e65-4dce-bccc-96edda4b58e7/Wn4X1zB2Q8.json';
+                                        break;
+                                    case 'tech_security': // Security
+                                        $lottie_url = 'https://lottie.host/4ebf7a0c-6874-4b53-8d07-fd405391ec9d/oJ24S0Grt2.json';
+                                        break;
+                                    default:
+                                        $lottie_url = '';
+                                }
+                                
+                                if($lottie_url) {
+                                    echo '<div style="max-width:400px; margin:0 auto; background:rgba(145,166,180,0.02); border-radius:16px; border:1px solid rgba(145,166,180,0.1); overflow:hidden;">';
+                                    echo '<lottie-player src="'.$lottie_url.'" background="transparent" speed="1" style="width: 100%; height: auto; aspect-ratio: 4/3;" loop autoplay></lottie-player>';
+                                    echo '</div>';
+                                    
+                                    // Add the flag to load script later
+                                    $has_lottie = true;
+                                }
+                            }
+                            
                             echo '</div>';
                         }
                         
@@ -109,6 +142,11 @@
                     &larr; SYLLABUS一覧へ戻る
                 </a>
             </div>
+
+            <?php if(isset($has_lottie) && $has_lottie): ?>
+            <!-- Load Lottie Web Player -->
+            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+            <?php endif; ?>
 
         </article>
     </div>

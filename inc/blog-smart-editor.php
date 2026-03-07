@@ -62,19 +62,29 @@ function blank_blog_smart_editor_html( $post ) {
                         <label>見出し</label>
                         <input type="text" name="smart_section[<?php echo $i; ?>][heading]" class="tpl-heading" value="<?php echo esc_attr($h); ?>" placeholder="例：〇〇機能の強力なメリット" />
                     </div>
-                    
                     <div class="smart-editor-field">
-                        <label>画像</label>
-                        <div class="img-preview-area">
+                        <label>🖼️ アニメーション / ビジュアル選択</label>
+                        <?php 
+                        $anim = isset($sec['anim']) ? $sec['anim'] : 'none';
+                        ?>
+                        <select name="smart_section[<?php echo $i; ?>][anim]" class="tpl-anim" style="width:100%; max-width:400px; padding:8px; border-radius:4px; border:1px solid #ccd0d4; margin-bottom:10px;" onchange="toggleImageUploader(this)">
+                            <option value="none" <?php selected($anim, 'none'); ?>>アニメーション・画像なし</option>
+                            <option value="tech_server" <?php selected($anim, 'tech_server'); ?>>【アニメ】サーバー / クラウド (Tech)</option>
+                            <option value="tech_code" <?php selected($anim, 'tech_code'); ?>>【アニメ】コーディング / 開発 (Tech)</option>
+                            <option value="tech_data" <?php selected($anim, 'tech_data'); ?>>【アニメ】データ解析 / AI (Tech)</option>
+                            <option value="tech_security" <?php selected($anim, 'tech_security'); ?>>【アニメ】セキュリティ / ロック (Tech)</option>
+                            <option value="custom_image" <?php selected($anim, 'custom_image'); ?>>自分で画像をアップロードする</option>
+                        </select>
+                        
+                        <div class="img-preview-area" style="display: <?php echo ($anim === 'custom_image') ? 'flex' : 'none'; ?>;">
                             <input type="hidden" name="smart_section[<?php echo $i; ?>][img]" class="tpl-img img-url-input" value="<?php echo esc_url($img); ?>" />
-                            <img src="<?php echo $img ? esc_url($img) : ''; ?>" class="img-preview" style="display: <?php echo $img ? 'block' : 'none'; ?>" />
+                            <img src="<?php echo $img ? esc_url($img) : ''; ?>" class="img-preview" style="display: <?php echo $img ? 'block' : 'none'; ?>;" />
                             <div>
                                 <button type="button" class="img-select-btn" onclick="openMediaUploader(this)">画像を選択</button>
                                 <button type="button" class="img-clear-btn" style="display: <?php echo $img ? 'inline' : 'none'; ?>;" onclick="clearMedia(this)">クリア</button>
                             </div>
                         </div>
                     </div>
-
                     <div class="smart-editor-field">
                         <label>本文（テキスト）</label>
                         <textarea name="smart_section[<?php echo $i; ?>][content]" class="tpl-content" rows="6" placeholder="見出しに対する本文を記入してください。改行は自動的に反映されます。"><?php echo esc_textarea($c); ?></textarea>
@@ -102,8 +112,17 @@ function blank_blog_smart_editor_html( $post ) {
             </div>
             
             <div class="smart-editor-field">
-                <label>画像</label>
-                <div class="img-preview-area">
+                <label>🖼️ アニメーション / ビジュアル選択</label>
+                <select class="tpl-anim" style="width:100%; max-width:400px; padding:8px; border-radius:4px; border:1px solid #ccd0d4; margin-bottom:10px;" onchange="toggleImageUploader(this)">
+                    <option value="none">アニメーション・画像なし</option>
+                    <option value="tech_server">【アニメ】サーバー / クラウド (Tech)</option>
+                    <option value="tech_code">【アニメ】コーディング / 開発 (Tech)</option>
+                    <option value="tech_data">【アニメ】データ解析 / AI (Tech)</option>
+                    <option value="tech_security">【アニメ】セキュリティ / ロック (Tech)</option>
+                    <option value="custom_image">自分で画像をアップロードする</option>
+                </select>
+                
+                <div class="img-preview-area" style="display: none;">
                     <input type="hidden" class="tpl-img img-url-input" value="" />
                     <img src="" class="img-preview" style="display: none;" />
                     <div>
@@ -132,6 +151,7 @@ function blank_blog_smart_editor_html( $post ) {
         newSec.querySelector('.sec-title-num').innerText = 'セクション ' + (smartSectionCount + 1);
         
         newSec.querySelector('.tpl-heading').name = 'smart_section[' + smartSectionCount + '][heading]';
+        newSec.querySelector('.tpl-anim').name = 'smart_section[' + smartSectionCount + '][anim]';
         newSec.querySelector('.tpl-img').name = 'smart_section[' + smartSectionCount + '][img]';
         newSec.querySelector('.tpl-content').name = 'smart_section[' + smartSectionCount + '][content]';
         
@@ -153,10 +173,20 @@ function blank_blog_smart_editor_html( $post ) {
             sec.setAttribute('data-index', smartSectionCount);
             sec.querySelector('.sec-title-num').innerText = 'セクション ' + (smartSectionCount + 1);
             sec.querySelector('.tpl-heading').name = 'smart_section[' + smartSectionCount + '][heading]';
+            sec.querySelector('.tpl-anim').name = 'smart_section[' + smartSectionCount + '][anim]';
             sec.querySelector('.tpl-img').name = 'smart_section[' + smartSectionCount + '][img]';
             sec.querySelector('.tpl-content').name = 'smart_section[' + smartSectionCount + '][content]';
             smartSectionCount++;
         });
+    }
+
+    function toggleImageUploader(selectEl) {
+        var area = selectEl.closest('.smart-editor-field').querySelector('.img-preview-area');
+        if(selectEl.value === 'custom_image') {
+            area.style.display = 'flex';
+        } else {
+            area.style.display = 'none';
+        }
     }
 
     // WP Media Uploader scoped correctly
@@ -200,9 +230,10 @@ function blank_save_blog_smart_editor( $post_id ) {
         $clean_sections = [];
         foreach ($_POST['smart_section'] as $sec) {
             // Check if at least one field is filled out to avoid saving completely empty ghost rows
-            if(!empty($sec['heading']) || !empty($sec['img']) || !empty($sec['content'])) {
+            if(!empty($sec['heading']) || !empty($sec['img']) || !empty($sec['content']) || (isset($sec['anim']) && $sec['anim'] !== 'none')) {
                 $clean_sections[] = [
                     'heading' => sanitize_text_field($sec['heading'] ?? ''),
+                    'anim'    => sanitize_text_field($sec['anim'] ?? 'none'),
                     'img'     => esc_url_raw($sec['img'] ?? ''),
                     'content' => sanitize_textarea_field($sec['content'] ?? '')
                 ];
