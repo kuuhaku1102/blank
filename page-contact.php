@@ -145,6 +145,12 @@ div.wpcf7-response-output {
 div.wpcf7-validation-errors {
     border-color: #ffa500;
 }
+/* Fallback for MA tools like BowNow iframe which might stay height 0 in local or specific envs */
+.wp-form-wrapper iframe {
+    min-height: 800px !important;
+    width: 100% !important;
+    border: none !important;
+}
 @media (max-width: 768px) {
     .wp-form-wrapper input[type="submit"],
     .wp-form-wrapper button[type="submit"] {
