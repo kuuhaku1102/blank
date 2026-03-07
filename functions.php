@@ -250,3 +250,34 @@ require_once get_template_directory() . '/inc/works-admin.php';
 
 // 料金シミュレーター管理の読み込み
 require_once get_template_directory() . '/inc/pricing-admin.php';
+
+/* =========================================================
+   WordPress セキュリティ対策（Basic Hardenings）
+========================================================= */
+
+// 1. WordPressプレーンバーション情報の非表示（攻撃対象にならないため）
+remove_action('wp_head','wp_generator');
+
+// 2. XML-RPCの無効化（DDoS攻撃やブルートフォース攻撃を防ぐ）
+add_filter('xmlrpc_enabled', '__return_false');
+
+// 3. 基本的なHTTPセキュリティヘッダーの付与（XSS、クリックジャッキング対策）
+function blank_security_headers() {
+    if (!is_admin()) {
+        header('X-Content-Type-Options: nosniff');
+        header('X-XSS-Protection: 1; mode=block');
+        header('X-Frame-Options: SAMEORIGIN');
+        header('Strict-Transport-Security: max-age=31536000; includeSubDomains; preload');
+    }
+}
+add_action('send_headers', 'blank_security_headers');
+
+// 4. ユーザー名の列挙（Authorスキャン）の防止（/author=1 へのアクセスをリダイレクト）
+function blank_disable_author_scans() {
+    if (is_admin()) return;
+    if (isset($_GET['author']) || preg_match('/^\/author\//', $_SERVER['REQUEST_URI'])) {
+        wp_redirect(home_url(), 301);
+        exit;
+    }
+}
+add_action('init', 'blank_disable_author_scans');
