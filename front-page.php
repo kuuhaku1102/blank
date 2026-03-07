@@ -511,6 +511,110 @@
     </div>
 </section>
 
+<!-- 5.5. Trading Companies (Clients/Partners) -->
+<section class="top-trading-companies" style="background:#f8f9fa; padding: 100px 0; overflow:hidden; border-top: 1px solid rgba(145,166,180,0.1);">
+    <div class="fade-up" style="max-width:var(--container-width); margin:0 auto; padding:0 5%; text-align:center;">
+        <p style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 10px; font-size:0.9rem;">TRADING COMPANIES</p>
+        <h2 style="font-size: 2.2rem; font-weight: 700; margin:0 0 50px; color:var(--primary-color);">取引企業</h2>
+    </div>
+    
+    <?php
+    $partner_args = array(
+        'post_type' => 'partner',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'orderby' => 'menu_order date',
+        'order' => 'ASC',
+    );
+    $partner_query = new WP_Query($partner_args);
+    if ($partner_query->have_posts()) :
+    ?>
+    <div class="trading-slider-wrap fade-up" style="position:relative; width:100%; padding-top:20px;">
+        <!-- Gradient masks for smooth fade edges -->
+        <div style="position:absolute; left:0; top:0; bottom:0; width:15vw; background:linear-gradient(to right, #f8f9fa 0%, transparent 100%); z-index:2; pointer-events:none;"></div>
+        <div style="position:absolute; right:0; top:0; bottom:0; width:15vw; background:linear-gradient(to left, #f8f9fa 0%, transparent 100%); z-index:2; pointer-events:none;"></div>
+        
+        <div class="trading-slider-track">
+            <?php 
+            // We use two identical groups side by side. Each group translates -100% to create a seamless loop.
+            for($g=0; $g<2; $g++): 
+            ?>
+            <div class="trading-logo-group" <?php if($g===1) echo 'aria-hidden="true"'; ?>>
+                <?php 
+                while ($partner_query->have_posts()) : $partner_query->the_post();
+                    $logo_url = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'full') : '';
+                    if ($logo_url): // Only display if thumbnail exists
+                ?>
+                <div class="trading-logo-item">
+                    <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                </div>
+                <?php 
+                    endif;
+                endwhile;
+                $partner_query->rewind_posts();
+                ?>
+            </div>
+            <?php endfor; wp_reset_postdata(); ?>
+        </div>
+    </div>
+    <?php else: ?>
+    <!--
+    <p style="text-align:center; color:var(--accent-color);">ダミーテキスト: ここにロゴスライダーが追加されます。</p>
+    -->
+    <?php endif; ?>
+</section>
+
+<style>
+.trading-slider-wrap {
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+}
+.trading-slider-track {
+    display: flex;
+    width: fit-content;
+}
+.trading-logo-group {
+    display: flex;
+    align-items: center;
+    gap: 80px; 
+    padding-right: 80px; /* match the gap so it seamlessly loops */
+    animation: marquee-scroll 40s linear infinite;
+}
+.trading-slider-track:hover .trading-logo-group {
+    animation-play-state: paused;
+}
+.trading-logo-item {
+    flex-shrink: 0;
+    width: 180px; 
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.trading-logo-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(100%) opacity(0.5);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.trading-logo-item:hover img {
+    filter: grayscale(0%) opacity(1);
+}
+@keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .trading-logo-group { gap: 40px; padding-right: 40px; }
+    .trading-logo-item { width: 120px; height: 60px; }
+    .top-trading-companies { padding: 60px 0; }
+}
+</style>
+
 <!-- 6. Recruit & Culture (Half image layout) -->
 <section class="top-recruit" style="background:var(--white); display:flex; flex-wrap:wrap;">
     <div class="fade-up" style="flex:1 1 50%; min-width:300px; padding: 120px 5% 120px 10%; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box;">

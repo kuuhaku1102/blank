@@ -65,16 +65,18 @@ function blank_register_post_types() {
         'show_in_rest' => true,
     ));
 
-    // 4. パートナーロゴ (Partner)
+    // 4. 取引先 (Trading Companies) / パートナーロゴ
     register_post_type( 'partner', array(
         'labels' => array(
-            'name' => 'パートナーロゴ',
-            'singular_name' => 'パートナーロゴ',
+            'name' => 'Trading Companies (取引先)',
+            'singular_name' => 'Trading Companies (取引先)',
+            'add_new' => 'ロゴを追加',
+            'add_new_item' => '新しい取引先ロゴを追加',
         ),
         'public' => true,
         'has_archive' => false,
         'menu_position' => 8,
-        'menu_icon' => 'dashicons-groups',
+        'menu_icon' => 'dashicons-building',
         'supports' => array( 'title', 'thumbnail' ),
         'show_in_rest' => true,
     ));
