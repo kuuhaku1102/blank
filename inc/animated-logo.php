@@ -3,235 +3,161 @@
 // Can be used anywhere as a fallback thumbnail or cool tech visual
 
 function blank_get_animated_logo_html($size = 'large') {
+    $size_px = $size === 'small' ? '80px' : '220px';
     ob_start();
     ?>
-    <div class="digital-tech-wrapper tech-size-<?php echo esc_attr($size); ?>">
-        <!-- Digital Grid Background -->
-        <div class="digital-grid-overlay"></div>
-        
-        <!-- Cyber HUD Elements / SVG -->
-        <svg class="digital-cyber-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <div class="cube-tech-wrapper tech-size-<?php echo esc_attr($size); ?>">
+        <svg class="cube-abstract-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:<?php echo $size_px; ?>; height:<?php echo $size_px; ?>;">
             <defs>
-                <linearGradient id="cyber-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="rgba(145, 166, 180, 0.2)" />
-                    <stop offset="100%" stop-color="rgba(28, 37, 65, 0.4)" />
+                <!-- Isometric Cube Faces Gradients -->
+                <linearGradient id="cube-top" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="100%" stop-color="#f8f9fa"/>
                 </linearGradient>
-                <filter id="cyber-glow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="2" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                <linearGradient id="cube-left" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f1f5f9"/>
+                    <stop offset="100%" stop-color="#e2e8f0"/>
+                </linearGradient>
+                <linearGradient id="cube-right" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#e9ecef"/>
+                    <stop offset="100%" stop-color="#cbd5e1"/>
+                </linearGradient>
+                
+                <!-- Soft Drop Shadow for Cubes -->
+                <filter id="cube-shadow" x="-50%" y="-20%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="12" stdDeviation="8" flood-color="#1c2541" flood-opacity="0.08" />
                 </filter>
+                <filter id="cube-blur" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="1.5" />
+                </filter>
+
+                <!-- Reusable Isometric Cube -->
+                <g id="iso-cube">
+                    <!-- Top Face -->
+                    <polygon points="0,-20 17.3,-10 0,0 -17.3,-10" fill="url(#cube-top)" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"/>
+                    <!-- Left Face -->
+                    <polygon points="-17.3,-10 0,0 0,20 -17.3,10" fill="url(#cube-left)" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"/>
+                    <!-- Right Face -->
+                    <polygon points="0,0 17.3,-10 17.3,10 0,20" fill="url(#cube-right)" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"/>
+                </g>
             </defs>
 
-            <!-- Rotating Radar Rings -->
-            <g class="hud-rings">
-                <circle cx="100" cy="100" r="85" fill="none" stroke="#1c2541" stroke-width="0.5" stroke-dasharray="10 20" opacity="0.3" class="ring-spin-slow" />
-                <circle cx="100" cy="100" r="70" fill="none" stroke="rgb(145, 166, 180)" stroke-width="1.5" stroke-dasharray="80 20 10 20" class="ring-spin-fast" />
-                <circle cx="100" cy="100" r="55" fill="none" stroke="#e53935" stroke-width="0.5" stroke-dasharray="2 4" class="ring-spin-reverse" />
-            </g>
+            <!-- Base Ground Shadow (Optional subtle depth) -->
+            <ellipse cx="100" cy="170" rx="45" ry="12" fill="#1c2541" opacity="0.03" filter="url(#cube-blur)" class="base-shadow" />
 
-            <!-- Digital Circuit Lines -->
-            <g class="circuit-board">
-                <!-- Top Left -->
-                <path d="M 20 40 L 40 40 L 50 50 L 80 50" fill="none" stroke="#1c2541" stroke-width="1.5" class="circuit-path cp-1" />
-                <circle cx="80" cy="50" r="3" fill="#e53935" class="circuit-node cn-1" filter="url(#cyber-glow)" />
-                <circle cx="20" cy="40" r="2" fill="rgb(145, 166, 180)" class="circuit-node cn-2" />
+            <g class="cubes-container">
+                <!-- Distant out-of-focus cubes (background) -->
+                <g transform="translate(40, 50) scale(0.6)" filter="url(#cube-blur)" opacity="0.6">
+                    <g class="cube-float-4"><use href="#iso-cube" /></g>
+                </g>
+                <g transform="translate(160, 60) scale(0.5)" filter="url(#cube-blur)" opacity="0.5">
+                    <g class="cube-float-5"><use href="#iso-cube" /></g>
+                </g>
 
-                <!-- Bottom Right -->
-                <path d="M 180 160 L 160 160 L 150 150 L 120 150" fill="none" stroke="rgb(145, 166, 180)" stroke-width="1.5" class="circuit-path cp-2" />
-                <circle cx="120" cy="150" r="3" fill="#1c2541" class="circuit-node cn-3" />
-                <circle cx="180" cy="160" r="2" fill="#e53935" class="circuit-node cn-4" filter="url(#cyber-glow)" />
+                <!-- Midground cubes -->
+                <g transform="translate(50, 130) scale(0.9)">
+                    <g class="cube-float-2"><use href="#iso-cube" filter="url(#cube-shadow)" /></g>
+                </g>
+                <g transform="translate(155, 120) scale(1.1)">
+                    <g class="cube-float-3"><use href="#iso-cube" filter="url(#cube-shadow)" /></g>
+                </g>
+                <g transform="translate(100, 35) scale(0.7)">
+                    <g class="cube-float-1"><use href="#iso-cube" filter="url(#cube-shadow)" /></g>
+                </g>
+                <g transform="translate(130, 170) scale(0.6)">
+                    <g class="cube-float-6"><use href="#iso-cube" filter="url(#cube-shadow)" /></g>
+                </g>
 
-                <!-- Top Right -->
-                <path d="M 160 30 L 150 40 L 120 40" fill="none" stroke="#e53935" stroke-width="1" class="circuit-path cp-3" />
-                <circle cx="120" cy="40" r="2" fill="rgb(145, 166, 180)" class="circuit-node cn-5" />
-
-                <!-- Bottom Left -->
-                <path d="M 40 170 L 50 160 L 80 160" fill="none" stroke="#1c2541" stroke-width="1" class="circuit-path cp-4" />
-                <circle cx="80" cy="160" r="2" fill="rgb(145, 166, 180)" class="circuit-node cn-6" />
-            </g>
-
-            <!-- Central Data Core -->
-            <polygon points="100,75 125,100 100,125 75,100" fill="url(#cyber-grad)" stroke="rgb(145, 166, 180)" stroke-width="2" class="data-core-shape" />
-            <polygon points="100,85 115,100 100,115 85,100" fill="#1c2541" class="data-core-inner" />
-            <circle cx="100" cy="100" r="4" fill="#e53935" filter="url(#cyber-glow)" class="data-core-eye" />
-            
-            <!-- Tech Data Bars -->
-            <g class="data-bars" transform="translate(140, 75)">
-                <rect x="0" y="0" width="4" height="15" fill="rgb(145, 166, 180)" class="d-bar db-1" />
-                <rect x="8" y="0" width="4" height="25" fill="#1c2541" class="d-bar db-2" />
-                <rect x="16" y="0" width="4" height="10" fill="#e53935" class="d-bar db-3" />
-                <rect x="24" y="0" width="4" height="20" fill="rgb(145, 166, 180)" class="d-bar db-4" />
-            </g>
-            <g class="data-bars" transform="translate(45, 105)">
-                <rect x="0" y="0" width="4" height="20" fill="#1c2541" class="d-bar db-4" />
-                <rect x="8" y="0" width="4" height="10" fill="rgb(145, 166, 180)" class="d-bar db-3" />
-                <rect x="16" y="0" width="4" height="25" fill="#e53935" class="d-bar db-2" />
-                <rect x="24" y="0" width="4" height="15" fill="rgb(145, 166, 180)" class="d-bar db-1" />
+                <!-- Main foreground cube -->
+                <g transform="translate(100, 95) scale(1.8)">
+                    <g class="cube-float-main"><use href="#iso-cube" filter="url(#cube-shadow)" /></g>
+                </g>
             </g>
             
-            <!-- Scanning Line -->
-            <line x1="10" y1="100" x2="190" y2="100" stroke="#e53935" stroke-width="1.5" opacity="0.6" class="hud-scanner" filter="url(#cyber-glow)" />
-
+            <!-- Delicate minimal floating particles -->
+            <circle cx="80" cy="70" r="1.5" fill="#91a6b4" opacity="0.4" class="particle pt-1" />
+            <circle cx="140" cy="150" r="2" fill="#91a6b4" opacity="0.3" class="particle pt-2" />
+            <circle cx="120" cy="40" r="1" fill="#91a6b4" opacity="0.5" class="particle pt-3" />
         </svg>
-
-        <!-- Streaming Code Snippets (Hex/Binary vibes) -->
-        <div class="cyber-code code-left">0x7F<br>SYS<br>ACK</div>
-        <div class="cyber-code code-right">DATA<br>SYNC<br>0x9C</div>
-
     </div>
 
     <style>
-        .digital-tech-wrapper {
+        .cube-tech-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
             min-height: 260px;
-            background: #fff;
+            background: radial-gradient(circle at 50% 30%, #ffffff 0%, #f0f4f8 100%);
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(28, 37, 65, 0.08);
-            border: 1px solid rgba(145, 166, 180, 0.2);
+            box-shadow: inset 0 0 40px rgba(145, 166, 180, 0.05); /* very soft inner depth */
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Courier New', Courier, monospace;
+            /* In case it's in a grid card, inherit border radius */
+            border-radius: inherit;
         }
 
-        /* High-tech Blueprint/Digital Grid */
-        .digital-grid-overlay {
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(145, 166, 180, 0.15) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(145, 166, 180, 0.15) 1px, transparent 1px);
-            background-size: 20px 20px;
-            z-index: 0;
-        }
-        
-        /* Subtle Vignette for depth */
-        .digital-tech-wrapper::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, transparent 40%, rgba(248, 249, 250, 0.9) 100%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .digital-cyber-svg {
+        .cube-abstract-svg {
             position: relative;
             z-index: 2;
             width: 80%;
             max-width: 250px;
             height: auto;
             aspect-ratio: 1;
+            overflow: visible;
         }
 
-        /* SVG Animations */
-        .hud-rings { transform-origin: 100px 100px; }
-        .ring-spin-slow { animation: cyberSpin 20s linear infinite; }
-        .ring-spin-fast { animation: cyberSpin 10s linear infinite; }
-        .ring-spin-reverse { animation: cyberSpin 15s linear infinite reverse; }
-
-        .circuit-path {
-            stroke-dasharray: 100;
-            stroke-dashoffset: 100;
-            animation: circuitDraw 4s infinite cubic-bezier(0.4, 0, 0.2, 1) alternate;
-        }
-        .cp-1 { animation-delay: 0s; }
-        .cp-2 { animation-delay: 1.5s; }
-        .cp-3 { animation-delay: 0.5s; }
-        .cp-4 { animation-delay: 2s; }
-
-        .circuit-node {
-            animation: nodeBlink 2s infinite alternate;
-        }
-        .cn-1 { animation-delay: 0.5s; }
-        .cn-2 { animation-delay: 1s; }
-        .cn-3 { animation-delay: 2s; }
-        .cn-4 { animation-delay: 2.5s; }
-        
-        .data-core-shape {
+        /* Container slight pan matching mouse/breath */
+        .cubes-container {
             transform-origin: 100px 100px;
-            animation: coreSpin 12s linear infinite;
-        }
-        .data-core-inner {
-            transform-origin: 100px 100px;
-            animation: coreSpin 8s linear infinite reverse;
-        }
-        .data-core-eye {
-            animation: eyePulse 1.5s infinite alternate;
+            animation: slowPan 15s ease-in-out infinite alternate;
         }
 
-        .d-bar {
-            transform-origin: bottom;
-            animation: barJump 1s infinite alternate ease-in-out;
-        }
-        .db-1 { animation-duration: 0.8s; }
-        .db-2 { animation-duration: 1.2s; }
-        .db-3 { animation-duration: 0.9s; }
-        .db-4 { animation-duration: 1.5s; }
+        /* Float Animations for individual cubes */
+        .cube-float-main { animation: cubeFloat 6s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+        .cube-float-1 { animation: cubeFloat 7s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate-reverse; }
+        .cube-float-2 { animation: cubeFloat 8s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; animation-delay: 1s; }
+        .cube-float-3 { animation: cubeFloat 9s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate-reverse; animation-delay: 1.5s; }
+        .cube-float-4 { animation: cubeFloat 10s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; animation-delay: 2s; }
+        .cube-float-5 { animation: cubeFloat 11s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate-reverse; animation-delay: 0.5s; }
+        .cube-float-6 { animation: cubeFloat 6.5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; animation-delay: 2.5s; }
 
-        .hud-scanner {
-            transform-origin: 100px 100px;
-            animation: cyberScan 3s infinite linear;
+        /* Floor shadow breathing */
+        .base-shadow {
+            transform-origin: center;
+            animation: shadowBreathe 6s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
         }
 
-        /* Streaming Text */
-        .cyber-code {
-            position: absolute;
-            z-index: 2;
-            color: #1c2541;
-            font-size: 0.7rem;
-            font-weight: bold;
-            line-height: 1.2;
-            opacity: 0.5;
+        /* Particles floating up */
+        .particle {
+            animation: particleRise 10s linear infinite;
         }
-        .code-left {
-            left: 20px;
-            top: 40px;
-            border-left: 2px solid #e53935;
-            padding-left: 5px;
-            animation: textFlicker 4s infinite alternate;
-        }
-        .code-right {
-            right: 20px;
-            bottom: 40px;
-            text-align: right;
-            border-right: 2px solid rgb(145, 166, 180);
-            padding-right: 5px;
-            animation: textFlicker 5s infinite alternate-reverse;
-        }
+        .pt-1 { animation-delay: 0s; animation-duration: 12s; }
+        .pt-2 { animation-delay: 4s; animation-duration: 15s; }
+        .pt-3 { animation-delay: 2s; animation-duration: 9s; }
 
         /* Keyframes */
-        @keyframes cyberSpin { 100% { transform: rotate(360deg); } }
-        @keyframes coreSpin { 100% { transform: rotate(360deg); } }
-        @keyframes circuitDraw {
-            0%, 20% { stroke-dashoffset: 100; }
-            80%, 100% { stroke-dashoffset: 0; }
+        @keyframes cubeFloat {
+            0% { transform: translateY(8px); }
+            100% { transform: translateY(-12px); }
         }
-        @keyframes nodeBlink {
-            0% { opacity: 0.2; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1.2); }
+
+        @keyframes slowPan {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-5px) rotate(0.5deg); }
         }
-        @keyframes eyePulse {
-            0% { opacity: 0.6; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1.4); }
+
+        @keyframes shadowBreathe {
+            0% { transform: scale(1.1); opacity: 0.04; }
+            100% { transform: scale(0.9); opacity: 0.01; }
         }
-        @keyframes barJump {
-            0% { transform: scaleY(0.3); }
-            100% { transform: scaleY(1.2); }
-        }
-        @keyframes cyberScan {
-            0% { transform: translateY(-70px); opacity: 0; }
-            10%, 90% { opacity: 0.7; }
-            100% { transform: translateY(70px); opacity: 0; }
-        }
-        @keyframes textFlicker {
-            0%, 100% { opacity: 0.5; }
-            45% { opacity: 0.5; }
-            50% { opacity: 0.1; }
-            55% { opacity: 0.8; }
+
+        @keyframes particleRise {
+            0% { transform: translateY(20px); opacity: 0; }
+            20% { opacity: 0.5; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-30px); opacity: 0; }
         }
     </style>
     <?php
