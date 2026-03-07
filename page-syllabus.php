@@ -39,8 +39,8 @@ if ( $syllabus_query->have_posts() ) : while ( $syllabus_query->have_posts() ) :
                     <?php if(has_post_thumbnail()): ?>
                         <?php the_post_thumbnail('large', ['style' => 'width:100%; height:100%; object-fit:cover; transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);', 'class' => 'syllabus-img']); ?>
                     <?php else: ?>
-                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-size:1.5rem; font-weight:bold; background:linear-gradient(135deg, rgba(145,166,180,0.1), rgba(145,166,180,0.2));" class="syllabus-img">
-                            SYLLABUS
+                        <div class="syllabus-img" style="width:100%; height:100%;">
+                            <?php echo blank_get_animated_logo_html('small'); ?>
                         </div>
                     <?php endif; ?>
                     <div class="overlay" style="position:absolute; inset:0; background:rgba(28,37,65,0.1); opacity:0; transition:opacity 0.4s ease;"></div>

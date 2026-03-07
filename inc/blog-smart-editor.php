@@ -68,12 +68,9 @@ function blank_blog_smart_editor_html( $post ) {
                         $anim = isset($sec['anim']) ? $sec['anim'] : 'none';
                         ?>
                         <select name="smart_section[<?php echo $i; ?>][anim]" class="tpl-anim" style="width:100%; max-width:400px; padding:8px; border-radius:4px; border:1px solid #ccd0d4; margin-bottom:10px;" onchange="toggleImageUploader(this)">
-                            <option value="none" <?php selected($anim, 'none'); ?>>アニメーション・画像なし</option>
-                            <option value="tech_server" <?php selected($anim, 'tech_server'); ?>>【アニメ】サーバー / クラウド (Tech)</option>
-                            <option value="tech_code" <?php selected($anim, 'tech_code'); ?>>【アニメ】コーディング / 開発 (Tech)</option>
-                            <option value="tech_data" <?php selected($anim, 'tech_data'); ?>>【アニメ】データ解析 / AI (Tech)</option>
-                            <option value="tech_security" <?php selected($anim, 'tech_security'); ?>>【アニメ】セキュリティ / ロック (Tech)</option>
+                            <option value="tech_logo" <?php selected($anim, 'tech_logo'); ?>>【自動】企業ロゴ(テックアニメ)</option>
                             <option value="custom_image" <?php selected($anim, 'custom_image'); ?>>自分で画像をアップロードする</option>
+                            <option value="none" <?php selected($anim, 'none'); ?>>アニメーション・画像なし</option>
                         </select>
                         
                         <div class="img-preview-area" style="display: <?php echo ($anim === 'custom_image') ? 'flex' : 'none'; ?>;">
@@ -114,12 +111,9 @@ function blank_blog_smart_editor_html( $post ) {
             <div class="smart-editor-field">
                 <label>🖼️ アニメーション / ビジュアル選択</label>
                 <select class="tpl-anim" style="width:100%; max-width:400px; padding:8px; border-radius:4px; border:1px solid #ccd0d4; margin-bottom:10px;" onchange="toggleImageUploader(this)">
-                    <option value="none">アニメーション・画像なし</option>
-                    <option value="tech_server">【アニメ】サーバー / クラウド (Tech)</option>
-                    <option value="tech_code">【アニメ】コーディング / 開発 (Tech)</option>
-                    <option value="tech_data">【アニメ】データ解析 / AI (Tech)</option>
-                    <option value="tech_security">【アニメ】セキュリティ / ロック (Tech)</option>
+                    <option value="tech_logo">【自動】企業ロゴ(テックアニメ)</option>
                     <option value="custom_image">自分で画像をアップロードする</option>
+                    <option value="none">アニメーション・画像なし</option>
                 </select>
                 
                 <div class="img-preview-area" style="display: none;">

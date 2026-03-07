@@ -257,6 +257,9 @@ require_once get_template_directory() . '/inc/blocks/patterns.php';
 // ブログ用スマートエディタ（管理画面メタボックス＆処理）の読み込み
 require_once get_template_directory() . '/inc/blog-smart-editor.php';
 
+// アニメーションロゴ出力関数の読み込み
+require_once get_template_directory() . '/inc/animated-logo.php';
+
 /* =========================================================
    WordPress セキュリティ対策（Basic Hardenings）
 ========================================================= */
