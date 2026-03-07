@@ -251,6 +251,9 @@ require_once get_template_directory() . '/inc/works-admin.php';
 // 料金シミュレーター管理の読み込み
 require_once get_template_directory() . '/inc/pricing-admin.php';
 
+// ブロックパターン（エディター用テンプレート）の読み込み
+require_once get_template_directory() . '/inc/blocks/patterns.php';
+
 /* =========================================================
    WordPress セキュリティ対策（Basic Hardenings）
 ========================================================= */
