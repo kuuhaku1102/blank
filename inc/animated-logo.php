@@ -7,43 +7,64 @@ function blank_get_animated_logo_html($size = 'large') {
     ob_start();
     ?>
     <div class="cube-tech-wrapper tech-size-<?php echo esc_attr($size); ?>">
+        
+        <!-- Three.js style particle background layer -->
+        <div class="particle-network-bg"></div>
+        
         <svg class="cube-abstract-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:<?php echo $size_px; ?>; height:<?php echo $size_px; ?>;">
             <defs>
                 <!-- Isometric Cube Faces Gradients -->
                 <linearGradient id="cube-top" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#ffffff"/>
-                    <stop offset="100%" stop-color="#f8f9fa"/>
-                </linearGradient>
-                <linearGradient id="cube-left" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#f1f5f9"/>
                     <stop offset="100%" stop-color="#e2e8f0"/>
                 </linearGradient>
+                <linearGradient id="cube-left" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#cbd5e1"/>
+                    <stop offset="100%" stop-color="#94a3b8"/>
+                </linearGradient>
                 <linearGradient id="cube-right" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#e9ecef"/>
-                    <stop offset="100%" stop-color="#cbd5e1"/>
+                    <stop offset="0%" stop-color="#slate-100"/>
+                    <stop offset="100%" stop-color="#71677c"/> <!-- Very slightly darker to give rich 3D -->
                 </linearGradient>
                 
-                <!-- Soft Drop Shadow for Cubes -->
+                <!-- Deeper Drop Shadow for Dark Background -->
                 <filter id="cube-shadow" x="-50%" y="-20%" width="200%" height="200%">
-                    <feDropShadow dx="0" dy="12" stdDeviation="8" flood-color="#1c2541" flood-opacity="0.08" />
+                    <feDropShadow dx="0" dy="15" stdDeviation="10" flood-color="#000000" flood-opacity="0.4" />
                 </filter>
                 <filter id="cube-blur" x="-50%" y="-50%" width="200%" height="200%">
                     <feGaussianBlur stdDeviation="1.5" />
                 </filter>
 
-                <!-- Reusable Isometric Cube -->
+                <!-- Reusable Isometric White Cube -->
                 <g id="iso-cube">
                     <!-- Top Face -->
                     <polygon points="0,-20 17.3,-10 0,0 -17.3,-10" fill="url(#cube-top)" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"/>
                     <!-- Left Face -->
-                    <polygon points="-17.3,-10 0,0 0,20 -17.3,10" fill="url(#cube-left)" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"/>
+                    <polygon points="-17.3,-10 0,0 0,20 -17.3,10" fill="#e2e8f0" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"/>
                     <!-- Right Face -->
-                    <polygon points="0,0 17.3,-10 17.3,10 0,20" fill="url(#cube-right)" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"/>
+                    <polygon points="0,0 17.3,-10 17.3,10 0,20" fill="#cbd5e1" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"/>
                 </g>
             </defs>
 
-            <!-- Base Ground Shadow (Optional subtle depth) -->
-            <ellipse cx="100" cy="170" rx="45" ry="12" fill="#1c2541" opacity="0.03" filter="url(#cube-blur)" class="base-shadow" />
+            <!-- simulated deep space nodes / lines -->
+            <g class="bg-nodes" stroke="rgba(145,166,180,0.15)" stroke-width="0.5">
+                <line x1="20" y1="30" x2="60" y2="80" />
+                <line x1="60" y1="80" x2="150" y2="40" />
+                <line x1="60" y1="80" x2="90" y2="160" />
+                <line x1="150" y1="40" x2="180" y2="120" />
+                <line x1="180" y1="120" x2="90" y2="160" />
+            </g>
+
+            <g class="bg-points" fill="rgba(145,166,180,0.4)">
+                <circle cx="20" cy="30" r="1.5" class="pt-pulse-1" />
+                <circle cx="60" cy="80" r="2" class="pt-pulse-2" />
+                <circle cx="150" cy="40" r="1.5" class="pt-pulse-3" />
+                <circle cx="180" cy="120" r="2" class="pt-pulse-1" />
+                <circle cx="90" cy="160" r="2.5" class="pt-pulse-2" />
+            </g>
+
+            <!-- Base Ground Shadow (Darker for dark BG) -->
+            <ellipse cx="100" cy="170" rx="45" ry="12" fill="#000000" opacity="0.3" filter="url(#cube-blur)" class="base-shadow" />
 
             <g class="cubes-container">
                 <!-- Distant out-of-focus cubes (background) -->
@@ -74,10 +95,10 @@ function blank_get_animated_logo_html($size = 'large') {
                 </g>
             </g>
             
-            <!-- Delicate minimal floating particles -->
-            <circle cx="80" cy="70" r="1.5" fill="#91a6b4" opacity="0.4" class="particle pt-1" />
-            <circle cx="140" cy="150" r="2" fill="#91a6b4" opacity="0.3" class="particle pt-2" />
-            <circle cx="120" cy="40" r="1" fill="#91a6b4" opacity="0.5" class="particle pt-3" />
+            <!-- Foreground particles floating up -->
+            <circle cx="80" cy="70" r="1.5" fill="#ffffff" opacity="0.6" class="particle pt-rise-1" />
+            <circle cx="140" cy="150" r="2" fill="#ffffff" opacity="0.4" class="particle pt-rise-2" />
+            <circle cx="120" cy="40" r="1" fill="#ffffff" opacity="0.8" class="particle pt-rise-3" />
         </svg>
     </div>
 
@@ -87,15 +108,37 @@ function blank_get_animated_logo_html($size = 'large') {
             width: 100%;
             height: 100%;
             min-height: 260px;
-            background: radial-gradient(circle at 50% 30%, #ffffff 0%, #f0f4f8 100%);
+            /* Main color background (dark navy) */
+            background: linear-gradient(135deg, var(--secondary-color, #1c2541) 0%, #0d121c 100%);
             border-radius: 12px;
-            box-shadow: inset 0 0 40px rgba(145, 166, 180, 0.05); /* very soft inner depth */
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.5); /* rich dark depth */
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             /* In case it's in a grid card, inherit border radius */
             border-radius: inherit;
+        }
+
+        /* Ambient subtle glowing light in the center */
+        .cube-tech-wrapper::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at center, rgba(145, 166, 180, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Three.js style random dots via CSS background */
+        .particle-network-bg {
+            position: absolute;
+            inset: -50%;
+            background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: rotate(20deg);
+            opacity: 0.3;
+            animation: slowPan 30s linear infinite;
         }
 
         .cube-abstract-svg {
@@ -111,8 +154,16 @@ function blank_get_animated_logo_html($size = 'large') {
         /* Container slight pan matching mouse/breath */
         .cubes-container {
             transform-origin: 100px 100px;
-            animation: slowPan 15s ease-in-out infinite alternate;
+            animation: containerFloat 15s ease-in-out infinite alternate;
         }
+
+        /* Nodes depth pulsing */
+        .bg-nodes { transform-origin: center; animation: containerFloat 20s infinite alternate-reverse; }
+        .bg-points { transform-origin: center; animation: containerFloat 20s infinite alternate-reverse; }
+
+        .pt-pulse-1 { animation: ptPulse 3s infinite alternate; }
+        .pt-pulse-2 { animation: ptPulse 4s infinite alternate-reverse; }
+        .pt-pulse-3 { animation: ptPulse 5s infinite alternate; }
 
         /* Float Animations for individual cubes */
         .cube-float-main { animation: cubeFloat 6s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
@@ -133,9 +184,9 @@ function blank_get_animated_logo_html($size = 'large') {
         .particle {
             animation: particleRise 10s linear infinite;
         }
-        .pt-1 { animation-delay: 0s; animation-duration: 12s; }
-        .pt-2 { animation-delay: 4s; animation-duration: 15s; }
-        .pt-3 { animation-delay: 2s; animation-duration: 9s; }
+        .pt-rise-1 { animation-delay: 0s; animation-duration: 12s; }
+        .pt-rise-2 { animation-delay: 4s; animation-duration: 15s; }
+        .pt-rise-3 { animation-delay: 2s; animation-duration: 9s; }
 
         /* Keyframes */
         @keyframes cubeFloat {
@@ -143,21 +194,31 @@ function blank_get_animated_logo_html($size = 'large') {
             100% { transform: translateY(-12px); }
         }
 
-        @keyframes slowPan {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-5px) rotate(0.5deg); }
+        @keyframes containerFloat {
+            0% { transform: translateY(0) rotate(-1deg); }
+            100% { transform: translateY(-3px) rotate(1deg); }
         }
 
         @keyframes shadowBreathe {
-            0% { transform: scale(1.1); opacity: 0.04; }
-            100% { transform: scale(0.9); opacity: 0.01; }
+            0% { transform: scale(1.1); opacity: 0.4; }
+            100% { transform: scale(0.9); opacity: 0.15; }
+        }
+
+        @keyframes ptPulse {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+
+        @keyframes slowPan {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
         }
 
         @keyframes particleRise {
             0% { transform: translateY(20px); opacity: 0; }
-            20% { opacity: 0.5; }
-            80% { opacity: 0.5; }
-            100% { transform: translateY(-30px); opacity: 0; }
+            20% { opacity: 0.8; filter: drop-shadow(0 0 2px white); }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-40px); opacity: 0; }
         }
     </style>
     <?php
