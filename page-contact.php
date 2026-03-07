@@ -30,8 +30,7 @@ get_header(); ?>
                 
                 <?php 
                 $content = get_the_content();
-                // Check if CF7 or the BowNow MA script is present in the content
-                if(trim(strip_tags($content)) === '' && !has_shortcode($content, 'contact-form-7') && strpos($content, 'bownow_cs_sid') === false) : ?>
+                if(trim(strip_tags($content)) === '' && !has_shortcode($content, 'contact-form-7')) : ?>
                     <!-- ダミーのお問い合わせフォーム表示 (WPにコンテンツが未入力の場合) -->
                     <form action="#" method="post" style="display:flex; flex-direction:column; gap:25px;">
                         <div>
@@ -52,7 +51,7 @@ get_header(); ?>
                         </div>
                         <div style="text-align:center; margin-top:20px;">
                             <!-- dummy button -->
-                            <button type="button" onclick="alert('これはデモ用のデザインフォームです。\n実際の送信は行われません。\n\n管理画面の固定ページ「contact」の本文に、MAツール（BowNow等）のスクリプトやContact Form 7をご入力いただくと、本物のフォームに自動で切り替わります。')" style="background:var(--primary-color); color:#fff; font-weight:bold; font-size:1.2rem; padding:15px 60px; border:none; border-radius:30px; cursor:pointer; box-shadow:0 10px 20px rgba(11,19,43,0.2); transition:transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(11,19,43,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(11,19,43,0.2)';">
+                            <button type="button" onclick="alert('これはデモ用のデザインフォームです。\n実際の送信は行われません。\n\n管理画面の固定ページ「contact」の本文に、Contact Form 7 などのショートコードを貼り付けると、こちらが本物のフォームに自動で切り替わります。')" style="background:var(--primary-color); color:#fff; font-weight:bold; font-size:1.2rem; padding:15px 60px; border:none; border-radius:30px; cursor:pointer; box-shadow:0 10px 20px rgba(11,19,43,0.2); transition:transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(11,19,43,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(11,19,43,0.2)';">
                                 送信内容を確認する
                             </button>
                         </div>
