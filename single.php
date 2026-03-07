@@ -45,16 +45,59 @@
         <article class="syllabus-single-article gsap-article" style="background:rgba(255,255,255,0.9); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); padding:60px; border-radius:20px; box-shadow:0 15px 40px rgba(0,0,0,0.05); border-top: 5px solid var(--accent-color); border-bottom: 1px solid rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-right: 1px solid rgba(0,0,0,0.05);">
             
             <div class="syllabus-content contentArea" style="line-height:2.2; font-size:1.1rem; color:var(--primary-color);">
-                <?php the_content(); ?>
+                <?php 
+                $smart_intro = get_post_meta($post->ID, 'blog_smart_intro', true);
+                $smart_sections = get_post_meta($post->ID, 'blog_smart_sections', true);
+
+                // Smart Editor: Intro
+                if(!empty($smart_intro)) {
+                    echo '<div class="smart-intro" style="font-size:1.2rem; font-weight:bold; color:var(--primary-color); background:rgba(26,86,219,0.05); padding:25px 30px; border-radius:12px; margin-bottom:40px; border-left:4px solid var(--highlight-color);">';
+                    echo nl2br(esc_html($smart_intro));
+                    echo '</div>';
+                }
+
+                // Smart Editor: Sections
+                if(!empty($smart_sections) && is_array($smart_sections)) {
+                    foreach($smart_sections as $sec) {
+                        echo '<div class="smart-section" style="margin-bottom:60px;">';
+                        
+                        if(!empty($sec['heading'])) {
+                            echo '<h2 style="font-size: 1.8rem; color: var(--primary-color); border-bottom: 2px solid rgba(145,166,180,0.2); padding-bottom: 15px; margin: 0 0 30px; font-weight: 800; display:flex; align-items:center; gap:10px;">';
+                            echo '<span style="display:block; width: 6px; height: 1.8rem; background: var(--highlight-color); border-radius: 3px;"></span>';
+                            echo esc_html($sec['heading']);
+                            echo '</h2>';
+                        }
+                        
+                        if(!empty($sec['img'])) {
+                            echo '<div style="margin-top:0; margin-bottom:30px; text-align:center;">';
+                            echo '<img src="'.esc_url($sec['img']).'" style="max-width:100%; height:auto; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid rgba(145,166,180,0.1);" alt="'.esc_attr($sec['heading']).'" />';
+                            echo '</div>';
+                        }
+                        
+                        if(!empty($sec['content'])) {
+                            echo '<p style="margin-top:0;">' . nl2br(esc_html($sec['content'])) . '</p>';
+                        }
+                        
+                        echo '</div>';
+                    }
+                }
+
+                // If traditional content exists, output it below. 
+                // Many times users might only use smart editor, so traditional content might be empty.
+                $content = get_the_content();
+                if(!empty($content)) {
+                    the_content();
+                }
+                ?>
             </div>
             
-            <!-- WordPress Post Content Styling Adjustments specifically for syllabus -->
+            <!-- WordPress Post Content Styling Adjustments specifically for syllabus & smart editor fallback -->
             <style>
-                .syllabus-content h2 { font-size: 1.8rem; color: var(--primary-color); border-bottom: 2px solid rgba(145,166,180,0.2); padding-bottom: 15px; margin: 60px 0 30px; font-weight: 800; display:flex; align-items:center; gap:10px; }
-                .syllabus-content h2::before { content: ""; display:block; width: 6px; height: 1.8rem; background: var(--highlight-color); border-radius: 3px; }
+                .syllabus-content > h2 { font-size: 1.8rem; color: var(--primary-color); border-bottom: 2px solid rgba(145,166,180,0.2); padding-bottom: 15px; margin: 60px 0 30px; font-weight: 800; display:flex; align-items:center; gap:10px; }
+                .syllabus-content > h2::before { content: ""; display:block; width: 6px; height: 1.8rem; background: var(--highlight-color); border-radius: 3px; }
                 .syllabus-content h3 { font-size: 1.5rem; color: var(--primary-color); margin: 40px 0 20px; font-weight: 700; border-left: 4px solid var(--accent-color); padding-left: 15px; }
                 .syllabus-content p { margin-bottom: 25px; }
-                .syllabus-content img { max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin: 30px 0; }
+                .syllabus-content > img { max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin: 30px 0; }
                 .syllabus-content ul { background: rgba(145,166,180,0.05); padding: 25px 25px 25px 45px; border-radius: 12px; border: 1px solid rgba(145,166,180,0.1); margin-bottom: 30px; }
                 .syllabus-content li { margin-bottom: 10px; }
                 .syllabus-content a { color: var(--highlight-color); text-decoration: underline; font-weight: bold; }
