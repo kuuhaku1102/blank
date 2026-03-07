@@ -45,7 +45,7 @@ if ( $syllabus_query->have_posts() ) : while ( $syllabus_query->have_posts() ) :
                     <?php endif; ?>
                     <div class="overlay" style="position:absolute; inset:0; background:rgba(28,37,65,0.1); opacity:0; transition:opacity 0.4s ease;"></div>
                     <style>
-                        .gsap-syllabus-card:hover .syllabus-img { transform: scale(1.08); }
+                        /* Removed annoying image scale hover effect */
                         .gsap-syllabus-card:hover .overlay { opacity: 1; }
                     </style>
                 </div>

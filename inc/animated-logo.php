@@ -27,9 +27,9 @@ function blank_get_animated_logo_html($size = 'large') {
                     <stop offset="100%" stop-color="#71677c"/> <!-- Very slightly darker to give rich 3D -->
                 </linearGradient>
                 
-                <!-- Deeper Drop Shadow for Dark Background -->
+                <!-- Softer Drop Shadow for Mid-Blue Background -->
                 <filter id="cube-shadow" x="-50%" y="-20%" width="200%" height="200%">
-                    <feDropShadow dx="0" dy="15" stdDeviation="10" flood-color="#000000" flood-opacity="0.4" />
+                    <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#1c2541" flood-opacity="0.2" />
                 </filter>
                 <filter id="cube-blur" x="-50%" y="-50%" width="200%" height="200%">
                     <feGaussianBlur stdDeviation="1.5" />
@@ -108,10 +108,10 @@ function blank_get_animated_logo_html($size = 'large') {
             width: 100%;
             height: 100%;
             min-height: 260px;
-            /* Main color background (dark navy) */
-            background: linear-gradient(135deg, var(--secondary-color, #1c2541) 0%, #0d121c 100%);
+            /* Using the exact requested color */
+            background: linear-gradient(135deg, rgb(145, 166, 180) 0%, rgba(145, 166, 180, 0.85) 100%);
             border-radius: 12px;
-            box-shadow: inset 0 0 60px rgba(0,0,0,0.5); /* rich dark depth */
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.15); /* softer inner depth */
             overflow: hidden;
             display: flex;
             justify-content: center;

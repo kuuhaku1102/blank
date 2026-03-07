@@ -36,7 +36,7 @@
                     <?php endif; ?>
                     <div class="overlay" style="position:absolute; inset:0; background:rgba(229,57,53,0.15); opacity:0; transition:opacity 0.4s ease;"></div>
                     <style>
-                        .gsap-cs-card:hover .cs-img { transform: scale(1.08); }
+                        /* hover image scale removed */
                         .gsap-cs-card:hover .overlay { opacity: 1; }
                     </style>
                 </div>

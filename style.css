@@ -504,7 +504,6 @@ h6 {
 }
 
 .service-card:hover {
-    transform: translateY(-10px) !important;
     box-shadow: none !important;
     border-color: rgba(229, 57, 53, 0.2) !important;
 }

@@ -110,7 +110,7 @@
                             </div>
                         <?php endif; ?>
                         <style>
-                            .gsap-works-card:hover .works-img { transform: translateY(-5px) scale(1.05); }
+                            /* Hover animation to rise up was removed */
                         </style>
                     </div>
 

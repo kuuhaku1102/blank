@@ -35,7 +35,7 @@
                     <div style="position:absolute; inset:0; background:linear-gradient(45deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%); opacity:0; pointer-events:none; transition:opacity 0.5s ease;" class="glass-reflection"></div>
                 </div>
                 <style>
-                    .gsap-feature-img:hover .syllabus-single-img { transform: scale(1.02); }
+                    /* Removed scale hover */
                     .gsap-feature-img:hover .glass-reflection { opacity: 1; }
                 </style>
             <?php endif; ?>
