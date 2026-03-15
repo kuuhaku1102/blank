@@ -511,6 +511,54 @@
     </div>
 </section>
 
+<!-- 6.5. Banner Works -->
+<section class="top-banner-works section-padding" style="background:var(--white); padding: 120px 0; overflow:hidden;">
+    <div class="fade-up" style="max-width:var(--container-width); margin:0 auto; padding:0 5%;">
+        <div class="section-header" style="margin-bottom: 60px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;">
+            <div>
+                <p class="gsap-subtitle" style="color:var(--highlight-color); font-weight:bold; letter-spacing: 0.15em; margin:0 0 15px; font-size:0.9rem;">BANNER WORKS</p>
+                <div style="overflow:hidden; padding-bottom:10px;"><h2 class="gsap-title" style="font-size: 3.5rem; font-weight: 800; margin:0; color:var(--primary-color);">バナー制作</h2></div>
+            </div>
+            <a href="<?php echo esc_url(get_post_type_archive_link('banner_works')); ?>" class="view-all-link" style="color: var(--primary-color); font-weight:bold; border-bottom: 2px solid var(--primary-color); text-decoration:none; padding-bottom:5px; transition:all 0.3s;" onmouseover="this.style.color='var(--highlight-color)'; this.style.borderColor='var(--highlight-color)';" onmouseout="this.style.color='var(--primary-color)'; this.style.borderColor='var(--primary-color)';">VIEW ALL 一覧 &rarr;</a>
+        </div>
+        
+        <div class="banner-works-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
+            <?php
+            $bw_query = new WP_Query( array('post_type' => 'banner_works', 'posts_per_page' => 8) );
+            if($bw_query->have_posts()): while($bw_query->have_posts()): $bw_query->the_post();
+                $bw_company = get_post_meta(get_the_ID(), 'banner_company', true);
+                $bw_media = get_post_meta(get_the_ID(), 'banner_media', true);
+                $bw_days = get_post_meta(get_the_ID(), 'banner_days', true);
+            ?>
+            <a href="<?php the_permalink(); ?>" class="banner-card fade-up" style="display:block; text-decoration:none; color:inherit; background:#f8f9fa; border-radius:8px; overflow:hidden; transition:transform 0.4s ease, box-shadow 0.4s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.05)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                <div class="banner-img-wrap" style="aspect-ratio:1/1; background:#ebeef0; overflow:hidden;">
+                    <?php if(has_post_thumbnail()): ?>
+                        <?php the_post_thumbnail('medium', ['style' => 'width:100%; height:100%; object-fit:cover; transition:transform 0.4s ease;', 'class' => 'bw-img']); ?>
+                    <?php else: ?>
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--primary-color); opacity:0.3; font-weight:bold;">NO IMAGE</div>
+                    <?php endif; ?>
+                </div>
+                <div class="banner-info" style="padding: 20px;">
+                    <h3 style="font-size:1.1rem; font-weight:bold; margin:0 0 10px; color:var(--primary-color); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"><?php the_title(); ?></h3>
+                    <?php if($bw_company): ?><p style="margin:0 0 5px; font-size:0.85rem; color:var(--secondary-color);"><strong>会社:</strong> <?php echo esc_html($bw_company); ?></p><?php endif; ?>
+                    <?php if($bw_media): ?><p style="margin:0 0 5px; font-size:0.85rem; color:var(--secondary-color);"><strong>媒体:</strong> <?php echo esc_html($bw_media); ?></p><?php endif; ?>
+                    <?php if($bw_days): ?><p style="margin:0; font-size:0.85rem; color:var(--secondary-color);"><strong>期間:</strong> <?php echo esc_html($bw_days); ?></p><?php endif; ?>
+                </div>
+            </a>
+            <?php endwhile; wp_reset_postdata(); else: ?>
+                <p style="color:var(--accent-color); grid-column:1/-1;">バナー制作実績は現在準備中です。</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
+<style>
+.banner-card:hover .bw-img { transform: scale(1.05); }
+@media (max-width: 768px) {
+    .banner-works-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important; gap: 20px !important; }
+}
+</style>
+
 <!-- 5.5. Trading Companies (Clients/Partners) -->
 <section class="top-trading-companies" style="background:#f8f9fa; padding: 100px 0; overflow:hidden; border-top: 1px solid rgba(145,166,180,0.1);">
     <div class="fade-up" style="max-width:var(--container-width); margin:0 auto; padding:0 5%; text-align:center;">
