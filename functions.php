@@ -65,6 +65,22 @@ function blank_register_post_types() {
         'show_in_rest' => true,
     ));
 
+    // 3.5 バナー制作実績 (Banner Works)
+    register_post_type( 'banner_works', array(
+        'labels' => array(
+            'name' => 'バナー制作実績',
+            'singular_name' => 'バナー制作実績',
+            'add_new' => '新規追加',
+            'add_new_item' => '新しいバナー実績を追加',
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'menu_position' => 7,
+        'menu_icon' => 'dashicons-format-image',
+        'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
+        'show_in_rest' => true,
+    ));
+
     // 4. 取引先 (Trading Companies) / パートナーロゴ
     register_post_type( 'partner', array(
         'labels' => array(
@@ -292,3 +308,73 @@ function blank_disable_author_scans() {
     }
 }
 add_action('init', 'blank_disable_author_scans');
+
+/* =========================================================
+   管理画面：記事の複製（コピー）機能
+========================================================= */
+function blank_duplicate_post_link( $actions, $post ) {
+    // カスタム投稿タイプを含め、すべてでコピー機能を表示（特に「制作実績」など）
+    if ( current_user_can( 'edit_posts' ) ) {
+        $actions['duplicate'] = '<a href="' . wp_nonce_url( admin_url( 'admin.php?action=blank_duplicate_post&post=' . $post->ID ), 'blank_duplicate_post_' . $post->ID ) . '" title="この記事を複製する" style="color:#2271b1; font-weight:bold;">コピー（複製）</a>';
+    }
+    return $actions;
+}
+// 管理画面の記事一覧にアクションリンクを追加
+add_filter( 'post_row_actions', 'blank_duplicate_post_link', 10, 2 );
+add_filter( 'page_row_actions', 'blank_duplicate_post_link', 10, 2 );
+
+function blank_duplicate_post_action() {
+    if ( ! ( isset( $_GET['post'] ) || isset( $_POST['post'] ) ) || ! isset( $_REQUEST['action'] ) ) {
+        wp_die( '複製する記事が見つかりません。' );
+    }
+
+    $post_id = (isset($_GET['post']) ? absint( $_GET['post'] ) : absint( $_POST['post'] ) );
+    check_admin_referer( 'blank_duplicate_post_' . $post_id );
+
+    $post = get_post( $post_id );
+    $current_user = wp_get_current_user();
+    
+    if ( $post ) {
+        $args = array(
+            'comment_status' => $post->comment_status,
+            'ping_status'    => $post->ping_status,
+            'post_author'    => $current_user->ID,
+            'post_content'   => $post->post_content,
+            'post_excerpt'   => $post->post_excerpt,
+            'post_name'      => $post->post_name . '-copy-' . wp_rand(100,999),
+            'post_parent'    => $post->post_parent,
+            'post_password'  => $post->post_password,
+            'post_status'    => 'draft', // コピー後は必ず下書きにする
+            'post_title'     => $post->post_title . '（コピー）',
+            'post_type'      => $post->post_type,
+            'to_ping'        => $post->to_ping,
+            'menu_order'     => $post->menu_order
+        );
+
+        $new_post_id = wp_insert_post( $args );
+
+        // タクソノミー（カテゴリやタグ等）の複製
+        $taxonomies = get_object_taxonomies( $post->post_type );
+        foreach ( $taxonomies as $taxonomy ) {
+            $post_terms = wp_get_object_terms( $post_id, $taxonomy, array( 'fields' => 'slugs' ) );
+            wp_set_object_terms( $new_post_id, $post_terms, $taxonomy, false );
+        }
+
+        // カスタムフィールド（Post Meta）の複製
+        $post_meta_infos = get_post_custom( $post_id );
+        foreach ( $post_meta_infos as $meta_key => $meta_values ) {
+            if ( $meta_key === '_wp_old_slug' ) continue;
+            foreach ( $meta_values as $meta_value ) {
+                add_post_meta( $new_post_id, $meta_key, maybe_unserialize( $meta_value ) );
+            }
+        }
+
+        // 複製した記事の編集画面へ直接リダイレクトする
+        wp_redirect( admin_url( 'post.php?action=edit&post=' . $new_post_id ) );
+        exit;
+    } else {
+        wp_die( '記事の複製に失敗しました。' );
+    }
+}
+// 実行用のアクションフック
+add_action( 'admin_action_blank_duplicate_post', 'blank_duplicate_post_action' );
