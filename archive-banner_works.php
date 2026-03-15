@@ -182,4 +182,23 @@
     </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var fadeElems = document.querySelectorAll('.fade-up');
+    if('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        fadeElems.forEach(function(el) { observer.observe(el); });
+    } else {
+        fadeElems.forEach(function(el) { el.classList.add('is-visible'); });
+    }
+});
+</script>
+
 <?php get_footer(); ?>
