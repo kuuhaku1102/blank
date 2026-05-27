@@ -9,6 +9,7 @@ add_action( 'after_setup_theme', 'blank_theme_setup' );
 function blank_enqueue_scripts() {
     wp_enqueue_style( 'google-fonts', 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap', array(), null );
     wp_enqueue_style( 'blank-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+    wp_enqueue_script( 'jquery' ); // これを追加
 }
 add_action( 'wp_enqueue_scripts', 'blank_enqueue_scripts' );
 
