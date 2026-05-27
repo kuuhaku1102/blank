@@ -55,7 +55,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 
 .form-grid {
     display: grid;
-    grid-template-columns: 2fr 1.2fr 1.2fr 1fr auto;
+    grid-template-columns: 2fr 1.2fr 1.2fr 1.2fr 1fr auto;
     gap: 20px;
     align-items: end;
 }
@@ -77,6 +77,20 @@ $product_names = array_unique(array_column($inventory, 'name'));
     font-family: inherit;
     transition: border-color 0.3s;
     background-color: #fff;
+}
+
+/* Profit Styles */
+.profit-positive {
+    color: #10b981 !important;
+    font-weight: bold;
+}
+.profit-negative {
+    color: #ef4444 !important;
+    font-weight: bold;
+}
+.profit-zero {
+    color: #64748b !important;
+    font-weight: bold;
 }
 
 .form-group input:focus,
@@ -297,8 +311,12 @@ $product_names = array_unique(array_column($inventory, 'name'));
                 </select>
             </div>
             <div class="form-group">
-                <label>値段 (円)</label>
+                <label>仕入れ値 (円)</label>
                 <input type="number" id="prod-price" placeholder="1000" min="0" required>
+            </div>
+            <div class="form-group">
+                <label>売値 (円)</label>
+                <input type="number" id="prod-selling-price" placeholder="1200" min="0" required>
             </div>
             <div class="form-group">
                 <label>追加個数</label>
@@ -311,10 +329,23 @@ $product_names = array_unique(array_column($inventory, 'name'));
     <!-- Summary Dashboard -->
     <?php
     $total_amount = 0;
+    $total_sales = 0;
     $total_items = 0;
     foreach($inventory as $item) {
-        $total_amount += ($item['price'] * $item['quantity']);
-        $total_items += $item['quantity'];
+        $qty = intval($item['quantity']);
+        $price = intval($item['price']);
+        $selling_price = isset($item['selling_price']) ? intval($item['selling_price']) : $price;
+
+        $total_amount += ($price * $qty);
+        $total_sales += ($selling_price * $qty);
+        $total_items += $qty;
+    }
+    $total_profit = $total_sales - $total_amount;
+    $profit_class = 'profit-zero';
+    if ($total_profit > 0) {
+        $profit_class = 'profit-positive';
+    } elseif ($total_profit < 0) {
+        $profit_class = 'profit-negative';
     }
     ?>
     <div class="inventory-summary">
@@ -323,8 +354,16 @@ $product_names = array_unique(array_column($inventory, 'name'));
             <div class="summary-value"><span id="total-items-display" class="total-count"><?php echo number_format($total_items); ?></span> <small style="font-size:0.9rem;">pcs</small></div>
         </div>
         <div class="summary-item">
-            <span class="summary-label">総在庫金額 / Total Valuation</span>
+            <span class="summary-label">総仕入金額 / Total Cost</span>
             <div class="summary-value">&yen;<span id="total-amount-display"><?php echo number_format($total_amount); ?></span></div>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">想定売上金額 / Estimated Sales</span>
+            <div class="summary-value">&yen;<span id="total-sales-display"><?php echo number_format($total_sales); ?></span></div>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">見込み損益 / Profit & Loss</span>
+            <div class="summary-value"><span id="total-profit-display" class="<?php echo $profit_class; ?>"><?php echo ($total_profit > 0 ? '+' : '') . number_format($total_profit); ?>円</span></div>
         </div>
     </div>
 
@@ -335,7 +374,9 @@ $product_names = array_unique(array_column($inventory, 'name'));
                 <tr>
                     <th>商品名</th>
                     <th>種類</th>
-                    <th>価格</th>
+                    <th>仕入れ値</th>
+                    <th>売値</th>
+                    <th>見込み損益</th>
                     <th>在庫数</th>
                     <th>最終更新</th>
                     <th>操作</th>
@@ -343,7 +384,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
             </thead>
             <tbody id="inventory-list">
                 <?php if(empty($inventory)): ?>
-                    <tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">項目がありません</td></tr>
+                    <tr class="empty-row"><td colspan="8" style="text-align:center; padding:40px; color:var(--accent-color);">項目がありません</td></tr>
                 <?php else: ?>
                     <?php 
                     // Sort by last updated
@@ -351,17 +392,30 @@ $product_names = array_unique(array_column($inventory, 'name'));
                         return strtotime($b['last_updated']) - strtotime($a['last_updated']);
                     });
                     foreach($inventory as $item): 
+                        $qty = intval($item['quantity']);
+                        $price = intval($item['price']);
+                        $selling_price = isset($item['selling_price']) ? intval($item['selling_price']) : $price;
                         $item_type = isset($item['type']) ? $item['type'] : 'BOX';
                         $badge_class = ($item_type === 'PSA10') ? 'badge-psa10' : 'badge-box';
+
+                        $row_profit = ($selling_price - $price) * $qty;
+                        $row_profit_class = 'profit-zero';
+                        if ($row_profit > 0) {
+                            $row_profit_class = 'profit-positive';
+                        } elseif ($row_profit < 0) {
+                            $row_profit_class = 'profit-negative';
+                        }
                     ?>
                     <tr data-id="<?php echo esc_attr($item['id']); ?>">
                         <td><span class="item-name"><?php echo esc_html($item['name']); ?></span></td>
                         <td><span class="badge <?php echo $badge_class; ?>"><?php echo esc_html($item_type); ?></span></td>
-                        <td><span class="item-price">&yen;<?php echo number_format($item['price']); ?></span></td>
+                        <td><span class="item-price">&yen;<?php echo number_format($price); ?></span></td>
+                        <td><span class="item-price" style="color:var(--primary-color);">&yen;<?php echo number_format($selling_price); ?></span></td>
+                        <td><span class="<?php echo $row_profit_class; ?>"><?php echo ($row_profit > 0 ? '+' : '') . number_format($row_profit); ?>円</span></td>
                         <td>
                             <div class="quantity-controls">
                                 <button type="button" class="qty-btn" onclick="updateQty('<?php echo $item['id']; ?>', -1)">−</button>
-                                <span class="qty-display"><?php echo esc_html($item['quantity']); ?></span>
+                                <span class="qty-display"><?php echo esc_html($qty); ?></span>
                                 <button type="button" class="qty-btn" onclick="updateQty('<?php echo $item['id']; ?>', 1)">+</button>
                             </div>
                         </td>
@@ -386,9 +440,10 @@ document.getElementById('inventory-form').addEventListener('submit', function(e)
     const name = document.getElementById('prod-name').value;
     const type = document.getElementById('prod-type').value;
     const price = document.getElementById('prod-price').value;
+    const sellingPrice = document.getElementById('prod-selling-price').value;
     const qty = document.getElementById('prod-qty').value;
 
-    if(!name || !type || !price || !qty) return;
+    if(!name || !type || !price || !sellingPrice || !qty) return;
 
     jQuery.post(ajaxUrl, {
         action: 'blank_inventory_action',
@@ -397,6 +452,7 @@ document.getElementById('inventory-form').addEventListener('submit', function(e)
         product_name: name,
         product_type: type,
         product_price: price,
+        product_selling_price: sellingPrice,
         product_quantity: qty
     }, function(response) {
         if(response.success) {
@@ -405,6 +461,7 @@ document.getElementById('inventory-form').addEventListener('submit', function(e)
             document.getElementById('prod-name').value = '';
             document.getElementById('prod-type').value = 'BOX';
             document.getElementById('prod-price').value = '';
+            document.getElementById('prod-selling-price').value = '';
             document.getElementById('prod-qty').value = '1';
         }
     });
@@ -443,7 +500,7 @@ function renderInventory(data) {
     const datalist = document.getElementById('prod-suggestions');
     
     if(!data || data.length === 0) {
-        listBody.innerHTML = '<tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">項目がありません</td></tr>';
+        listBody.innerHTML = '<tr class="empty-row"><td colspan="8" style="text-align:center; padding:40px; color:var(--accent-color);">項目がありません</td></tr>';
         return;
     }
 
@@ -454,17 +511,31 @@ function renderInventory(data) {
     let names = new Set();
     data.forEach(item => {
         names.add(item.name);
+        const qty = parseInt(item.quantity);
+        const price = parseInt(item.price);
+        const sellingPrice = parseInt(item.selling_price !== undefined ? item.selling_price : price);
         const itemType = item.type || 'BOX';
         const badgeClass = itemType === 'PSA10' ? 'badge-psa10' : 'badge-box';
+
+        const rowProfit = (sellingPrice - price) * qty;
+        let profitClass = 'profit-zero';
+        if (rowProfit > 0) {
+            profitClass = 'profit-positive';
+        } else if (rowProfit < 0) {
+            profitClass = 'profit-negative';
+        }
+
         html += `
             <tr data-id="${item.id}">
                 <td><span class="item-name">${escapeHtml(item.name)}</span></td>
                 <td><span class="badge ${badgeClass}">${escapeHtml(itemType)}</span></td>
-                <td><span class="item-price">&yen;${parseInt(item.price).toLocaleString()}</span></td>
+                <td><span class="item-price">&yen;${price.toLocaleString()}</span></td>
+                <td><span class="item-price" style="color:var(--primary-color);">&yen;${sellingPrice.toLocaleString()}</span></td>
+                <td><span class="${profitClass}">${rowProfit > 0 ? '+' : ''}${rowProfit.toLocaleString()}円</span></td>
                 <td>
                     <div class="quantity-controls">
                         <button type="button" class="qty-btn" onclick="updateQty('${item.id}', -1)">−</button>
-                        <span class="qty-display">${item.quantity}</span>
+                        <span class="qty-display">${qty}</span>
                         <button type="button" class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
                     </div>
                 </td>
@@ -484,13 +555,33 @@ function renderInventory(data) {
 
     // Calculate totals
     let totalAmt = 0;
+    let totalSales = 0;
     let totalQty = 0;
     data.forEach(item => {
-        totalAmt += (parseInt(item.price) * parseInt(item.quantity));
-        totalQty += parseInt(item.quantity);
+        const qty = parseInt(item.quantity);
+        const price = parseInt(item.price);
+        const sellingPrice = parseInt(item.selling_price !== undefined ? item.selling_price : price);
+
+        totalAmt += (price * qty);
+        totalSales += (sellingPrice * qty);
+        totalQty += qty;
     });
-    document.getElementById('total-amount-display').textContent = totalAmt.toLocaleString();
+
+    const totalProfit = totalSales - totalAmt;
+    let profitClass = 'profit-zero';
+    if (totalProfit > 0) {
+        profitClass = 'profit-positive';
+    } else if (totalProfit < 0) {
+        profitClass = 'profit-negative';
+    }
+
     document.getElementById('total-items-display').textContent = totalQty.toLocaleString();
+    document.getElementById('total-amount-display').textContent = totalAmt.toLocaleString();
+    document.getElementById('total-sales-display').textContent = totalSales.toLocaleString();
+    
+    const profitDisplay = document.getElementById('total-profit-display');
+    profitDisplay.className = profitClass;
+    profitDisplay.textContent = (totalProfit > 0 ? '+' : '') + totalProfit.toLocaleString() + '円';
 }
 
 function formatDate(dateStr) {
