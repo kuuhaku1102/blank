@@ -145,6 +145,19 @@ function blank_inventory_handle_ajax() {
             return $item['id'] !== $id;
         });
         $inventory = array_values($inventory);
+
+    } elseif ($action_type === 'update_memo') {
+        // 売却履歴のメモをインライン編集で更新
+        $sale_id = sanitize_text_field($_POST['sale_id']);
+        $new_memo = isset($_POST['memo']) ? sanitize_textarea_field($_POST['memo']) : '';
+
+        foreach ($sales_history as &$sale) {
+            if ($sale['id'] === $sale_id) {
+                $sale['memo'] = $new_memo;
+                break;
+            }
+        }
+        unset($sale);
     }
 
     $data = [

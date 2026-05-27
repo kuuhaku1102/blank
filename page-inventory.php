@@ -3,7 +3,132 @@
  * Template Name: 在庫管理 (Inventory Management)
  */
 
+$is_authenticated = false;
+$auth_error = '';
+
+// Password Protection Logic (Cookie based)
+if (isset($_POST['inventory_password'])) {
+    if ($_POST['inventory_password'] === 'Torecamafia') {
+        // Set secure cookie for 30 days
+        setcookie('inventory_auth', md5('Torecamafia'), time() + 3600 * 24 * 30, COOKIEPATH, COOKIE_DOMAIN);
+        $is_authenticated = true;
+        // Redirect to avoid double submission
+        wp_safe_redirect(wp_get_referer() ? wp_get_referer() : home_url($_SERVER['REQUEST_URI']));
+        exit;
+    } else {
+        $auth_error = 'パスワードが正しくありません';
+    }
+} elseif (isset($_COOKIE['inventory_auth']) && $_COOKIE['inventory_auth'] === md5('Torecamafia')) {
+    $is_authenticated = true;
+}
+
 get_header();
+
+// Show modern premium login form if not authenticated
+if (!$is_authenticated) {
+?>
+<style>
+.login-overlay {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+.login-card {
+    background: #fff;
+    border: 1px solid rgba(145, 166, 180, 0.2);
+    border-radius: 24px;
+    padding: 50px 40px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+    text-align: center;
+    position: relative;
+}
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, var(--highlight-color), var(--primary-color));
+    border-radius: 24px 24px 0 0;
+}
+.login-card h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+}
+.login-card p {
+    color: var(--accent-color);
+    font-size: 0.95rem;
+    margin-bottom: 35px;
+    line-height: 1.6;
+}
+.login-input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    outline: none;
+    transition: all 0.3s;
+    text-align: center;
+    letter-spacing: 0.15em;
+    font-weight: bold;
+}
+.login-input:focus {
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+.login-btn {
+    width: 100%;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+}
+.login-btn:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+.error-msg {
+    color: #ef4444;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    background: #fef2f2;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #fca5a5;
+}
+</style>
+<div class="login-overlay">
+    <div class="login-card">
+        <h2>🔒 SECURITY ACCESS</h2>
+        <p>このページは保護されています。<br>在庫管理システムへログインするためのパスワードを入力してください。</p>
+        <?php if (!empty($auth_error)): ?>
+            <div class="error-msg"><?php echo esc_html($auth_error); ?></div>
+        <?php endif; ?>
+        <form method="POST">
+            <input type="password" name="inventory_password" class="login-input" placeholder="パスワードを入力..." autocomplete="current-password" required autofocus>
+            <button type="submit" class="login-btn">ログイン</button>
+        </form>
+    </div>
+</div>
+<?php
+get_footer();
+exit;
+}
 
 // Get and split data
 $data = get_option('blank_inventory_data', []);
@@ -21,7 +146,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 <style>
 /* Inventory Page Styles */
 .inventory-container {
-    max-width: 1280px;
+    max-width: 1320px;
     margin: 120px auto 80px;
     padding: 0 3%;
 }
@@ -173,7 +298,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 /* Layout Grid for Split Tables */
 .inventory-layout-grid {
     display: grid;
-    grid-template-columns: 1fr 1.1fr;
+    grid-template-columns: 1fr 1.25fr;
     gap: 30px;
     align-items: start;
 }
@@ -211,7 +336,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 
 .inventory-table th {
     background: #f8fafc;
-    padding: 15px 15px;
+    padding: 15px;
     text-align: left;
     font-size: 0.85rem;
     color: var(--secondary-color);
@@ -377,6 +502,143 @@ $product_names = array_unique(array_column($inventory, 'name'));
     font-size: 0.75rem;
     color: var(--accent-color);
     margin-left: 4px;
+}
+
+/* Date Tabs UI */
+.date-tabs-wrap {
+    background: #fff;
+    border: 1px solid rgba(145, 166, 180, 0.2);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+.date-tabs-wrap::-webkit-scrollbar {
+    height: 6px;
+}
+.date-tabs-wrap::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+.date-tab {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 16px;
+    margin-right: 8px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 90px;
+    text-align: center;
+    font-family: inherit;
+}
+.date-tab:hover {
+    border-color: var(--highlight-color);
+    background: #f8fafc;
+    transform: translateY(-1px);
+}
+.date-tab.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+.date-tab.active .date-tab-sub,
+.date-tab.active .date-tab-profit {
+    color: #fff !important;
+    opacity: 0.95;
+}
+.date-tab-main {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    line-height: 1.1;
+}
+.date-tab.active .date-tab-main {
+    color: #fff;
+}
+.date-tab-sub {
+    font-size: 0.65rem;
+    color: var(--accent-color);
+    margin-top: 2px;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+.date-tab-profit {
+    font-size: 0.7rem;
+    margin-top: 4px;
+    font-weight: bold;
+}
+.date-tab-profit.positive { color: #10b981; }
+.date-tab-profit.negative { color: #ef4444; }
+
+/* Daily Summary Cards */
+.daily-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 15px;
+    padding: 14px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+.daily-summary-item {
+    text-align: center;
+}
+.daily-summary-label {
+    font-size: 0.7rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+.daily-summary-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Memo Cell */
+.memo-cell {
+    font-size: 0.8rem;
+    color: #475569;
+    background: #f8fafc;
+    border: 1px dashed #e2e8f0;
+    padding: 5px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.memo-cell:hover {
+    background: #fff;
+    border-color: var(--highlight-color);
+    border-style: solid;
+}
+.memo-cell.empty {
+    color: #cbd5e1;
+    font-style: italic;
+    background: transparent;
+}
+.memo-edit-input {
+    width: 100%;
+    padding: 5px 8px;
+    border: 1.5px solid var(--highlight-color);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    outline: none;
 }
 </style>
 
@@ -549,57 +811,41 @@ $product_names = array_unique(array_column($inventory, 'name'));
         <!-- Right: Sales History -->
         <div class="inventory-section">
             <h2 class="section-title">📊 売却実績（確定損益）</h2>
+
+            <!-- Date Tabs -->
+            <div class="date-tabs-wrap" id="date-tabs-wrap">
+                <!-- 日付タブはJSで動的生成 -->
+            </div>
+
+            <!-- Daily Summary (選択日付の集計) -->
+            <div class="daily-summary" id="daily-summary">
+                <div class="daily-summary-item">
+                    <div class="daily-summary-label">売却点数</div>
+                    <div class="daily-summary-value" id="daily-qty">0 <small style="font-size:0.7rem;">pcs</small></div>
+                </div>
+                <div class="daily-summary-item">
+                    <div class="daily-summary-label">売上合計</div>
+                    <div class="daily-summary-value" id="daily-revenue">¥0</div>
+                </div>
+                <div class="daily-summary-item">
+                    <div class="daily-summary-label">損益</div>
+                    <div class="daily-summary-value" id="daily-profit">¥0</div>
+                </div>
+            </div>
             <div class="inventory-table-wrap" style="border-top: 3px solid #10b981;">
                 <table class="inventory-table">
                     <thead>
                         <tr>
-                            <th class="sortable-th" onclick="toggleSalesSort()" style="width: 200px;">
-                                売却日 &amp; 商品名 <span id="sort-indicator" class="sort-indicator">▼</span>
-                            </th>
-                            <th>単価 (仕入&rarr;売値)</th>
-                            <th>数量</th>
-                            <th>損益</th>
+                            <th style="width: 90px;">商品名</th>
+                            <th style="width: 110px;">単価 (仕入→売値)</th>
+                            <th style="width:50px;">数量</th>
+                            <th style="width:90px;">損益</th>
+                            <th>メモ</th>
                             <th style="width:50px; text-align:center;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="sales-list">
-                        <?php if(empty($sales_history)): ?>
-                            <tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>
-                        <?php else: ?>
-                            <?php 
-                            // デフォルトは新しい順にソート
-                            usort($sales_history, function($a, $b) {
-                                return strtotime($b['sold_at']) - strtotime($a['sold_at']);
-                            });
-                            foreach($sales_history as $sale):
-                                $cost = intval($sale['cost_price']);
-                                $sell = intval($sale['sell_price']);
-                                $qty = intval($sale['quantity']);
-                                $profit = ($sell - $cost) * $qty;
-                                $row_profit_class = 'profit-zero';
-                                if ($profit > 0) $row_profit_class = 'profit-positive';
-                                elseif ($profit < 0) $row_profit_class = 'profit-negative';
-                                $memo = isset($sale['memo']) ? $sale['memo'] : '';
-                            ?>
-                            <tr data-sale-id="<?php echo esc_attr($sale['id']); ?>">
-                                <td>
-                                    <span style="font-size:0.75rem; color:#64748b; display:block; font-weight:bold;"><?php echo date('Y/m/d', strtotime($sale['sold_at'])); ?></span>
-                                    <span class="item-name" style="font-size:0.9rem;"><?php echo esc_html($sale['name']); ?></span>
-                                    <?php if(!empty($memo)): ?>
-                                        <span style="font-size:0.8rem; color:#64748b; display:block; margin-top:4px; font-weight:500; background:#f1f5f9; padding:4px 8px; border-radius:4px; border-left:2px solid #cbd5e1; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;" title="<?php echo esc_attr($memo); ?>">📝 <?php echo esc_html($memo); ?></span>
-                                    <?php endif; ?>
-                                </td>
-                                <td style="font-size:0.85rem;">
-                                    <span style="color:#64748b;">&yen;<?php echo number_format($cost); ?></span>
-                                    <span style="color:#94a3b8; margin:0 2px;">&rarr;</span>
-                                    <span style="font-weight:bold; color:var(--primary-color);">&yen;<?php echo number_format($sell); ?></span>
-                                </td>
-                                <td style="font-weight:bold;"><?php echo $qty; ?></td>
-                                <td><span class="<?php echo $row_profit_class; ?>"><?php echo ($profit > 0 ? '+' : '') . number_format($profit); ?>円</span></td>
-                                <td style="text-align:center;"><button type="button" class="delete-btn" onclick="deleteSale('<?php echo $sale['id']; ?>')" style="padding:0; color:#64748b;">取消</button></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                        <!-- 初期描画はJS (renderInventory) に任せる -->
                     </tbody>
                 </table>
             </div>
@@ -612,12 +858,17 @@ $product_names = array_unique(array_column($inventory, 'name'));
 const ajaxUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
 const nonce = '<?php echo wp_create_nonce('blank_inventory_nonce'); ?>';
 
-// グローバルデータとソート順の保持
+// グローバルデータの保持
 let latestData = {
     inventory: <?php echo json_encode($inventory); ?>,
     sales_history: <?php echo json_encode($sales_history); ?>
 };
-let salesSortOrder = 'desc'; // 'desc' (新しい順) または 'asc' (古い順)
+let selectedDateFilter = 'all'; // 選択されている日付フィルター ('all' または 'YYYY/MM/DD')
+
+// 初期描画（セレクトボックス作成のため実行）
+jQuery(document).ready(function() {
+    renderInventory(latestData);
+});
 
 // Add item
 document.getElementById('inventory-form').addEventListener('submit', function(e) {
@@ -748,32 +999,167 @@ function deleteSale(saleId) {
     });
 }
 
-// Toggle Sort direction for Sales history
-function toggleSalesSort() {
-    salesSortOrder = (salesSortOrder === 'desc') ? 'asc' : 'desc';
-    const indicator = document.getElementById('sort-indicator');
-    if (indicator) {
-        indicator.textContent = (salesSortOrder === 'desc') ? '▼' : '▲';
-    }
+// Set Date Filter from Tab Click
+function setDateFilter(dateValue) {
+    selectedDateFilter = dateValue;
     renderInventory(latestData);
+}
+
+// Update memo for a sale (inline edit)
+function saveMemoEdit(saleId, newMemo) {
+    jQuery.post(ajaxUrl, {
+        action: 'blank_inventory_action',
+        security: nonce,
+        inventory_action: 'update_memo',
+        sale_id: saleId,
+        memo: newMemo
+    }, function(response) {
+        if(response.success) {
+            latestData = response.data;
+            renderInventory(latestData);
+        }
+    });
+}
+
+// Enable Memo Inline Edit
+function enableMemoEdit(el, saleId) {
+    // 最新データから生のメモを取得（HTML エスケープ済みの data-memo は使わない）
+    const sale = (latestData.sales_history || []).find(s => s.id === saleId);
+    const currentMemo = (sale && sale.memo) ? sale.memo : '';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentMemo;
+    input.className = 'memo-edit-input';
+    input.placeholder = 'メモを入力...';
+    el.replaceWith(input);
+    input.focus();
+    input.select();
+
+    const commit = () => {
+        const newVal = input.value.trim();
+        if (newVal !== currentMemo) {
+            saveMemoEdit(saleId, newVal);
+        } else {
+            renderInventory(latestData);
+        }
+    };
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            input.blur();
+        } else if (e.key === 'Escape') {
+            renderInventory(latestData);
+        }
+    });
 }
 
 function renderInventory(data) {
     const listBody = document.getElementById('inventory-list');
     const salesBody = document.getElementById('sales-list');
     const datalist = document.getElementById('prod-suggestions');
-    
+    const dateTabsWrap = document.getElementById('date-tabs-wrap');
+
     const inventory = data.inventory || [];
     const sales_history = data.sales_history || [];
 
     // Sort Active Inventory (always last updated first)
     inventory.sort((a, b) => new Date(b.last_updated) - new Date(a.last_updated));
 
-    // Sort Sales History dynamically based on state
-    if (salesSortOrder === 'desc') {
-        sales_history.sort((a, b) => new Date(b.sold_at) - new Date(a.sold_at));
-    } else {
-        sales_history.sort((a, b) => new Date(a.sold_at) - new Date(b.sold_at));
+    // Sales: Always newest first (タブ内では時系列順)
+    sales_history.sort((a, b) => new Date(b.sold_at) - new Date(a.sold_at));
+
+    // --- Build Date Tabs (with daily profit per date) ---
+    let dateProfitMap = {}; // { 'YYYY/MM/DD': { qty, revenue, profit } }
+    sales_history.forEach(sale => {
+        const dStr = formatDateOnly(sale.sold_at);
+        if (!dateProfitMap[dStr]) {
+            dateProfitMap[dStr] = { qty: 0, revenue: 0, profit: 0 };
+        }
+        const qty = parseInt(sale.quantity);
+        const sell = parseInt(sale.sell_price);
+        const cost = parseInt(sale.cost_price);
+        dateProfitMap[dStr].qty += qty;
+        dateProfitMap[dStr].revenue += sell * qty;
+        dateProfitMap[dStr].profit += (sell - cost) * qty;
+    });
+
+    let sortedDates = Object.keys(dateProfitMap).sort((a, b) => new Date(b) - new Date(a));
+
+    // Validate current selection
+    if (selectedDateFilter !== 'all' && !dateProfitMap[selectedDateFilter]) {
+        selectedDateFilter = 'all';
+    }
+
+    // Render Date Tabs
+    if (dateTabsWrap) {
+        let totalProfit = 0;
+        let totalQty = 0;
+        sales_history.forEach(sale => {
+            totalProfit += (parseInt(sale.sell_price) - parseInt(sale.cost_price)) * parseInt(sale.quantity);
+            totalQty += parseInt(sale.quantity);
+        });
+
+        let tabsHtml = '';
+        // "すべて" タブ
+        const allActive = selectedDateFilter === 'all' ? 'active' : '';
+        const allProfitClass = totalProfit > 0 ? 'positive' : (totalProfit < 0 ? 'negative' : '');
+        const allProfitText = totalProfit === 0 ? '—' : (totalProfit > 0 ? '+' : '') + formatYen(totalProfit);
+        tabsHtml += `
+            <button type="button" class="date-tab ${allActive}" onclick="setDateFilter('all')">
+                <span class="date-tab-main">すべて</span>
+                <span class="date-tab-sub">${totalQty} 件</span>
+                <span class="date-tab-profit ${allProfitClass}">${allProfitText}</span>
+            </button>
+        `;
+        // 日付タブ
+        sortedDates.forEach(dStr => {
+            const isActive = selectedDateFilter === dStr ? 'active' : '';
+            const dp = dateProfitMap[dStr];
+            const pCls = dp.profit > 0 ? 'positive' : (dp.profit < 0 ? 'negative' : '');
+            const pTxt = dp.profit === 0 ? '±0' : (dp.profit > 0 ? '+' : '') + formatYen(dp.profit);
+            // M/D (曜日) 表示にして見やすく
+            const d = new Date(dStr.replace(/\//g, '-'));
+            const weekday = ['日','月','火','水','木','金','土'][d.getDay()];
+            const mainLabel = `${d.getMonth()+1}/${d.getDate()}`;
+            const subLabel = `${d.getFullYear()} (${weekday})`;
+            tabsHtml += `
+                <button type="button" class="date-tab ${isActive}" onclick="setDateFilter('${dStr}')" title="${dStr}">
+                    <span class="date-tab-main">${mainLabel}</span>
+                    <span class="date-tab-sub">${subLabel}</span>
+                    <span class="date-tab-profit ${pCls}">${pTxt}</span>
+                </button>
+            `;
+        });
+        if (sortedDates.length === 0) {
+            tabsHtml = '<div style="padding:10px 14px; color:#94a3b8; font-size:0.85rem;">売却実績がまだありません</div>';
+        }
+        dateTabsWrap.innerHTML = tabsHtml;
+    }
+
+    // Apply Date Filter to Sales History
+    let filteredSales = sales_history;
+    if (selectedDateFilter !== 'all') {
+        filteredSales = sales_history.filter(sale => formatDateOnly(sale.sold_at) === selectedDateFilter);
+    }
+
+    // --- Update Daily Summary ---
+    const dailySummary = document.getElementById('daily-summary');
+    if (dailySummary) {
+        let dQty = 0, dRev = 0, dProf = 0;
+        filteredSales.forEach(sale => {
+            const q = parseInt(sale.quantity);
+            const s = parseInt(sale.sell_price);
+            const c = parseInt(sale.cost_price);
+            dQty += q;
+            dRev += s * q;
+            dProf += (s - c) * q;
+        });
+        document.getElementById('daily-qty').innerHTML = dQty.toLocaleString() + ' <small style="font-size:0.7rem;">pcs</small>';
+        document.getElementById('daily-revenue').textContent = '¥' + dRev.toLocaleString();
+        const profitEl = document.getElementById('daily-profit');
+        profitEl.textContent = (dProf > 0 ? '+' : '') + '¥' + dProf.toLocaleString();
+        profitEl.style.color = dProf > 0 ? '#10b981' : (dProf < 0 ? '#ef4444' : '#64748b');
     }
 
     // --- Render Active Inventory ---
@@ -849,35 +1235,38 @@ function renderInventory(data) {
         datalist.innerHTML = dHtml;
     }
 
-    // --- Render Sales History ---
-    if(sales_history.length === 0) {
-        salesBody.innerHTML = '<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>';
+    // --- Render Filtered Sales History ---
+    if(filteredSales.length === 0) {
+        const emptyMsg = selectedDateFilter === 'all'
+            ? '売却実績はありません'
+            : `${selectedDateFilter} の売却実績はありません`;
+        salesBody.innerHTML = `<tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">${emptyMsg}</td></tr>`;
     } else {
         let html = '';
-        sales_history.forEach(sale => {
+        filteredSales.forEach(sale => {
             const cost = parseInt(sale.cost_price);
             const sell = parseInt(sale.sell_price);
             const qty = parseInt(sale.quantity);
             const profit = (sell - cost) * qty;
             const memo = sale.memo || '';
+            const itemType = sale.type || 'BOX';
+            const badgeClass = itemType === 'PSA10' ? 'badge-psa10' : 'badge-box';
 
             let rowProfitClass = 'profit-zero';
             if (profit > 0) rowProfitClass = 'profit-positive';
             else if (profit < 0) rowProfitClass = 'profit-negative';
 
-            let memoHtml = '';
-            if (memo) {
-                memoHtml = `
-                    <span class="sales-memo-tag" style="font-size:0.8rem; color:#64748b; display:block; margin-top:4px; font-weight:500; background:#f1f5f9; padding:4px 8px; border-radius:4px; border-left:2px solid #cbd5e1; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;" title="${escapeHtml(memo)}">📝 ${escapeHtml(memo)}</span>
-                `;
-            }
+            // 「すべて表示」時のみ日付を行に表示
+            const dateBadge = selectedDateFilter === 'all'
+                ? `<span style="font-size:0.7rem; color:#94a3b8; display:block; font-weight:bold; margin-bottom:3px;">${formatDateOnly(sale.sold_at)}</span>`
+                : '';
 
             html += `
                 <tr data-sale-id="${sale.id}">
                     <td>
-                        <span style="font-size:0.75rem; color:#64748b; display:block; font-weight:bold;">${formatDateOnly(sale.sold_at)}</span>
+                        ${dateBadge}
                         <span class="item-name" style="font-size:0.9rem;">${escapeHtml(sale.name)}</span>
-                        ${memoHtml}
+                        <span class="badge ${badgeClass}" style="font-size:0.6rem; padding:2px 6px; margin-left:4px;">${escapeHtml(itemType)}</span>
                     </td>
                     <td style="font-size:0.85rem;">
                         <span style="color:#64748b;">&yen;${cost.toLocaleString()}</span>
@@ -886,6 +1275,11 @@ function renderInventory(data) {
                     </td>
                     <td style="font-weight:bold;">${qty}</td>
                     <td><span class="${rowProfitClass}">${profit > 0 ? '+' : ''}${profit.toLocaleString()}円</span></td>
+                    <td>
+                        <span class="memo-cell ${memo ? '' : 'empty'}" data-memo="${escapeHtml(memo)}" onclick="enableMemoEdit(this, '${sale.id}')" title="${memo ? escapeHtml(memo) : 'クリックでメモを追加'}">
+                            ${memo ? escapeHtml(memo) : '＋ メモを追加'}
+                        </span>
+                    </td>
                     <td style="text-align:center;"><button type="button" class="delete-btn" onclick="deleteSale('${sale.id}')" style="padding:0; color:#64748b;">取消</button></td>
                 </tr>
             `;
@@ -931,6 +1325,19 @@ function formatDateOnly(dateStr) {
     const m = ('0' + (d.getMonth() + 1)).slice(-2);
     const day = ('0' + d.getDate()).slice(-2);
     return `${y}/${m}/${day}`;
+}
+
+// 金額を ¥1.2万 / ¥34万 / ¥1.5億 のような短縮表記にする
+function formatYen(num) {
+    const abs = Math.abs(num);
+    const sign = num < 0 ? '-' : '';
+    if (abs >= 100000000) {
+        return `${sign}¥${(abs / 100000000).toFixed(1)}億`;
+    } else if (abs >= 10000) {
+        return `${sign}¥${(abs / 10000).toFixed(abs >= 100000 ? 0 : 1)}万`;
+    } else {
+        return `${sign}¥${abs.toLocaleString()}`;
+    }
 }
 
 function escapeHtml(str) {
