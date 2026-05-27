@@ -281,6 +281,9 @@ require_once get_template_directory() . '/inc/blog-smart-editor.php';
 // アニメーションロゴ出力関数の読み込み
 require_once get_template_directory() . '/inc/animated-logo.php';
 
+// 在庫管理ロジックの読み込み
+require_once get_template_directory() . '/inc/inventory-admin.php';
+
 /* =========================================================
    WordPress セキュリティ対策（Basic Hardenings）
 ========================================================= */
