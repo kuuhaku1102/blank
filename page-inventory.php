@@ -173,7 +173,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 /* Layout Grid for Split Tables */
 .inventory-layout-grid {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
+    grid-template-columns: 1fr 1.1fr;
     gap: 30px;
     align-items: start;
 }
@@ -363,6 +363,21 @@ $product_names = array_unique(array_column($inventory, 'name'));
     color: #64748b !important;
     font-weight: bold;
 }
+
+/* Sortable Header */
+.sortable-th {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+.sortable-th:hover {
+    background-color: #f1f5f9 !important;
+}
+.sort-indicator {
+    font-size: 0.75rem;
+    color: var(--accent-color);
+    margin-left: 4px;
+}
 </style>
 
 <div class="inventory-container">
@@ -538,19 +553,21 @@ $product_names = array_unique(array_column($inventory, 'name'));
                 <table class="inventory-table">
                     <thead>
                         <tr>
-                            <th>売却日 &amp; 商品名</th>
+                            <th class="sortable-th" onclick="toggleSalesSort()" style="width: 200px;">
+                                売却日 &amp; 商品名 <span id="sort-indicator" class="sort-indicator">▼</span>
+                            </th>
                             <th>単価 (仕入&rarr;売値)</th>
                             <th>数量</th>
                             <th>損益</th>
-                            <th>メモ</th>
                             <th style="width:50px; text-align:center;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="sales-list">
                         <?php if(empty($sales_history)): ?>
-                            <tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>
+                            <tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>
                         <?php else: ?>
                             <?php 
+                            // デフォルトは新しい順にソート
                             usort($sales_history, function($a, $b) {
                                 return strtotime($b['sold_at']) - strtotime($a['sold_at']);
                             });
@@ -568,6 +585,9 @@ $product_names = array_unique(array_column($inventory, 'name'));
                                 <td>
                                     <span style="font-size:0.75rem; color:#64748b; display:block; font-weight:bold;"><?php echo date('Y/m/d', strtotime($sale['sold_at'])); ?></span>
                                     <span class="item-name" style="font-size:0.9rem;"><?php echo esc_html($sale['name']); ?></span>
+                                    <?php if(!empty($memo)): ?>
+                                        <span style="font-size:0.8rem; color:#64748b; display:block; margin-top:4px; font-weight:500; background:#f1f5f9; padding:4px 8px; border-radius:4px; border-left:2px solid #cbd5e1; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;" title="<?php echo esc_attr($memo); ?>">📝 <?php echo esc_html($memo); ?></span>
+                                    <?php endif; ?>
                                 </td>
                                 <td style="font-size:0.85rem;">
                                     <span style="color:#64748b;">&yen;<?php echo number_format($cost); ?></span>
@@ -576,11 +596,6 @@ $product_names = array_unique(array_column($inventory, 'name'));
                                 </td>
                                 <td style="font-weight:bold;"><?php echo $qty; ?></td>
                                 <td><span class="<?php echo $row_profit_class; ?>"><?php echo ($profit > 0 ? '+' : '') . number_format($profit); ?>円</span></td>
-                                <td>
-                                    <span style="font-size:0.8rem; color:#64748b; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block;" title="<?php echo esc_attr($memo); ?>">
-                                        <?php echo !empty($memo) ? esc_html($memo) : '<span style="color:#cbd5e1;">-</span>'; ?>
-                                    </span>
-                                </td>
                                 <td style="text-align:center;"><button type="button" class="delete-btn" onclick="deleteSale('<?php echo $sale['id']; ?>')" style="padding:0; color:#64748b;">取消</button></td>
                             </tr>
                             <?php endforeach; ?>
@@ -596,6 +611,13 @@ $product_names = array_unique(array_column($inventory, 'name'));
 <script>
 const ajaxUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
 const nonce = '<?php echo wp_create_nonce('blank_inventory_nonce'); ?>';
+
+// グローバルデータとソート順の保持
+let latestData = {
+    inventory: <?php echo json_encode($inventory); ?>,
+    sales_history: <?php echo json_encode($sales_history); ?>
+};
+let salesSortOrder = 'desc'; // 'desc' (新しい順) または 'asc' (古い順)
 
 // Add item
 document.getElementById('inventory-form').addEventListener('submit', function(e) {
@@ -618,7 +640,8 @@ document.getElementById('inventory-form').addEventListener('submit', function(e)
         product_quantity: qty
     }, function(response) {
         if(response.success) {
-            renderInventory(response.data);
+            latestData = response.data;
+            renderInventory(latestData);
             // reset form
             document.getElementById('prod-name').value = '';
             document.getElementById('prod-type').value = 'BOX';
@@ -637,7 +660,8 @@ function updateQty(id, change) {
         change: change
     }, function(response) {
         if(response.success) {
-            renderInventory(response.data);
+            latestData = response.data;
+            renderInventory(latestData);
         }
     });
 }
@@ -651,7 +675,8 @@ function deleteItem(id) {
         product_id: id
     }, function(response) {
         if(response.success) {
-            renderInventory(response.data);
+            latestData = response.data;
+            renderInventory(latestData);
         }
     });
 }
@@ -701,7 +726,8 @@ function executeSell(id) {
         sell_memo: memo
     }, function(response) {
         if(response.success) {
-            renderInventory(response.data);
+            latestData = response.data;
+            renderInventory(latestData);
         }
     });
 }
@@ -716,9 +742,20 @@ function deleteSale(saleId) {
         sale_id: saleId
     }, function(response) {
         if(response.success) {
-            renderInventory(response.data);
+            latestData = response.data;
+            renderInventory(latestData);
         }
     });
+}
+
+// Toggle Sort direction for Sales history
+function toggleSalesSort() {
+    salesSortOrder = (salesSortOrder === 'desc') ? 'asc' : 'desc';
+    const indicator = document.getElementById('sort-indicator');
+    if (indicator) {
+        indicator.textContent = (salesSortOrder === 'desc') ? '▼' : '▲';
+    }
+    renderInventory(latestData);
 }
 
 function renderInventory(data) {
@@ -729,9 +766,15 @@ function renderInventory(data) {
     const inventory = data.inventory || [];
     const sales_history = data.sales_history || [];
 
-    // Sort lists
+    // Sort Active Inventory (always last updated first)
     inventory.sort((a, b) => new Date(b.last_updated) - new Date(a.last_updated));
-    sales_history.sort((a, b) => new Date(b.sold_at) - new Date(a.sold_at));
+
+    // Sort Sales History dynamically based on state
+    if (salesSortOrder === 'desc') {
+        sales_history.sort((a, b) => new Date(b.sold_at) - new Date(a.sold_at));
+    } else {
+        sales_history.sort((a, b) => new Date(a.sold_at) - new Date(b.sold_at));
+    }
 
     // --- Render Active Inventory ---
     if(inventory.length === 0) {
@@ -808,7 +851,7 @@ function renderInventory(data) {
 
     // --- Render Sales History ---
     if(sales_history.length === 0) {
-        salesBody.innerHTML = '<tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>';
+        salesBody.innerHTML = '<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>';
     } else {
         let html = '';
         sales_history.forEach(sale => {
@@ -822,11 +865,19 @@ function renderInventory(data) {
             if (profit > 0) rowProfitClass = 'profit-positive';
             else if (profit < 0) rowProfitClass = 'profit-negative';
 
+            let memoHtml = '';
+            if (memo) {
+                memoHtml = `
+                    <span class="sales-memo-tag" style="font-size:0.8rem; color:#64748b; display:block; margin-top:4px; font-weight:500; background:#f1f5f9; padding:4px 8px; border-radius:4px; border-left:2px solid #cbd5e1; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;" title="${escapeHtml(memo)}">📝 ${escapeHtml(memo)}</span>
+                `;
+            }
+
             html += `
                 <tr data-sale-id="${sale.id}">
                     <td>
                         <span style="font-size:0.75rem; color:#64748b; display:block; font-weight:bold;">${formatDateOnly(sale.sold_at)}</span>
                         <span class="item-name" style="font-size:0.9rem;">${escapeHtml(sale.name)}</span>
+                        ${memoHtml}
                     </td>
                     <td style="font-size:0.85rem;">
                         <span style="color:#64748b;">&yen;${cost.toLocaleString()}</span>
@@ -835,11 +886,6 @@ function renderInventory(data) {
                     </td>
                     <td style="font-weight:bold;">${qty}</td>
                     <td><span class="${rowProfitClass}">${profit > 0 ? '+' : ''}${profit.toLocaleString()}円</span></td>
-                    <td>
-                        <span style="font-size:0.8rem; color:#64748b; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block;" title="${escapeHtml(memo)}">
-                            ${memo ? escapeHtml(memo) : '<span style="color:#cbd5e1;">-</span>'}
-                        </span>
-                    </td>
                     <td style="text-align:center;"><button type="button" class="delete-btn" onclick="deleteSale('${sale.id}')" style="padding:0; color:#64748b;">取消</button></td>
                 </tr>
             `;
