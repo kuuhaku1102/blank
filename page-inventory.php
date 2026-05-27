@@ -55,7 +55,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 
 .form-grid {
     display: grid;
-    grid-template-columns: 2fr 1.2fr 1.2fr 1.2fr 1fr auto;
+    grid-template-columns: 2fr 1.2fr 1.2fr 1fr auto;
     gap: 20px;
     align-items: end;
 }
@@ -91,6 +91,40 @@ $product_names = array_unique(array_column($inventory, 'name'));
 .profit-zero {
     color: #64748b !important;
     font-weight: bold;
+}
+
+/* Inline Edit Input Style */
+.inline-edit-input {
+    width: 110px;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: 'Outfit', sans-serif;
+    color: var(--primary-color);
+    font-weight: bold;
+    background: transparent;
+    transition: all 0.2s;
+    text-align: right;
+}
+.inline-edit-input:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+}
+.inline-edit-input:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+/* Chrome, Safari, Edge, Opera: Remove spin buttons */
+.inline-edit-input::-webkit-outer-spin-button,
+.inline-edit-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Firefox: Remove spin buttons */
+.inline-edit-input[type=number] {
+    -moz-appearance: textfield;
 }
 
 .form-group input:focus,
@@ -315,10 +349,6 @@ $product_names = array_unique(array_column($inventory, 'name'));
                 <input type="number" id="prod-price" placeholder="1000" min="0" required>
             </div>
             <div class="form-group">
-                <label>売値 (円)</label>
-                <input type="number" id="prod-selling-price" placeholder="1200" min="0" required>
-            </div>
-            <div class="form-group">
                 <label>追加個数</label>
                 <input type="number" id="prod-qty" value="1" min="1" required>
             </div>
@@ -410,7 +440,12 @@ $product_names = array_unique(array_column($inventory, 'name'));
                         <td><span class="item-name"><?php echo esc_html($item['name']); ?></span></td>
                         <td><span class="badge <?php echo $badge_class; ?>"><?php echo esc_html($item_type); ?></span></td>
                         <td><span class="item-price">&yen;<?php echo number_format($price); ?></span></td>
-                        <td><span class="item-price" style="color:var(--primary-color);">&yen;<?php echo number_format($selling_price); ?></span></td>
+                        <td>
+                            <div style="display:flex; align-items:center; justify-content:flex-end;">
+                                <span style="color:#94a3b8; font-size:0.9rem; margin-right:2px;">&yen;</span>
+                                <input type="number" class="inline-edit-input" value="<?php echo esc_attr($selling_price); ?>" onchange="updateSellingPrice('<?php echo $item['id']; ?>', this.value)" min="0" placeholder="未設定">
+                            </div>
+                        </td>
                         <td><span class="<?php echo $row_profit_class; ?>"><?php echo ($row_profit > 0 ? '+' : '') . number_format($row_profit); ?>円</span></td>
                         <td>
                             <div class="quantity-controls">
@@ -440,10 +475,9 @@ document.getElementById('inventory-form').addEventListener('submit', function(e)
     const name = document.getElementById('prod-name').value;
     const type = document.getElementById('prod-type').value;
     const price = document.getElementById('prod-price').value;
-    const sellingPrice = document.getElementById('prod-selling-price').value;
     const qty = document.getElementById('prod-qty').value;
 
-    if(!name || !type || !price || !sellingPrice || !qty) return;
+    if(!name || !type || !price || !qty) return;
 
     jQuery.post(ajaxUrl, {
         action: 'blank_inventory_action',
@@ -452,7 +486,6 @@ document.getElementById('inventory-form').addEventListener('submit', function(e)
         product_name: name,
         product_type: type,
         product_price: price,
-        product_selling_price: sellingPrice,
         product_quantity: qty
     }, function(response) {
         if(response.success) {
@@ -461,7 +494,6 @@ document.getElementById('inventory-form').addEventListener('submit', function(e)
             document.getElementById('prod-name').value = '';
             document.getElementById('prod-type').value = 'BOX';
             document.getElementById('prod-price').value = '';
-            document.getElementById('prod-selling-price').value = '';
             document.getElementById('prod-qty').value = '1';
         }
     });
@@ -474,6 +506,20 @@ function updateQty(id, change) {
         inventory_action: 'update_quantity',
         product_id: id,
         change: change
+    }, function(response) {
+        if(response.success) {
+            renderInventory(response.data);
+        }
+    });
+}
+
+function updateSellingPrice(id, sellingPrice) {
+    jQuery.post(ajaxUrl, {
+        action: 'blank_inventory_action',
+        security: nonce,
+        inventory_action: 'update_selling_price',
+        product_id: id,
+        selling_price: sellingPrice
     }, function(response) {
         if(response.success) {
             renderInventory(response.data);
@@ -530,7 +576,12 @@ function renderInventory(data) {
                 <td><span class="item-name">${escapeHtml(item.name)}</span></td>
                 <td><span class="badge ${badgeClass}">${escapeHtml(itemType)}</span></td>
                 <td><span class="item-price">&yen;${price.toLocaleString()}</span></td>
-                <td><span class="item-price" style="color:var(--primary-color);">&yen;${sellingPrice.toLocaleString()}</span></td>
+                <td>
+                    <div style="display:flex; align-items:center; justify-content:flex-end;">
+                        <span style="color:#94a3b8; font-size:0.9rem; margin-right:2px;">&yen;</span>
+                        <input type="number" class="inline-edit-input" value="${sellingPrice}" onchange="updateSellingPrice('${item.id}', this.value)" min="0" placeholder="未設定">
+                    </div>
+                </td>
                 <td><span class="${profitClass}">${rowProfit > 0 ? '+' : ''}${rowProfit.toLocaleString()}円</span></td>
                 <td>
                     <div class="quantity-controls">
