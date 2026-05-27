@@ -190,6 +190,33 @@ $product_names = array_unique(array_column($inventory, 'name'));
     }
     .inventory-header h1 { font-size: 2rem; }
 }
+
+/* Summary Dashboard styles */
+.inventory-summary {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.summary-item {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(145, 166, 180, 0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+.summary-label {
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+    display: block;
+}
+.summary-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+}
+.total-count { color: var(--highlight-color); }
 </style>
 
 <div class="inventory-container">
@@ -220,6 +247,26 @@ $product_names = array_unique(array_column($inventory, 'name'));
             </div>
             <button type="submit" class="add-btn">登録・追加</button>
         </form>
+    </div>
+
+    <!-- Summary Dashboard -->
+    <?php
+    $total_amount = 0;
+    $total_items = 0;
+    foreach($inventory as $item) {
+        $total_amount += ($item['price'] * $item['quantity']);
+        $total_items += $item['quantity'];
+    }
+    ?>
+    <div class="inventory-summary">
+        <div class="summary-item">
+            <span class="summary-label">総在庫数 / Total Items</span>
+            <div class="summary-value"><span id="total-items-display" class="total-count"><?php echo number_format($total_items); ?></span> <small style="font-size:0.9rem;">pcs</small></div>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">総在庫金額 / Total Valuation</span>
+            <div class="summary-value">&yen;<span id="total-amount-display"><?php echo number_format($total_amount); ?></span></div>
+        </div>
     </div>
 
     <!-- Inventory List Table -->
@@ -364,6 +411,16 @@ function renderInventory(data) {
         dHtml += `<option value="${escapeHtml(name)}">`;
     });
     datalist.innerHTML = dHtml;
+
+    // Calculate totals
+    let totalAmt = 0;
+    let totalQty = 0;
+    data.forEach(item => {
+        totalAmt += (parseInt(item.price) * parseInt(item.quantity));
+        totalQty += parseInt(item.quantity);
+    });
+    document.getElementById('total-amount-display').textContent = totalAmt.toLocaleString();
+    document.getElementById('total-items-display').textContent = totalQty.toLocaleString();
 }
 
 function formatDate(dateStr) {
