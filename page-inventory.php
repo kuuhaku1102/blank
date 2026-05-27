@@ -55,7 +55,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 
 .form-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr auto;
+    grid-template-columns: 2fr 1.2fr 1.2fr 1fr auto;
     gap: 20px;
     align-items: end;
 }
@@ -68,18 +68,70 @@ $product_names = array_unique(array_column($inventory, 'name'));
     margin-bottom: 8px;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
     width: 100%;
     padding: 12px 15px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     font-family: inherit;
     transition: border-color 0.3s;
+    background-color: #fff;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
     outline: none;
     border-color: var(--highlight-color);
+}
+
+/* Custom Select Style */
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+/* Badge Styles */
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.badge-box {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.badge-psa10 {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+    animation: goldPulse 2s infinite alternate;
+}
+
+@keyframes goldPulse {
+    0% {
+        box-shadow: 0 0 4px rgba(239, 68, 68, 0.1);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+    }
 }
 
 .add-btn {
@@ -238,6 +290,13 @@ $product_names = array_unique(array_column($inventory, 'name'));
                 </datalist>
             </div>
             <div class="form-group">
+                <label>種類</label>
+                <select id="prod-type" required>
+                    <option value="BOX">BOX</option>
+                    <option value="PSA10">PSA10</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label>値段 (円)</label>
                 <input type="number" id="prod-price" placeholder="1000" min="0" required>
             </div>
@@ -275,6 +334,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
             <thead>
                 <tr>
                     <th>商品名</th>
+                    <th>種類</th>
                     <th>価格</th>
                     <th>在庫数</th>
                     <th>最終更新</th>
@@ -283,16 +343,20 @@ $product_names = array_unique(array_column($inventory, 'name'));
             </thead>
             <tbody id="inventory-list">
                 <?php if(empty($inventory)): ?>
-                    <tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">項目がありません</td></tr>
+                    <tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">項目がありません</td></tr>
                 <?php else: ?>
                     <?php 
                     // Sort by last updated
                     usort($inventory, function($a, $b) {
                         return strtotime($b['last_updated']) - strtotime($a['last_updated']);
                     });
-                    foreach($inventory as $item): ?>
+                    foreach($inventory as $item): 
+                        $item_type = isset($item['type']) ? $item['type'] : 'BOX';
+                        $badge_class = ($item_type === 'PSA10') ? 'badge-psa10' : 'badge-box';
+                    ?>
                     <tr data-id="<?php echo esc_attr($item['id']); ?>">
                         <td><span class="item-name"><?php echo esc_html($item['name']); ?></span></td>
+                        <td><span class="badge <?php echo $badge_class; ?>"><?php echo esc_html($item_type); ?></span></td>
                         <td><span class="item-price">&yen;<?php echo number_format($item['price']); ?></span></td>
                         <td>
                             <div class="quantity-controls">
@@ -320,16 +384,18 @@ document.getElementById('inventory-form').addEventListener('submit', function(e)
     e.preventDefault();
     
     const name = document.getElementById('prod-name').value;
+    const type = document.getElementById('prod-type').value;
     const price = document.getElementById('prod-price').value;
     const qty = document.getElementById('prod-qty').value;
 
-    if(!name || !price || !qty) return;
+    if(!name || !type || !price || !qty) return;
 
     jQuery.post(ajaxUrl, {
         action: 'blank_inventory_action',
         security: nonce,
         inventory_action: 'add',
         product_name: name,
+        product_type: type,
         product_price: price,
         product_quantity: qty
     }, function(response) {
@@ -337,6 +403,7 @@ document.getElementById('inventory-form').addEventListener('submit', function(e)
             renderInventory(response.data);
             // reset form
             document.getElementById('prod-name').value = '';
+            document.getElementById('prod-type').value = 'BOX';
             document.getElementById('prod-price').value = '';
             document.getElementById('prod-qty').value = '1';
         }
@@ -376,7 +443,7 @@ function renderInventory(data) {
     const datalist = document.getElementById('prod-suggestions');
     
     if(!data || data.length === 0) {
-        listBody.innerHTML = '<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">項目がありません</td></tr>';
+        listBody.innerHTML = '<tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">項目がありません</td></tr>';
         return;
     }
 
@@ -387,9 +454,12 @@ function renderInventory(data) {
     let names = new Set();
     data.forEach(item => {
         names.add(item.name);
+        const itemType = item.type || 'BOX';
+        const badgeClass = itemType === 'PSA10' ? 'badge-psa10' : 'badge-box';
         html += `
             <tr data-id="${item.id}">
                 <td><span class="item-name">${escapeHtml(item.name)}</span></td>
+                <td><span class="badge ${badgeClass}">${escapeHtml(itemType)}</span></td>
                 <td><span class="item-price">&yen;${parseInt(item.price).toLocaleString()}</span></td>
                 <td>
                     <div class="quantity-controls">

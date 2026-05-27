@@ -16,12 +16,16 @@ function blank_inventory_handle_ajax() {
     if ($action_type === 'add') {
         $name = sanitize_text_field($_POST['product_name']);
         $price = intval($_POST['product_price']);
+        $type = isset($_POST['product_type']) ? sanitize_text_field($_POST['product_type']) : 'BOX';
         $quantity = intval($_POST['product_quantity']);
 
         $found = false;
         foreach ($inventory as &$item) {
-            if ($item['name'] === $name && $item['price'] === $price) {
+            $item_type = isset($item['type']) ? $item['type'] : 'BOX';
+            if ($item['name'] === $name && $item['price'] === $price && $item_type === $type) {
                 $item['quantity'] += $quantity;
+                $item['type'] = $type; // キーを明示的に更新
+                $item['last_updated'] = current_time('mysql');
                 $found = true;
                 break;
             }
@@ -32,6 +36,7 @@ function blank_inventory_handle_ajax() {
                 'id' => uniqid(),
                 'name' => $name,
                 'price' => $price,
+                'type' => $type,
                 'quantity' => $quantity,
                 'last_updated' => current_time('mysql')
             ];
