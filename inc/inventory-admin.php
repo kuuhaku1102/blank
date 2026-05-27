@@ -70,6 +70,9 @@ function blank_inventory_handle_ajax() {
         $id = sanitize_text_field($_POST['product_id']);
         $sell_qty = intval($_POST['sell_quantity']);
         $sell_price = intval($_POST['sell_price']);
+        $sell_date = isset($_POST['sell_date']) ? sanitize_text_field($_POST['sell_date']) : current_time('Y-m-d');
+        $sell_memo = isset($_POST['sell_memo']) ? sanitize_textarea_field($_POST['sell_memo']) : '';
+        $sold_at = $sell_date . ' ' . current_time('H:i:s');
 
         foreach ($inventory as &$item) {
             if ($item['id'] === $id) {
@@ -86,7 +89,8 @@ function blank_inventory_handle_ajax() {
                         'cost_price' => $item['price'],
                         'sell_price' => $sell_price,
                         'quantity' => $sell_qty,
-                        'sold_at' => current_time('mysql')
+                        'sold_at' => $sold_at,
+                        'memo' => $sell_memo
                     ];
                 }
                 break;

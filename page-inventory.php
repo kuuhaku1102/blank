@@ -21,7 +21,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 <style>
 /* Inventory Page Styles */
 .inventory-container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 120px auto 80px;
     padding: 0 3%;
 }
@@ -173,12 +173,12 @@ $product_names = array_unique(array_column($inventory, 'name'));
 /* Layout Grid for Split Tables */
 .inventory-layout-grid {
     display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 35px;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 30px;
     align-items: start;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
     .inventory-layout-grid {
         grid-template-columns: 1fr;
     }
@@ -211,7 +211,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 
 .inventory-table th {
     background: #f8fafc;
-    padding: 15px 18px;
+    padding: 15px 15px;
     text-align: left;
     font-size: 0.85rem;
     color: var(--secondary-color);
@@ -219,7 +219,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
 }
 
 .inventory-table td {
-    padding: 18px;
+    padding: 15px;
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.95rem;
 }
@@ -345,9 +345,9 @@ $product_names = array_unique(array_column($inventory, 'name'));
 
 .sell-panel-grid {
     display: grid;
-    grid-template-columns: 1fr 1.5fr auto;
+    grid-template-columns: 1fr 1fr 1.2fr;
     gap: 15px;
-    align-items: end;
+    margin-bottom: 15px;
 }
 
 /* Profit / Loss styles */
@@ -461,7 +461,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
                             <th>種類</th>
                             <th>仕入れ値</th>
                             <th>在庫数</th>
-                            <th style="width:140px; text-align:center;">操作</th>
+                            <th style="width:120px; text-align:center;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="inventory-list">
@@ -506,6 +506,16 @@ $product_names = array_unique(array_column($inventory, 'name'));
                                                 <label>売値 (1個あたり/円)</label>
                                                 <input type="number" id="sell-price-<?php echo $item['id']; ?>" placeholder="<?php echo $price; ?>">
                                             </div>
+                                            <div class="form-group" style="margin-bottom:0;">
+                                                <label>売却日</label>
+                                                <input type="date" id="sell-date-<?php echo $item['id']; ?>" value="<?php echo date('Y-m-d'); ?>">
+                                            </div>
+                                        </div>
+                                        <div style="display:flex; gap:15px; align-items:end; margin-top:15px;">
+                                            <div class="form-group" style="flex:1; margin-bottom:0;">
+                                                <label>メモ (販売先など)</label>
+                                                <input type="text" id="sell-memo-<?php echo $item['id']; ?>" placeholder="例: メルカリ、〇〇様へ直接販売など">
+                                            </div>
                                             <div style="display:flex; gap:10px;">
                                                 <button type="button" class="add-btn" onclick="executeSell('<?php echo $item['id']; ?>')" style="padding:10px 18px; font-size:0.85rem; background:#10b981;">確定</button>
                                                 <button type="button" class="qty-btn" onclick="toggleSellPanel('<?php echo $item['id']; ?>')" style="border-radius:6px; font-size:0.85rem; height:43px; padding:0 12px;">閉じる</button>
@@ -528,16 +538,17 @@ $product_names = array_unique(array_column($inventory, 'name'));
                 <table class="inventory-table">
                     <thead>
                         <tr>
-                            <th>商品名</th>
-                            <th>仕入 &rarr; 売値</th>
+                            <th>売却日 &amp; 商品名</th>
+                            <th>単価 (仕入&rarr;売値)</th>
                             <th>数量</th>
                             <th>損益</th>
-                            <th style="width:60px; text-align:center;">操作</th>
+                            <th>メモ</th>
+                            <th style="width:50px; text-align:center;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="sales-list">
                         <?php if(empty($sales_history)): ?>
-                            <tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>
+                            <tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>
                         <?php else: ?>
                             <?php 
                             usort($sales_history, function($a, $b) {
@@ -551,11 +562,12 @@ $product_names = array_unique(array_column($inventory, 'name'));
                                 $row_profit_class = 'profit-zero';
                                 if ($profit > 0) $row_profit_class = 'profit-positive';
                                 elseif ($profit < 0) $row_profit_class = 'profit-negative';
+                                $memo = isset($sale['memo']) ? $sale['memo'] : '';
                             ?>
                             <tr data-sale-id="<?php echo esc_attr($sale['id']); ?>">
                                 <td>
+                                    <span style="font-size:0.75rem; color:#64748b; display:block; font-weight:bold;"><?php echo date('Y/m/d', strtotime($sale['sold_at'])); ?></span>
                                     <span class="item-name" style="font-size:0.9rem;"><?php echo esc_html($sale['name']); ?></span>
-                                    <span style="font-size:0.7rem; color:#94a3b8; display:block;"><?php echo date('m/d H:i', strtotime($sale['sold_at'])); ?></span>
                                 </td>
                                 <td style="font-size:0.85rem;">
                                     <span style="color:#64748b;">&yen;<?php echo number_format($cost); ?></span>
@@ -564,6 +576,11 @@ $product_names = array_unique(array_column($inventory, 'name'));
                                 </td>
                                 <td style="font-weight:bold;"><?php echo $qty; ?></td>
                                 <td><span class="<?php echo $row_profit_class; ?>"><?php echo ($profit > 0 ? '+' : '') . number_format($profit); ?>円</span></td>
+                                <td>
+                                    <span style="font-size:0.8rem; color:#64748b; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block;" title="<?php echo esc_attr($memo); ?>">
+                                        <?php echo !empty($memo) ? esc_html($memo) : '<span style="color:#cbd5e1;">-</span>'; ?>
+                                    </span>
+                                </td>
                                 <td style="text-align:center;"><button type="button" class="delete-btn" onclick="deleteSale('<?php echo $sale['id']; ?>')" style="padding:0; color:#64748b;">取消</button></td>
                             </tr>
                             <?php endforeach; ?>
@@ -665,6 +682,8 @@ function toggleSellPanel(id) {
 function executeSell(id) {
     const qty = parseInt(document.getElementById('sell-qty-' + id).value);
     const price = parseInt(document.getElementById('sell-price-' + id).value);
+    const date = document.getElementById('sell-date-' + id).value;
+    const memo = document.getElementById('sell-memo-' + id).value;
 
     if(!qty || qty < 1 || isNaN(price)) {
         alert('正しい数量と売値を入力してください。');
@@ -677,7 +696,9 @@ function executeSell(id) {
         inventory_action: 'sell',
         product_id: id,
         sell_quantity: qty,
-        sell_price: price
+        sell_price: price,
+        sell_date: date,
+        sell_memo: memo
     }, function(response) {
         if(response.success) {
             renderInventory(response.data);
@@ -716,6 +737,7 @@ function renderInventory(data) {
     if(inventory.length === 0) {
         listBody.innerHTML = '<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">保有在庫はありません</td></tr>';
     } else {
+        const todayStr = new Date().toISOString().split('T')[0];
         let html = '';
         let names = new Set();
         inventory.forEach(item => {
@@ -754,6 +776,16 @@ function renderInventory(data) {
                                     <label>売値 (1個あたり/円)</label>
                                     <input type="number" id="sell-price-${item.id}" placeholder="${price}" value="${price}">
                                 </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label>売却日</label>
+                                    <input type="date" id="sell-date-${item.id}" value="${todayStr}">
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:15px; align-items:end; margin-top:15px;">
+                                <div class="form-group" style="flex:1; margin-bottom:0;">
+                                    <label>メモ (販売先など)</label>
+                                    <input type="text" id="sell-memo-${item.id}" placeholder="例: メルカリ、〇〇様へ直接販売など">
+                                </div>
                                 <div style="display:flex; gap:10px;">
                                     <button type="button" class="add-btn" onclick="executeSell('${item.id}')" style="padding:10px 18px; font-size:0.85rem; background:#10b981;">確定</button>
                                     <button type="button" class="qty-btn" onclick="toggleSellPanel('${item.id}')" style="border-radius:6px; font-size:0.85rem; height:43px; padding:0 12px;">閉じる</button>
@@ -776,7 +808,7 @@ function renderInventory(data) {
 
     // --- Render Sales History ---
     if(sales_history.length === 0) {
-        salesBody.innerHTML = '<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>';
+        salesBody.innerHTML = '<tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">売却実績はありません</td></tr>';
     } else {
         let html = '';
         sales_history.forEach(sale => {
@@ -784,6 +816,7 @@ function renderInventory(data) {
             const sell = parseInt(sale.sell_price);
             const qty = parseInt(sale.quantity);
             const profit = (sell - cost) * qty;
+            const memo = sale.memo || '';
 
             let rowProfitClass = 'profit-zero';
             if (profit > 0) rowProfitClass = 'profit-positive';
@@ -792,8 +825,8 @@ function renderInventory(data) {
             html += `
                 <tr data-sale-id="${sale.id}">
                     <td>
+                        <span style="font-size:0.75rem; color:#64748b; display:block; font-weight:bold;">${formatDateOnly(sale.sold_at)}</span>
                         <span class="item-name" style="font-size:0.9rem;">${escapeHtml(sale.name)}</span>
-                        <span style="font-size:0.7rem; color:#94a3b8; display:block;">${formatDate(sale.sold_at)}</span>
                     </td>
                     <td style="font-size:0.85rem;">
                         <span style="color:#64748b;">&yen;${cost.toLocaleString()}</span>
@@ -802,6 +835,11 @@ function renderInventory(data) {
                     </td>
                     <td style="font-weight:bold;">${qty}</td>
                     <td><span class="${rowProfitClass}">${profit > 0 ? '+' : ''}${profit.toLocaleString()}円</span></td>
+                    <td>
+                        <span style="font-size:0.8rem; color:#64748b; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block;" title="${escapeHtml(memo)}">
+                            ${memo ? escapeHtml(memo) : '<span style="color:#cbd5e1;">-</span>'}
+                        </span>
+                    </td>
                     <td style="text-align:center;"><button type="button" class="delete-btn" onclick="deleteSale('${sale.id}')" style="padding:0; color:#64748b;">取消</button></td>
                 </tr>
             `;
@@ -841,13 +879,12 @@ function renderInventory(data) {
     profitDisplay.textContent = (totalRealizedProfit > 0 ? '+' : '') + totalRealizedProfit.toLocaleString() + '円';
 }
 
-function formatDate(dateStr) {
+function formatDateOnly(dateStr) {
     const d = new Date(dateStr.replace(/-/g, '/'));
+    const y = d.getFullYear();
     const m = ('0' + (d.getMonth() + 1)).slice(-2);
     const day = ('0' + d.getDate()).slice(-2);
-    const h = ('0' + d.getHours()).slice(-2);
-    const min = ('0' + d.getMinutes()).slice(-2);
-    return `${m}/${day} ${h}:${min}`;
+    return `${y}/${m}/${day}`;
 }
 
 function escapeHtml(str) {
