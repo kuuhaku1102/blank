@@ -135,9 +135,11 @@ $data = get_option('blank_inventory_data', []);
 if (empty($data) || (isset($data[0]) && is_array($data[0]))) {
     $inventory = is_array($data) ? $data : [];
     $sales_history = [];
+    $date_memos = [];
 } else {
     $inventory = isset($data['inventory']) ? $data['inventory'] : [];
     $sales_history = isset($data['sales_history']) ? $data['sales_history'] : [];
+    $date_memos = isset($data['date_memos']) ? $data['date_memos'] : [];
 }
 
 $product_names = array_unique(array_column($inventory, 'name'));
@@ -790,7 +792,7 @@ $product_names = array_unique(array_column($inventory, 'name'));
                                         </div>
                                         <div style="display:flex; gap:15px; align-items:end; margin-top:15px;">
                                             <div class="form-group" style="flex:1; margin-bottom:0;">
-                                                <label>メモ (販売先など)</label>
+                                                <label>販売先メモ <span style="font-weight:normal; color:#94a3b8; font-size:0.7rem;">(その日のメモがまだ無い場合のみ保存)</span></label>
                                                 <input type="text" id="sell-memo-<?php echo $item['id']; ?>" placeholder="例: メルカリ、〇〇様へ直接販売など">
                                             </div>
                                             <div style="display:flex; gap:10px;">
@@ -832,16 +834,23 @@ $product_names = array_unique(array_column($inventory, 'name'));
                     <div class="daily-summary-value" id="daily-profit">¥0</div>
                 </div>
             </div>
+            <!-- 日付ごとの「販売先メモ」(1個) -->
+            <div id="date-memo-card" style="display:none; background:#fff; border:1px solid rgba(145,166,180,0.2); border-left:4px solid var(--highlight-color); border-radius:10px; padding:12px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <span style="font-size:0.75rem; font-weight:bold; color:var(--accent-color); letter-spacing:0.05em;">📝 販売先メモ</span>
+                    <span id="date-memo-display" onclick="enableDateMemoEdit()" style="flex:1; min-width:200px; font-size:0.9rem; color:#475569; padding:6px 10px; border-radius:6px; cursor:pointer; background:#f8fafc; border:1px dashed #e2e8f0; transition:all 0.2s;"></span>
+                </div>
+            </div>
+
             <div class="inventory-table-wrap" style="border-top: 3px solid #10b981;">
                 <table class="inventory-table">
                     <thead>
                         <tr>
-                            <th style="width: 90px;">商品名</th>
-                            <th style="width: 110px;">単価 (仕入→売値)</th>
-                            <th style="width:50px;">数量</th>
-                            <th style="width:90px;">損益</th>
-                            <th>メモ</th>
-                            <th style="width:50px; text-align:center;">操作</th>
+                            <th>商品名</th>
+                            <th style="width: 130px;">単価 (仕入→売値)</th>
+                            <th style="width:60px;">数量</th>
+                            <th style="width:110px;">損益</th>
+                            <th style="width:60px; text-align:center;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="sales-list">
@@ -861,9 +870,15 @@ const nonce = '<?php echo wp_create_nonce('blank_inventory_nonce'); ?>';
 // グローバルデータの保持
 let latestData = {
     inventory: <?php echo json_encode($inventory); ?>,
-    sales_history: <?php echo json_encode($sales_history); ?>
+    sales_history: <?php echo json_encode($sales_history); ?>,
+    date_memos: <?php echo json_encode((object)$date_memos); ?>
 };
 let selectedDateFilter = 'all'; // 選択されている日付フィルター ('all' または 'YYYY/MM/DD')
+
+// 'YYYY/MM/DD' → 'YYYY-MM-DD' に変換 (バックエンドのキー形式に合わせる)
+function dateKeyFromDisplay(dStr) {
+    return dStr.replace(/\//g, '-');
+}
 
 // 初期描画（セレクトボックス作成のため実行）
 jQuery(document).ready(function() {
@@ -1005,13 +1020,13 @@ function setDateFilter(dateValue) {
     renderInventory(latestData);
 }
 
-// Update memo for a sale (inline edit)
-function saveMemoEdit(saleId, newMemo) {
+// Update date memo (販売先メモ。日付ごとに1個)
+function saveDateMemoEdit(dateKey, newMemo) {
     jQuery.post(ajaxUrl, {
         action: 'blank_inventory_action',
         security: nonce,
-        inventory_action: 'update_memo',
-        sale_id: saleId,
+        inventory_action: 'update_date_memo',
+        date_key: dateKey,
         memo: newMemo
     }, function(response) {
         if(response.success) {
@@ -1021,24 +1036,37 @@ function saveMemoEdit(saleId, newMemo) {
     });
 }
 
-// Enable Memo Inline Edit
-function enableMemoEdit(el, saleId) {
-    // 最新データから生のメモを取得（HTML エスケープ済みの data-memo は使わない）
-    const sale = (latestData.sales_history || []).find(s => s.id === saleId);
-    const currentMemo = (sale && sale.memo) ? sale.memo : '';
+// Enable Date Memo Inline Edit (販売先メモ編集)
+function enableDateMemoEdit() {
+    if (selectedDateFilter === 'all') {
+        alert('日付タブを選択してから、その日のメモを編集してください。');
+        return;
+    }
+    const dateKey = dateKeyFromDisplay(selectedDateFilter);
+    const memos = latestData.date_memos || {};
+    const currentMemo = memos[dateKey] || '';
+
+    const display = document.getElementById('date-memo-display');
     const input = document.createElement('input');
     input.type = 'text';
     input.value = currentMemo;
-    input.className = 'memo-edit-input';
-    input.placeholder = 'メモを入力...';
-    el.replaceWith(input);
+    input.style.flex = '1';
+    input.style.minWidth = '200px';
+    input.style.padding = '6px 10px';
+    input.style.borderRadius = '6px';
+    input.style.fontSize = '0.9rem';
+    input.style.border = '1.5px solid var(--highlight-color)';
+    input.style.outline = 'none';
+    input.placeholder = '例: メルカリ / ヤフオク / 〇〇様へ手渡し';
+
+    display.replaceWith(input);
     input.focus();
     input.select();
 
     const commit = () => {
         const newVal = input.value.trim();
         if (newVal !== currentMemo) {
-            saveMemoEdit(saleId, newVal);
+            saveDateMemoEdit(dateKey, newVal);
         } else {
             renderInventory(latestData);
         }
@@ -1162,6 +1190,32 @@ function renderInventory(data) {
         profitEl.style.color = dProf > 0 ? '#10b981' : (dProf < 0 ? '#ef4444' : '#64748b');
     }
 
+    // --- Update Date Memo Card (販売先メモ) ---
+    const dateMemoCard = document.getElementById('date-memo-card');
+    if (dateMemoCard) {
+        if (selectedDateFilter === 'all') {
+            // 「すべて」表示中は日付メモ非表示
+            dateMemoCard.style.display = 'none';
+        } else {
+            dateMemoCard.style.display = 'block';
+            const memos = latestData.date_memos || {};
+            const dateKey = dateKeyFromDisplay(selectedDateFilter);
+            const memoTxt = memos[dateKey] || '';
+            const display = document.getElementById('date-memo-display');
+            if (display) {
+                if (memoTxt) {
+                    display.textContent = memoTxt;
+                    display.style.color = '#475569';
+                    display.style.fontStyle = 'normal';
+                } else {
+                    display.textContent = '＋ 販売先を入力（クリックで編集）';
+                    display.style.color = '#94a3b8';
+                    display.style.fontStyle = 'italic';
+                }
+            }
+        }
+    }
+
     // --- Render Active Inventory ---
     if(inventory.length === 0) {
         listBody.innerHTML = '<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">保有在庫はありません</td></tr>';
@@ -1212,7 +1266,7 @@ function renderInventory(data) {
                             </div>
                             <div style="display:flex; gap:15px; align-items:end; margin-top:15px;">
                                 <div class="form-group" style="flex:1; margin-bottom:0;">
-                                    <label>メモ (販売先など)</label>
+                                    <label>販売先メモ <span style="font-weight:normal; color:#94a3b8; font-size:0.7rem;">(その日のメモがまだ無い場合のみ保存)</span></label>
                                     <input type="text" id="sell-memo-${item.id}" placeholder="例: メルカリ、〇〇様へ直接販売など">
                                 </div>
                                 <div style="display:flex; gap:10px;">
@@ -1240,7 +1294,7 @@ function renderInventory(data) {
         const emptyMsg = selectedDateFilter === 'all'
             ? '売却実績はありません'
             : `${selectedDateFilter} の売却実績はありません`;
-        salesBody.innerHTML = `<tr class="empty-row"><td colspan="6" style="text-align:center; padding:40px; color:var(--accent-color);">${emptyMsg}</td></tr>`;
+        salesBody.innerHTML = `<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">${emptyMsg}</td></tr>`;
     } else {
         let html = '';
         filteredSales.forEach(sale => {
@@ -1248,7 +1302,6 @@ function renderInventory(data) {
             const sell = parseInt(sale.sell_price);
             const qty = parseInt(sale.quantity);
             const profit = (sell - cost) * qty;
-            const memo = sale.memo || '';
             const itemType = sale.type || 'BOX';
             const badgeClass = itemType === 'PSA10' ? 'badge-psa10' : 'badge-box';
 
@@ -1275,11 +1328,6 @@ function renderInventory(data) {
                     </td>
                     <td style="font-weight:bold;">${qty}</td>
                     <td><span class="${rowProfitClass}">${profit > 0 ? '+' : ''}${profit.toLocaleString()}円</span></td>
-                    <td>
-                        <span class="memo-cell ${memo ? '' : 'empty'}" data-memo="${escapeHtml(memo)}" onclick="enableMemoEdit(this, '${sale.id}')" title="${memo ? escapeHtml(memo) : 'クリックでメモを追加'}">
-                            ${memo ? escapeHtml(memo) : '＋ メモを追加'}
-                        </span>
-                    </td>
                     <td style="text-align:center;"><button type="button" class="delete-btn" onclick="deleteSale('${sale.id}')" style="padding:0; color:#64748b;">取消</button></td>
                 </tr>
             `;

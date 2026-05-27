@@ -26,6 +26,7 @@ function blank_inventory_handle_ajax() {
     
     $inventory = isset($data['inventory']) ? $data['inventory'] : [];
     $sales_history = isset($data['sales_history']) ? $data['sales_history'] : [];
+    $date_memos = isset($data['date_memos']) ? $data['date_memos'] : []; // 'YYYY-MM-DD' => 'memo'
 
     if ($action_type === 'add') {
         $name = sanitize_text_field($_POST['product_name']);
@@ -80,7 +81,7 @@ function blank_inventory_handle_ajax() {
                     $item['quantity'] -= $sell_qty;
                     $item['last_updated'] = current_time('mysql');
 
-                    // 売却履歴に追加
+                    // 売却履歴に追加（個別メモは廃止: 互換のため空で保存）
                     $sales_history[] = [
                         'id' => uniqid(),
                         'inventory_id' => $item['id'],
@@ -90,8 +91,15 @@ function blank_inventory_handle_ajax() {
                         'sell_price' => $sell_price,
                         'quantity' => $sell_qty,
                         'sold_at' => $sold_at,
-                        'memo' => $sell_memo
+                        'memo' => ''
                     ];
+
+                    // 売却時にメモが入力されていれば、その日のメモとして保存（既存があれば上書きしない、空のみ更新）
+                    if (!empty($sell_memo)) {
+                        if (empty($date_memos[$sell_date])) {
+                            $date_memos[$sell_date] = $sell_memo;
+                        }
+                    }
                 }
                 break;
             }
@@ -146,23 +154,25 @@ function blank_inventory_handle_ajax() {
         });
         $inventory = array_values($inventory);
 
-    } elseif ($action_type === 'update_memo') {
-        // 売却履歴のメモをインライン編集で更新
-        $sale_id = sanitize_text_field($_POST['sale_id']);
+    } elseif ($action_type === 'update_date_memo') {
+        // 日付ごとの「販売先メモ」を1個更新
+        $date_key = sanitize_text_field($_POST['date_key']); // 'YYYY-MM-DD'
         $new_memo = isset($_POST['memo']) ? sanitize_textarea_field($_POST['memo']) : '';
 
-        foreach ($sales_history as &$sale) {
-            if ($sale['id'] === $sale_id) {
-                $sale['memo'] = $new_memo;
-                break;
+        if (empty($new_memo)) {
+            // 空ならキー自体を削除
+            if (isset($date_memos[$date_key])) {
+                unset($date_memos[$date_key]);
             }
+        } else {
+            $date_memos[$date_key] = $new_memo;
         }
-        unset($sale);
     }
 
     $data = [
         'inventory' => $inventory,
-        'sales_history' => $sales_history
+        'sales_history' => $sales_history,
+        'date_memos' => $date_memos
     ];
     update_option('blank_inventory_data', $data);
     wp_send_json_success($data);
@@ -175,7 +185,8 @@ function blank_inventory_seed_init() {
     if (!get_option('blank_inventory_data')) {
         update_option('blank_inventory_data', [
             'inventory' => [],
-            'sales_history' => []
+            'sales_history' => [],
+            'date_memos' => []
         ]);
     }
 }
