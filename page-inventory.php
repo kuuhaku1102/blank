@@ -608,6 +608,84 @@ $product_names = array_unique(array_column($inventory, 'name'));
     font-family: 'Outfit', sans-serif;
 }
 
+/* Inventory Search Box */
+.inv-search-wrap {
+    position: relative;
+    margin-bottom: 15px;
+}
+.inv-search-input {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background: #fff;
+    transition: all 0.2s;
+    font-family: inherit;
+    outline: none;
+}
+.inv-search-input:focus {
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+}
+.inv-search-wrap::before {
+    content: '🔍';
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.inv-search-clear {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    background: #f1f5f9;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    color: #64748b;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.inv-search-clear:hover { background: #e2e8f0; color: #1e293b; }
+.inv-search-clear.visible { display: flex; }
+
+/* Daily summary row in 「すべて」 view */
+.daily-row {
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.daily-row:hover {
+    background: #f8fafc;
+}
+.daily-row td {
+    padding: 18px 15px !important;
+}
+.daily-row-date {
+    font-weight: 800;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+.daily-row-weekday {
+    font-size: 0.75rem;
+    color: var(--accent-color);
+    margin-left: 6px;
+}
+.daily-row-jump {
+    font-size: 0.7rem;
+    color: var(--highlight-color);
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
 /* Memo Cell */
 .memo-cell {
     font-size: 0.8rem;
@@ -732,6 +810,13 @@ $product_names = array_unique(array_column($inventory, 'name'));
         <!-- Left: Active Inventory -->
         <div class="inventory-section">
             <h2 class="section-title">📂 保有在庫一覧</h2>
+
+            <!-- 検索窓 -->
+            <div class="inv-search-wrap">
+                <input type="text" id="inv-search-input" class="inv-search-input" placeholder="商品名で検索..." oninput="filterInventory()" autocomplete="off">
+                <button type="button" class="inv-search-clear" id="inv-search-clear" onclick="clearInventorySearch()" title="クリア">✕</button>
+            </div>
+
             <div class="inventory-table-wrap">
                 <table class="inventory-table">
                     <thead>
@@ -874,6 +959,27 @@ let latestData = {
     date_memos: <?php echo json_encode((object)$date_memos); ?>
 };
 let selectedDateFilter = 'all'; // 選択されている日付フィルター ('all' または 'YYYY/MM/DD')
+let inventorySearchTerm = ''; // 保有在庫の検索キーワード
+
+// 在庫検索：入力に応じてフィルタ
+function filterInventory() {
+    const input = document.getElementById('inv-search-input');
+    inventorySearchTerm = (input.value || '').trim().toLowerCase();
+    const clearBtn = document.getElementById('inv-search-clear');
+    if (clearBtn) {
+        clearBtn.classList.toggle('visible', inventorySearchTerm.length > 0);
+    }
+    renderInventory(latestData);
+}
+
+function clearInventorySearch() {
+    const input = document.getElementById('inv-search-input');
+    if (input) input.value = '';
+    inventorySearchTerm = '';
+    document.getElementById('inv-search-clear').classList.remove('visible');
+    renderInventory(latestData);
+    input && input.focus();
+}
 
 // 'YYYY/MM/DD' → 'YYYY-MM-DD' に変換 (バックエンドのキー形式に合わせる)
 function dateKeyFromDisplay(dStr) {
@@ -1217,14 +1323,27 @@ function renderInventory(data) {
     }
 
     // --- Render Active Inventory ---
-    if(inventory.length === 0) {
-        listBody.innerHTML = '<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">保有在庫はありません</td></tr>';
+    // 全在庫からオートコンプリート用の名前リストを先に作成（検索フィルタ前）
+    let allNames = new Set();
+    inventory.forEach(item => allNames.add(item.name));
+
+    // 検索キーワードでフィルタ
+    let displayInventory = inventory;
+    if (inventorySearchTerm) {
+        displayInventory = inventory.filter(item =>
+            (item.name || '').toLowerCase().includes(inventorySearchTerm)
+        );
+    }
+
+    if(displayInventory.length === 0) {
+        const emptyMsg = inventorySearchTerm
+            ? `「${escapeHtml(inventorySearchTerm)}」に一致する在庫はありません`
+            : '保有在庫はありません';
+        listBody.innerHTML = `<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">${emptyMsg}</td></tr>`;
     } else {
         const todayStr = new Date().toISOString().split('T')[0];
         let html = '';
-        let names = new Set();
-        inventory.forEach(item => {
-            names.add(item.name);
+        displayInventory.forEach(item => {
             const qty = parseInt(item.quantity);
             const price = parseInt(item.price);
             const itemType = item.type || 'BOX';
@@ -1280,10 +1399,12 @@ function renderInventory(data) {
             `;
         });
         listBody.innerHTML = html;
+    }
 
-        // Update autocomplete list
+    // Update autocomplete list (検索フィルタとは独立に全在庫の名前を入れる)
+    if (datalist) {
         let dHtml = '';
-        names.forEach(name => {
+        allNames.forEach(name => {
             dHtml += `<option value="${escapeHtml(name)}">`;
         });
         datalist.innerHTML = dHtml;
@@ -1295,7 +1416,43 @@ function renderInventory(data) {
             ? '売却実績はありません'
             : `${selectedDateFilter} の売却実績はありません`;
         salesBody.innerHTML = `<tr class="empty-row"><td colspan="5" style="text-align:center; padding:40px; color:var(--accent-color);">${emptyMsg}</td></tr>`;
+    } else if (selectedDateFilter === 'all') {
+        // 「すべて」表示時は、日付ごとに集計した1行のサマリー行のみ表示（商品個別行は出さない）
+        const weekdayJa = ['日','月','火','水','木','金','土'];
+        let html = '';
+        // sortedDates は新しい順
+        sortedDates.forEach(dStr => {
+            const dp = dateProfitMap[dStr];
+            const memos = latestData.date_memos || {};
+            const memoTxt = memos[dateKeyFromDisplay(dStr)] || '';
+            const d = new Date(dStr.replace(/\//g, '-'));
+            const weekday = weekdayJa[d.getDay()];
+
+            let profitCls = 'profit-zero';
+            if (dp.profit > 0) profitCls = 'profit-positive';
+            else if (dp.profit < 0) profitCls = 'profit-negative';
+
+            const memoBadge = memoTxt
+                ? `<span style="font-size:0.7rem; color:#64748b; background:#f8fafc; padding:2px 8px; border-radius:4px; margin-left:8px; border:1px dashed #e2e8f0;">📝 ${escapeHtml(memoTxt)}</span>`
+                : '';
+
+            html += `
+                <tr class="daily-row" onclick="setDateFilter('${dStr}')" title="クリックでこの日の詳細を表示">
+                    <td>
+                        <span class="daily-row-date">${d.getMonth()+1}/${d.getDate()}</span>
+                        <span class="daily-row-weekday">${d.getFullYear()} (${weekday})</span>
+                        ${memoBadge}
+                    </td>
+                    <td style="font-size:0.85rem; color:#64748b;">売上 <span style="color:var(--primary-color); font-weight:bold;">¥${dp.revenue.toLocaleString()}</span></td>
+                    <td style="font-weight:bold;">${dp.qty} <small style="font-weight:normal; color:#94a3b8;">pcs</small></td>
+                    <td><span class="${profitCls}">${dp.profit > 0 ? '+' : ''}${dp.profit.toLocaleString()}円</span></td>
+                    <td style="text-align:center;"><span class="daily-row-jump">詳細 →</span></td>
+                </tr>
+            `;
+        });
+        salesBody.innerHTML = html;
     } else {
+        // 単一日付選択時は、商品ごとの行を従来通り表示
         let html = '';
         filteredSales.forEach(sale => {
             const cost = parseInt(sale.cost_price);
@@ -1309,15 +1466,9 @@ function renderInventory(data) {
             if (profit > 0) rowProfitClass = 'profit-positive';
             else if (profit < 0) rowProfitClass = 'profit-negative';
 
-            // 「すべて表示」時のみ日付を行に表示
-            const dateBadge = selectedDateFilter === 'all'
-                ? `<span style="font-size:0.7rem; color:#94a3b8; display:block; font-weight:bold; margin-bottom:3px;">${formatDateOnly(sale.sold_at)}</span>`
-                : '';
-
             html += `
                 <tr data-sale-id="${sale.id}">
                     <td>
-                        ${dateBadge}
                         <span class="item-name" style="font-size:0.9rem;">${escapeHtml(sale.name)}</span>
                         <span class="badge ${badgeClass}" style="font-size:0.6rem; padding:2px 6px; margin-left:4px;">${escapeHtml(itemType)}</span>
                     </td>
